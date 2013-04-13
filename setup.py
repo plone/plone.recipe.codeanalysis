@@ -33,7 +33,11 @@ long_description = (
     '********\n')
 
 entry_point = 'plone.recipe.codeanalysis:Recipe'
-entry_points = {"zc.buildout": ["default = %s" % entry_point]}
+entry_points = {
+  "zc.buildout": [
+    "default = %s" % entry_point
+  ]
+}
 
 tests_require = [
   'zope.testing', 'zc.buildout[test]'
@@ -62,6 +66,10 @@ setup(name='plone.recipe.codeanalysis',
       install_requires=[
         'setuptools',
         'zc.buildout',
+        'genshi',
+        'flake8',
+        'pep8',
+        'zc.recipe.egg',
       ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
