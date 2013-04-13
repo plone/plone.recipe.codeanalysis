@@ -55,7 +55,7 @@ Running the buildout gives us::
 	>>> buildout_output_lower = system(buildout).lower()
 	>>> "installing test1" in buildout_output_lower
 	True
-	>>> "unused options for test1: 'option2' 'option1'" in buildout_output_lower
+  >>> "unused options for test1: 'option1' 'option2'." in buildout_output_lower
 	True
 
 

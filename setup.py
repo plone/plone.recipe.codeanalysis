@@ -35,7 +35,9 @@ long_description = (
 entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {"zc.buildout": ["default = %s" % entry_point]}
 
-tests_require = ['zope.testing', 'zc.buildout']
+tests_require = [
+  'zope.testing', 'zc.buildout[test]'
+]
 
 setup(name='plone.recipe.codeanalysis',
       version=version,
@@ -57,10 +59,10 @@ setup(name='plone.recipe.codeanalysis',
       namespace_packages=['plone', 'plone.recipe'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=['setuptools',
-                        'zc.buildout',
-                        'manuel',
-                        ],
+      install_requires=[
+        'setuptools',
+        'zc.buildout',
+      ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
       test_suite='plone.recipe.codeanalysis.tests.test_docs.test_suite',
