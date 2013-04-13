@@ -58,8 +58,8 @@ setup(name='plone.recipe.codeanalysis',
       include_package_data=True,
       zip_safe=False,
       install_requires=['setuptools',
-                        'zc.buildout'
-                        # -*- Extra requirements: -*-
+                        'zc.buildout',
+                        'manuel',
                         ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
