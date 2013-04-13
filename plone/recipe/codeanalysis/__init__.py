@@ -7,6 +7,10 @@ import zc.recipe.egg
 
 import pep8
 
+from genshi.template import TextTemplate
+
+current_dir = os.path.dirname(__file__)
+
 
 class Recipe(object):
     """zc.buildout recipe"""
@@ -61,16 +65,14 @@ class Recipe(object):
         self.create_pre_commit_hook()
 
     def create_pre_commit_hook(self):
-        tmpl_filename = os.path.join(
-            self.buildout['buildout']['directory'],
-            'plone/recipe/codeanalysis/templates/pre-commit.tmpl', 
-        )
+        tmpl_filename = os.path.join(current_dir, 'templates', 'pre-commit.tmpl')
         tmpl_file = open(tmpl_filename, 'r')
-        from genshi.template import TextTemplate
         tmpl = TextTemplate(tmpl_file.read())
         tmpl_file.close()
-        stream = tmpl.generate(name='world')
-        import pdb; pdb.set_trace()
+        python_bin = self.buildout['buildout']['bin-directory'] + '/zopepy'
+        stream = tmpl.generate(
+            python_bin=python_bin
+        )
         git_hooks_directory = os.path.join(
             self.buildout['buildout']['directory'],
             '.git/hooks', 
@@ -80,13 +82,4 @@ class Recipe(object):
         output_file.close()
 
 def code_analysis_flake8(options):
-    COMPLEXITY = 10
-    STRICT = False
-    from flake8.hooks import git_hook
-    sys.exit(git_hook(complexity=COMPLEXITY, strict=STRICT, ignore='E501'))
-    # Alternatively
-    # sys.exit(git_hook(complexity=COMPLEXITY, strict=STRICT,
-    #                   ignore=['E501']))
-
-
-
+    pass

@@ -53,6 +53,7 @@ We'll start by creating a buildout that uses the recipe::
 Running the buildout gives us::
 
 	>>> buildout_output_lower = system(buildout).lower()
+  >>> import pdb; pdb.set_trace()
 	>>> "installing test1" in buildout_output_lower
 	True
   >>> "unused options for test1: 'option1' 'option2'." in buildout_output_lower
