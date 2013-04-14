@@ -56,6 +56,17 @@ class Recipe(object):
     def install_scripts(self):
         zc.buildout.easy_install.scripts(
             [(
+                self.name,
+                self.__module__,
+                'code_analysis'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
+        zc.buildout.easy_install.scripts(
+            [(
                 self.name + '-flake8',
                 self.__module__,
                 'code_analysis_flake8'
@@ -89,6 +100,10 @@ class Recipe(object):
         """Full bash-based pre-commit hook.
         """
         tmpl_filename = os.path.join(current_dir, 'templates', 'pre-commit.sh.tmpl')
+
+
+def code_analysis(options):
+    code_analysis_flake8(options)
 
 
 def code_analysis_flake8(options):
