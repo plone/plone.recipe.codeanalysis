@@ -95,6 +95,8 @@ def code_analysis_flake8(options):
     print("Flake 8 Code Analysis")
     print("---------------------")
     bin_dir = os.path.join(options['bin-directory'])
-    output = subprocess.call(bin_dir + '/flake8')
+    #ignore = 'E226,E302,E41'
+    ignore = ''
+    output = subprocess.call([bin_dir + '/flake8', '--ignore=%s' % ignore])
     print(output)
     print("---------------------")
