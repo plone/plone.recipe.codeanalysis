@@ -112,6 +112,11 @@ def code_analysis_flake8(options):
     bin_dir = os.path.join(options['bin-directory'])
     #ignore = 'E226,E302,E41'
     ignore = ''
-    output = subprocess.call([bin_dir + '/flake8', '--ignore=%s' % ignore])
+    exclude = 'bootstrap.py,docs,src'
+    output = subprocess.call([
+        bin_dir + '/flake8', 
+        '--ignore=%s' % ignore,
+        '--exclude=%s' % exclude,
+    ])
     print(output)
     print("---------------------")
