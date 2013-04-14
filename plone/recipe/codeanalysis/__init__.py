@@ -5,8 +5,10 @@ import sys
 import zc.buildout
 import zc.recipe.egg
 
+import subprocess
 import pep8
 
+from subprocess import Popen, PIPE
 from genshi.template import TextTemplate
 
 current_dir = os.path.dirname(__file__)
@@ -45,6 +47,7 @@ class Recipe(object):
 
     def install(self):
         self.install_scripts()
+        self.install_pre_commit_hook()
         return self.files
 
     def update(self):
@@ -53,7 +56,7 @@ class Recipe(object):
     def install_scripts(self):
         zc.buildout.easy_install.scripts(
             [(
-                self.name,
+                self.name + '-flake8',
                 self.__module__,
                 'code_analysis_flake8'
             )],
@@ -62,9 +65,10 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
-        self.create_pre_commit_hook()
 
-    def create_pre_commit_hook(self):
+    def install_pre_commit_hook(self):
+        """Flake8 Python pre-commit hook.
+        """
         tmpl_filename = os.path.join(current_dir, 'templates', 'pre-commit.tmpl')
         tmpl_file = open(tmpl_filename, 'r')
         tmpl = TextTemplate(tmpl_file.read())
@@ -81,5 +85,16 @@ class Recipe(object):
         output_file.write(stream.render())
         output_file.close()
 
+    def create_pre_commit_hook(self):
+        """Full bash-based pre-commit hook.
+        """
+        tmpl_filename = os.path.join(current_dir, 'templates', 'pre-commit.sh.tmpl')
+
+
 def code_analysis_flake8(options):
-    pass
+    print("Flake 8 Code Analysis")
+    print("---------------------")
+    bin_dir = os.path.join(options['bin-directory'])
+    output = subprocess.call(bin_dir + '/flake8')
+    print(output)
+    print("---------------------")
