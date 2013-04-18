@@ -117,6 +117,7 @@ def code_analysis_flake8(options):
         bin_dir + '/flake8', 
         '--ignore=%s' % ignore,
         '--exclude=%s' % exclude,
+        '.',
     ])
     print(output)
     print("---------------------")
