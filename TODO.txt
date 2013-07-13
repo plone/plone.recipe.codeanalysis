@@ -1,0 +1,20 @@
+TODO
+====
+
+ [ ] Fix Test Runner
+
+ [ ] Write tests and documentation
+
+ [ ] Make 1.0a1 release
+
+ [ ] Check for pdbs
+
+ [ ] Check for print statements
+
+ [ ] Check ZPTLint
+
+ [ ] Check CSSLint
+
+ [ ] Check UTF-8 Headers
+
+ [ ] Check translations
