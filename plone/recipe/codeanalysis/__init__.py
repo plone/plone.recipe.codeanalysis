@@ -5,7 +5,6 @@ import zc.buildout
 import zc.recipe.egg
 
 import subprocess
-import pep8
 
 from subprocess import Popen, PIPE
 from genshi.template import TextTemplate
@@ -95,6 +94,7 @@ class Recipe(object):
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
         output_file.write(stream.render())
         output_file.close()
+        os.chmod(git_hooks_directory + '/pre-commit', 775)
 
 
 def code_analysis(options):
