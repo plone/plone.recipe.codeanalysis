@@ -69,19 +69,20 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/flake8
         zc.buildout.easy_install.scripts(
-            [(
-                flake8.__name__,
-                flake8.main,
-                'flake8'
-            )],
+            ['flake8'],
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-flake8
         zc.buildout.easy_install.scripts(
-            ['flake8'],
+            [(
+                self.name + '-flake8',
+                self.__module__,
+                'code_analysis_flake8'
+            )],
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
