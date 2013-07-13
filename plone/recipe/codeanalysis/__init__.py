@@ -79,7 +79,11 @@ class Recipe(object):
     def install_pre_commit_hook(self):
         """Flake8 Python pre-commit hook.
         """
-        tmpl_filename = os.path.join(current_dir, 'templates', 'pre-commit.tmpl')
+        tmpl_filename = os.path.join(
+            current_dir,
+            'templates',
+            'pre-commit.tmpl'
+        )
         tmpl_file = open(tmpl_filename, 'r')
         tmpl = TextTemplate(tmpl_file.read())
         tmpl_file.close()
