@@ -94,7 +94,11 @@ class Recipe(object):
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
         output_file.write(stream.render())
         output_file.close()
-        os.chmod(git_hooks_directory + '/pre-commit', 775)
+        subprocess.call([
+            "chmod",
+            "775",
+            git_hooks_directory + '/pre-commit',
+        ])
 
 
 def code_analysis(options):
