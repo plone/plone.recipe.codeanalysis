@@ -86,9 +86,8 @@ class Recipe(object):
         tmpl_file = open(tmpl_filename, 'r')
         tmpl = TextTemplate(tmpl_file.read())
         tmpl_file.close()
-        python_bin = self.buildout['buildout']['bin-directory'] + '/zopepy'
         stream = tmpl.generate(
-            python_bin=python_bin
+            buildout_directory=self.buildout['buildout']['directory']
         )
         git_hooks_directory = os.path.join(
             self.buildout['buildout']['directory'],
@@ -97,11 +96,6 @@ class Recipe(object):
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
         output_file.write(stream.render())
         output_file.close()
-
-    def create_pre_commit_hook(self):
-        """Full bash-based pre-commit hook.
-        """
-        tmpl_filename = os.path.join(current_dir, 'templates', 'pre-commit.sh.tmpl')
 
 
 def code_analysis(options):
