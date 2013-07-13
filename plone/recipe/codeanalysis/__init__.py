@@ -6,7 +6,6 @@ import zc.recipe.egg
 
 import subprocess
 
-from subprocess import Popen, PIPE
 from genshi.template import TextTemplate
 
 current_dir = os.path.dirname(__file__)
