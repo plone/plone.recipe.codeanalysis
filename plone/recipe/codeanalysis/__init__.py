@@ -8,8 +8,6 @@ import subprocess
 import flake8
 import flake8.main
 
-from genshi.template import TextTemplate
-
 current_dir = os.path.dirname(__file__)
 
 
@@ -26,7 +24,7 @@ class Recipe(object):
 
         # Set default options
         self.options.setdefault('directory', '.')
-        self.options.setdefault('pre-commit-hook', 'True')
+        self.options.setdefault('pre-commit-hook', 'False')
         self.options.setdefault('flake8-ignore', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
         self.options.setdefault('flake8-complexity', '10')
@@ -51,7 +49,8 @@ class Recipe(object):
 
     def install(self):
         self.install_scripts()
-        self.install_pre_commit_hook()
+        if self.options['pre-commit-hook'] != 'False':
+            self.install_pre_commit_hook()
         return self.files
 
     def update(self):
@@ -97,6 +96,7 @@ class Recipe(object):
             'pre-commit.tmpl'
         )
         tmpl_file = open(tmpl_filename, 'r')
+        from genshi.template import TextTemplate
         tmpl = TextTemplate(tmpl_file.read())
         tmpl_file.close()
         stream = tmpl.generate(

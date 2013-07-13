@@ -37,26 +37,22 @@ Example usage
    Below is a skeleton doctest that you can start with when building
    your own tests.
 
-We'll start by creating a buildout that uses the recipe::
-
     >>> write('buildout.cfg',
     ... """
     ... [buildout]
-    ... parts = test1
+    ... parts = code-analysis
     ...
-    ... [test1]
+    ... [code-analysis]
     ... recipe = plone.recipe.codeanalysis
-    ... directory = plone/recipe/codeanalysis
-    ... option1 = %(foo)s
-    ... option2 = %(bar)s
-    ... """ % { 'foo' : 'value1', 'bar' : 'value2'})
+    ... directory = %(directory)s
+    ... """ % {
+    ...     'directory' : '${buildout:directory}/plone/recipe/codeanalysis',
+    ... })
 
 Running the buildout gives us::
 
-	>>> buildout_output_lower = system(buildout).lower()
-	>>> "installing test1" in buildout_output_lower
-	True
-  >>> "unused options for test1: 'option1' 'option2'." in buildout_output_lower
-	True
-
-
+    >>> buildout_output_lower = system(buildout).lower()
+    >>> '/sample-buildout/bin/flake8' in buildout_output_lower
+    True
+    >>> '/sample-buildout/bin/code-analysis' in buildout_output_lower
+    True

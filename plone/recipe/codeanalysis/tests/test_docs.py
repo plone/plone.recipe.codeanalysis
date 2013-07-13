@@ -24,7 +24,7 @@ def setUp(test):
     zc.buildout.testing.install_develop('plone.recipe.codeanalysis', test)
 
     # Install any other recipes that should be available in the tests
-    #zc.buildout.testing.install('collective.recipe.foobar', test)
+    zc.buildout.testing.install('zc.recipe.egg', test)
 
 def test_suite():
     suite = unittest.TestSuite((
