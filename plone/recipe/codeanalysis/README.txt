@@ -36,3 +36,5 @@ Running the buildout gives us::
     True
     >>> '/sample-buildout/bin/code-analysis-flake8' in buildout_output_lower
     True
+    >>> '/sample-buildout/bin/code-analysis-jshint' in buildout_output_lower
+    True
