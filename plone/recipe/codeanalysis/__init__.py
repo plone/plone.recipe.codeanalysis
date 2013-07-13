@@ -121,7 +121,6 @@ def code_analysis(options):
     print("-----------------------------")
     print("Pre-commit Hook Code Analysis")
     print("-----------------------------")
-    print("")
     code_analysis_flake8(options)
     code_analysis_jshint(options)
     print("-----------------------------")
@@ -162,6 +161,9 @@ def code_analysis_jshint(options):
         stdout=subprocess.PIPE
     )
     jsfiles, err = process_jsfiles.communicate()
+    if not jsfiles:
+        print("JS Hint                [\033[00;32m OK \033[0m]")
+        return
     cmd = [
         options['jshint-bin'],
         jsfiles.replace("\n", "")
