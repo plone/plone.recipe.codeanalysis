@@ -27,6 +27,8 @@ class Recipe(object):
         # Set default options
         self.options.setdefault('directory', '.')
         self.options.setdefault('pre-commit-hook', 'True')
+        self.options.setdefault('flake8-ignore', '')
+        self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
         self.options.setdefault('flake8-complexity', '10')
         self.options.setdefault('jslint', 'False')
         self.options.setdefault('csslint', 'False')
@@ -121,14 +123,10 @@ def code_analysis_flake8(options):
     print("Flake 8 Code Analysis")
     print("---------------------")
     bin_dir = os.path.join(options['bin-directory'])
-    #ignore = 'E226,E302,E41'
-    ignore = ''
-    exclude = 'bootstrap.py,docs,src'
     output = subprocess.call([
         bin_dir + '/flake8',
-        '--ignore=%s' % ignore,
-        '--exclude=%s' % exclude,
-        '--count',
+        '--ignore=%s' % options['flake8-ignore'],
+        '--exclude=%s' % options['flake8-exclude'],
         options['directory'],
     ])
     print(output)
