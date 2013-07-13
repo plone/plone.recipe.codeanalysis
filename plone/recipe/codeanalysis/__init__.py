@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
 import os
-import sys
 import zc.buildout
 import zc.recipe.egg
 
