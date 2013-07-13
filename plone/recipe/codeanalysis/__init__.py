@@ -5,6 +5,8 @@ import zc.buildout
 import zc.recipe.egg
 
 import subprocess
+import flake8
+import flake8.main
 
 from genshi.template import TextTemplate
 
@@ -66,14 +68,20 @@ class Recipe(object):
         )
         zc.buildout.easy_install.scripts(
             [(
-                self.name + '-flake8',
-                self.__module__,
-                'code_analysis_flake8'
+                flake8.__name__,
+                flake8.main,
+                'flake8'
             )],
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
+        )
+        zc.buildout.easy_install.scripts(
+            ['flake8'],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
         )
 
     def install_pre_commit_hook(self):
