@@ -26,6 +26,8 @@ class Recipe(object):
         )
 
         # Set default options
+        self.options.setdefault('directory', '.')
+        self.options.setdefault('pre-commit-hook', 'True')
         self.options.setdefault('flake8-complexity', '10')
         self.options.setdefault('jslint', 'False')
         self.options.setdefault('csslint', 'False')
@@ -90,7 +92,7 @@ class Recipe(object):
         )
         git_hooks_directory = os.path.join(
             self.buildout['buildout']['directory'],
-            '.git/hooks', 
+            '.git/hooks',
         )
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
         output_file.write(stream.render())
@@ -107,6 +109,7 @@ def code_analysis(options):
 
 
 def code_analysis_flake8(options):
+    print("")
     print("Flake 8 Code Analysis")
     print("---------------------")
     bin_dir = os.path.join(options['bin-directory'])
@@ -114,10 +117,12 @@ def code_analysis_flake8(options):
     ignore = ''
     exclude = 'bootstrap.py,docs,src'
     output = subprocess.call([
-        bin_dir + '/flake8', 
+        bin_dir + '/flake8',
         '--ignore=%s' % ignore,
         '--exclude=%s' % exclude,
-        '.',
+        '--statistics',
+        '--count',
+        options['directory'],
     ])
     print(output)
     print("---------------------")
