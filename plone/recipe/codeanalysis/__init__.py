@@ -117,10 +117,11 @@ class Recipe(object):
 def code_analysis(options):
     print("")
     print("-----------------------------")
-    print("Pre-commit hook Code Analysis")
+    print("Pre-commit Hook Code Analysis")
     print("-----------------------------")
     code_analysis_flake8(options)
     print("-----------------------------")
+    print("")
 
 
 def code_analysis_flake8(options):
@@ -138,7 +139,7 @@ def code_analysis_flake8(options):
     output, err = process.communicate()
     if process.returncode:
         print("")
-        print("Flake 8 [\033[00;31m FAILURE \033[0m]")
+        print("Flake 8           [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
-        print("Flake 8 [\033[00;32m OK \033[0m]")
+        print("Flake 8                [\033[00;32m OK \033[0m]")
