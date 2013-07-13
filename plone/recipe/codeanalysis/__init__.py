@@ -115,19 +115,30 @@ class Recipe(object):
 
 
 def code_analysis(options):
+    print("")
+    print("-------------------------------------------------------------------------------")
+    print("Pre-commit hook Code Analysis")
+    print("-------------------------------------------------------------------------------")
     code_analysis_flake8(options)
+    print("-------------------------------------------------------------------------------")
 
 
 def code_analysis_flake8(options):
-    print("")
-    print("Flake 8 Code Analysis")
-    print("---------------------")
     bin_dir = os.path.join(options['bin-directory'])
-    output = subprocess.call([
-        bin_dir + '/flake8',
-        '--ignore=%s' % options['flake8-ignore'],
-        '--exclude=%s' % options['flake8-exclude'],
-        options['directory'],
-    ])
-    print(output)
-    print("---------------------")
+    process = subprocess.Popen(
+        [
+            bin_dir + '/flake8',
+            '--ignore=%s' % options['flake8-ignore'],
+            '--exclude=%s' % options['flake8-exclude'],
+            options['directory'],
+        ],
+        stderr=subprocess.STDOUT,
+        stdout=subprocess.PIPE
+    )
+    output, err = process.communicate()
+    if process.returncode:
+        print("")
+        print("Flake 8 [\033[00;31m FAILURE \033[0m]")
+        print(output)
+    else:
+        print("Flake 8 [\033[00;32m OK \033[0m]")
