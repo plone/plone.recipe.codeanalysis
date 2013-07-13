@@ -122,7 +122,8 @@ def code_analysis(options):
     print("Pre-commit Hook Code Analysis")
     print("-----------------------------")
     code_analysis_flake8(options)
-    code_analysis_jshint(options)
+    if options['jshint'] != 'False':
+        code_analysis_jshint(options)
     print("-----------------------------")
     print("")
 
