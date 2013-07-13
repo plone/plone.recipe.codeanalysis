@@ -30,7 +30,8 @@ class Recipe(object):
         self.options.setdefault('flake8-ignore', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
         self.options.setdefault('flake8-complexity', '10')
-        self.options.setdefault('jslint', 'False')
+        self.options.setdefault('jshint', 'False')
+        self.options.setdefault('jshint-bin', 'jshint')
         self.options.setdefault('csslint', 'False')
 
         # Figure out default output file
@@ -57,6 +58,7 @@ class Recipe(object):
         self.install()
 
     def install_scripts(self):
+        # bin/code-analysis
         zc.buildout.easy_install.scripts(
             [(
                 self.name,
@@ -119,27 +121,59 @@ def code_analysis(options):
     print("-----------------------------")
     print("Pre-commit Hook Code Analysis")
     print("-----------------------------")
+    print("")
     code_analysis_flake8(options)
+    code_analysis_jshint(options)
     print("-----------------------------")
     print("")
 
 
 def code_analysis_flake8(options):
-    bin_dir = os.path.join(options['bin-directory'])
+    cmd = [
+        os.path.join(options['bin-directory']) + '/flake8',
+        '--ignore=%s' % options['flake8-ignore'],
+        '--exclude=%s' % options['flake8-exclude'],
+        options['directory'],
+    ]
     process = subprocess.Popen(
-        [
-            bin_dir + '/flake8',
-            '--ignore=%s' % options['flake8-ignore'],
-            '--exclude=%s' % options['flake8-exclude'],
-            options['directory'],
-        ],
+        cmd,
         stderr=subprocess.STDOUT,
         stdout=subprocess.PIPE
     )
     output, err = process.communicate()
     if process.returncode:
-        print("")
         print("Flake 8           [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
         print("Flake 8                [\033[00;32m OK \033[0m]")
+
+
+def code_analysis_jshint(options):
+    cmd = [
+        'find',
+        '-L',
+        options['directory'],
+        '-regex',
+        '.*\.js'
+    ]
+    process_jsfiles = subprocess.Popen(
+        cmd,
+        stderr=subprocess.STDOUT,
+        stdout=subprocess.PIPE
+    )
+    jsfiles, err = process_jsfiles.communicate()
+    cmd = [
+        options['jshint-bin'],
+        jsfiles.replace("\n", "")
+    ]
+    process = subprocess.Popen(
+        cmd,
+        stderr=subprocess.STDOUT,
+        stdout=subprocess.PIPE
+    )
+    output, err = process.communicate()
+    if process.returncode:
+        print("JS Hint           [\033[00;31m FAILURE \033[0m]")
+        print(output)
+    else:
+        print("JS Hint                [\033[00;32m OK \033[0m]")
