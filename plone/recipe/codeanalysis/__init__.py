@@ -20,16 +20,20 @@ class Recipe(object):
             options
         )
 
-        # Set default options
+        # Set required default options
         self.options.setdefault('directory', '.')
         self.options.setdefault('pre-commit-hook', 'True')
+        # Flake 8
         self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-ignore', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
         self.options.setdefault('flake8-complexity', '10')
+        # JSHint
         self.options.setdefault('jshint', 'False')
         self.options.setdefault('jshint-bin', 'jshint')
+        # CSS Lint
         self.options.setdefault('csslint', 'False')
+        self.options.setdefault('csslint-bin', 'csslint')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -97,6 +101,17 @@ class Recipe(object):
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
         )
+        # bin/code-analysis-csslint
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-csslint',
+                self.__module__,
+                'code_analysis_csslint'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+        )
 
     def install_pre_commit_hook(self):
         """Flake8 Python pre-commit hook.
@@ -130,11 +145,30 @@ class Recipe(object):
         ])
         print("Install Git pre-commit hook.")
 
+
+def _find_files(options, regex):
+    cmd = [
+        'find',
+        '-L',
+        options['directory'],
+        '-regex',
+        regex
+    ]
+    process_files = subprocess.Popen(
+        cmd,
+        stderr=subprocess.STDOUT,
+        stdout=subprocess.PIPE
+    )
+    files, err = process_files.communicate()
+    return files
+
 def code_analysis(options):
     if options['flake8'] != 'False':
         code_analysis_flake8(options)
     if options['jshint'] != 'False':
         code_analysis_jshint(options)
+    if options['csslint'] != 'False':
+        code_analysis_csslint(options)
 
 
 def code_analysis_flake8(options):
@@ -158,25 +192,13 @@ def code_analysis_flake8(options):
 
 
 def code_analysis_jshint(options):
-    cmd = [
-        'find',
-        '-L',
-        options['directory'],
-        '-regex',
-        '.*\.js'
-    ]
-    process_jsfiles = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
-    jsfiles, err = process_jsfiles.communicate()
-    if not jsfiles:
+    files = _find_files(options, '.*\.js')
+    if not files:
         print("JS Hint                [\033[00;32m OK \033[0m]")
         return
     cmd = [
         options['jshint-bin'],
-        jsfiles.replace("\n", "")
+        files.replace("\n", "")
     ]
     process = subprocess.Popen(
         cmd,
@@ -189,3 +211,25 @@ def code_analysis_jshint(options):
         print(output)
     else:
         print("JS Hint                [\033[00;32m OK \033[0m]")
+
+
+def code_analysis_csslint(options):
+    files = _find_files(options, '.*\.css')
+    if not files:
+        print("CSS Lint               [\033[00;32m OK \033[0m]")
+        return
+    cmd = [
+        options['csslint-bin'],
+        files.replace("\n", "")
+    ]
+    process = subprocess.Popen(
+        cmd,
+        stderr=subprocess.STDOUT,
+        stdout=subprocess.PIPE
+    )
+    output, err = process.communicate()
+    if output != '':
+        print("CSS Lint          [\033[00;31m FAILURE \033[0m]")
+        print(output)
+    else:
+        print("CSS Lint               [\033[00;32m OK \033[0m]")
