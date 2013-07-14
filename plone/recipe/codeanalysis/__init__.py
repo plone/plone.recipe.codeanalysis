@@ -114,20 +114,6 @@ class Recipe(object):
         )
 
     def install_pre_commit_hook(self):
-        """Flake8 Python pre-commit hook.
-        """
-        tmpl_filename = os.path.join(
-            current_dir,
-            'templates',
-            'pre-commit.tmpl'
-        )
-        tmpl_file = open(tmpl_filename, 'r')
-        from genshi.template import TextTemplate
-        tmpl = TextTemplate(tmpl_file.read())
-        tmpl_file.close()
-        stream = tmpl.generate(
-            buildout_directory=self.buildout['buildout']['directory']
-        )
         git_hooks_directory = self.buildout['buildout']['directory'] + \
             '/.git/hooks'
         if not os.path.exists(git_hooks_directory):
@@ -136,7 +122,7 @@ class Recipe(object):
                 "this does not seem to be a git repository.")
             return
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
-        output_file.write(stream.render())
+        output_file.write("#!/bin/bash\nbin/code-analysis")
         output_file.close()
         subprocess.call([
             "chmod",
