@@ -1,5 +1,7 @@
 .. contents::
 
+.. image:: https://travis-ci.org/plone/plone.recipe.codeanalysis.png?branch=master
+
 Introduction
 ============
 
@@ -10,6 +12,14 @@ a script to run the code analysis::
 
 By default plone.recipe.codeanalysis also creates a git pre-commit hook, so
 the code analysis is run automatically before each commit.
+
+Code repository::
+
+    https://github.com/plone/plone.recipe.codeanalysis
+
+Issue Tracker::
+
+    https://github.com/plone/plone.recipe.codeanalysis/issues
 
 
 Supported options
