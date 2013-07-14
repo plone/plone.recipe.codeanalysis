@@ -4,10 +4,10 @@ Supported options
 The recipe supports the following options:
 
 directory
-    Description for ``option1``...
+    Directory that is subject to the code analysis.
 
 pre-commit hook
-    Description for ``option2``...
+    If set to True, a git pre-commit hook is installed that runs the code analysis before each commit.
 
 
 Example usage
