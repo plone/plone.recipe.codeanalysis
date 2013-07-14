@@ -23,6 +23,7 @@ class Recipe(object):
         # Set default options
         self.options.setdefault('directory', '.')
         self.options.setdefault('pre-commit-hook', 'False')
+        self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-ignore', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
         self.options.setdefault('flake8-complexity', '10')
@@ -127,7 +128,8 @@ class Recipe(object):
 
 
 def code_analysis(options):
-    code_analysis_flake8(options)
+    if options['flake8'] != 'False':
+        code_analysis_flake8(options)
     if options['jshint'] != 'False':
         code_analysis_jshint(options)
 
