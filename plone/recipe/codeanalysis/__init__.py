@@ -220,6 +220,7 @@ def code_analysis_csslint(options):
         return
     cmd = [
         options['csslint-bin'],
+        '--format=compact',
         files.replace("\n", "")
     ]
     process = subprocess.Popen(
