@@ -22,7 +22,7 @@ class Recipe(object):
 
         # Set default options
         self.options.setdefault('directory', '.')
-        self.options.setdefault('pre-commit-hook', 'False')
+        self.options.setdefault('pre-commit-hook', 'True')
         self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-ignore', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
@@ -113,10 +113,12 @@ class Recipe(object):
         stream = tmpl.generate(
             buildout_directory=self.buildout['buildout']['directory']
         )
-        git_hooks_directory = os.path.join(
-            self.buildout['buildout']['directory'],
-            '.git/hooks',
-        )
+        git_hooks_directory = self.buildout['buildout']['directory'] + '/.git/hooks'
+        if not os.path.exists(git_hooks_directory):
+            print(
+                "Unable to create git pre-commit hook, "
+                "this does not seem to be a git repository.")
+            return
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
         output_file.write(stream.render())
         output_file.close()
@@ -125,7 +127,7 @@ class Recipe(object):
             "775",
             git_hooks_directory + '/pre-commit',
         ])
-
+        print("Install Git pre-commit hook.")
 
 def code_analysis(options):
     if options['flake8'] != 'False':

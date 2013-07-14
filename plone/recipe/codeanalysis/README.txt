@@ -4,7 +4,7 @@ Supported options
 The recipe supports the following options:
 
 directory
-    Directory that is subject to the code analysis.
+    Directory that is subject to the code analysis. This option is required.
 
 pre-commit hook
     If set to True, a git pre-commit hook is installed that runs the code analysis before each commit.
@@ -31,7 +31,6 @@ Running the buildout gives us a 'code-analysis' script that runs the entire
 code analysis::
 
     >>> buildout_output_lower = system(buildout).lower()
-    >>> print(buildout_output_lower)
     >>> '/sample-buildout/bin/code-analysis' in buildout_output_lower
     True
 
@@ -46,4 +45,25 @@ Flake 8 is installed by the buildout, there is no need to install it on the
 system::
 
     >>> '/sample-buildout/bin/flake8' in buildout_output_lower
+    True
+
+By default a git pre-commit hook is installed. Though, this does not work if
+the current directory is not a git repository::
+
+    >>> 'unable to create git pre-commit hook, this does not seem to be a git repository' in buildout_output_lower
+    True
+
+If we have a git repository::
+
+    >>> import subprocess
+    >>> subprocess.call(['mkdir', '-p', '.git/hooks'])
+    0
+
+And run buildout again::
+
+    >>> buildout_output_lower = system(buildout).lower()
+
+Then the git pre-commit hook has been installed::
+
+    >>> 'install git pre-commit hook.' in buildout_output_lower
     True
