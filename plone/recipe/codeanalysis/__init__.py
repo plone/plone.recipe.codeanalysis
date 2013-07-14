@@ -113,7 +113,8 @@ class Recipe(object):
         stream = tmpl.generate(
             buildout_directory=self.buildout['buildout']['directory']
         )
-        git_hooks_directory = self.buildout['buildout']['directory'] + '/.git/hooks'
+        git_hooks_directory = self.buildout['buildout']['directory'] + \
+            '/.git/hooks'
         if not os.path.exists(git_hooks_directory):
             print(
                 "Unable to create git pre-commit hook, "
