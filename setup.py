@@ -63,9 +63,6 @@ setup(name='plone.recipe.codeanalysis',
       namespace_packages=['plone', 'plone.recipe'],
       include_package_data=True,
       zip_safe=False,
-      setup_requires=[
-        'genshi',
-      ],
       install_requires=[
         'setuptools',
         'zc.buildout',
