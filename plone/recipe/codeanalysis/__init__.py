@@ -127,15 +127,9 @@ class Recipe(object):
 
 
 def code_analysis(options):
-    print("")
-    print("-----------------------------")
-    print("Pre-commit Hook Code Analysis")
-    print("-----------------------------")
     code_analysis_flake8(options)
     if options['jshint'] != 'False':
         code_analysis_jshint(options)
-    print("-----------------------------")
-    print("")
 
 
 def code_analysis_flake8(options):
