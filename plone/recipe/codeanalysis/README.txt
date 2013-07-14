@@ -31,6 +31,7 @@ Running the buildout gives us a 'code-analysis' script that runs the entire
 code analysis::
 
     >>> buildout_output_lower = system(buildout).lower()
+    >>> print(buildout_output_lower)
     >>> '/sample-buildout/bin/code-analysis' in buildout_output_lower
     True
 
