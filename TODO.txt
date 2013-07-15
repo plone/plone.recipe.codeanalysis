@@ -22,3 +22,5 @@ TODO
  [ ] Check for outdated unittest statements
 
  [ ] Check for XXX/BBB statements
+
+ [ ] Support output formats that Jenkins can read and process
