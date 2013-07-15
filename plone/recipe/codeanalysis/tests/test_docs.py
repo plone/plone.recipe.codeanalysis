@@ -17,6 +17,7 @@ optionflags = (
     doctest.REPORT_ONLY_FIRST_FAILURE
 )
 
+
 def setUp(test):
     zc.buildout.testing.buildoutSetUp(test)
 
@@ -25,6 +26,7 @@ def setUp(test):
 
     # Install any other recipes that should be available in the tests
     zc.buildout.testing.install('zc.recipe.egg', test)
+
 
 def test_suite():
     suite = unittest.TestSuite((
