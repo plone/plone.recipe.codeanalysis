@@ -26,7 +26,7 @@ class Recipe(object):
         # Flake 8
         self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-ignore', '')
-        self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,src')
+        self.options.setdefault('flake8-exclude', 'bootstrap.py,docs')
         self.options.setdefault('flake8-complexity', '10')
         # JSHint
         self.options.setdefault('jshint', 'False')
@@ -150,6 +150,7 @@ def _find_files(options, regex):
     )
     files, err = process_files.communicate()
     return files
+
 
 def code_analysis(options):
     if options['flake8'] != 'False':
