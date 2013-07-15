@@ -2,6 +2,7 @@
 """Recipe codeanalysis"""
 import os
 import sys
+import time
 import zc.buildout
 import zc.recipe.egg
 
@@ -163,7 +164,7 @@ def code_analysis(options):
 
 
 def code_analysis_flake8(options):
-    sys.stdout.write("Flake 8")
+    sys.stdout.write("Flake 8 ")
     sys.stdout.flush()
     cmd = [
         os.path.join(options['bin-directory']) + '/flake8',
@@ -176,12 +177,16 @@ def code_analysis_flake8(options):
         stderr=subprocess.STDOUT,
         stdout=subprocess.PIPE
     )
+    while process.poll() is None:
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        time.sleep(1)
     output, err = process.communicate()
     if process.returncode:
-        print("           [\033[00;31m FAILURE \033[0m]")
+        print("          [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
-        print("                [\033[00;32m OK \033[0m]")
+        print("               [\033[00;32m OK \033[0m]")
 
 
 def code_analysis_jshint(options):
