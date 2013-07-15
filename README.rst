@@ -37,13 +37,16 @@ flake8
     If set to True, run flake8 code analysis. Default is True.
 
 flake8-ignore
-    Skip errors or warnings. See http://flake8.readthedocs.org/en/latest/warnings.html#error-codes for error codes.
+    Skip errors or warnings. See http://flake8.readthedocs.org/en/latest/warnings.html#error-codes for error codes. Default is
+    None.
 
 flake8-exclude
-    Comma-separated filename and glob patterns default (e.g. .svn,CVS,.bzr,.hg,.git,__pycache).
+    Comma-separated filename and glob patterns default. Say you want to
+    exclude bootstrap.py, setup.py and all collective.* and plone.* packages. Just set "flake8-exclude=bootstrap.py,setup.py,docs,collective.*,plone.*"
+    in your buildout configuration. Default is 'bootstrap.py,docs'.
 
 flake8-complexity
-    McCabe complexity threshold.
+    McCabe complexity threshold. Default is 10.
 
 jshint
     If set to True, jshint code analysis is run. Default to False.
@@ -51,7 +54,7 @@ jshint
 jshint-bin
     JSHint executable. Default is 'jshint'. If you have jshint installed on
     your system and in your path, there is nothing to do. If you install
-    jshint in your buildout, e.g.:
+    jshint in your buildout, e.g.::
 
         [node]
         recipe = gp.recipe.node
