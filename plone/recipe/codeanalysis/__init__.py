@@ -89,6 +89,7 @@ class Recipe(object):
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
         )
         # bin/code-analysis-jshint
         zc.buildout.easy_install.scripts(
@@ -100,6 +101,7 @@ class Recipe(object):
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
         )
         # bin/code-analysis-csslint
         zc.buildout.easy_install.scripts(
@@ -111,6 +113,7 @@ class Recipe(object):
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
             self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
         )
 
     def install_pre_commit_hook(self):
