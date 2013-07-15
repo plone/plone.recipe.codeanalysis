@@ -40,7 +40,7 @@ entry_points = {
 }
 
 tests_require = [
-  'zope.testing', 'zc.buildout[test]',
+  'zope.testing', 'zc.buildout[test]', 'setuptools', 'zc.buildout', 'zc.recipe.egg', 'flake8'
 ]
 
 setup(name='plone.recipe.codeanalysis',
