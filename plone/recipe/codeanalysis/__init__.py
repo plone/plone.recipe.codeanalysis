@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
 import os
+import sys
 import zc.buildout
 import zc.recipe.egg
 
@@ -162,6 +163,8 @@ def code_analysis(options):
 
 
 def code_analysis_flake8(options):
+    sys.stdout.write("Flake 8")
+    sys.stdout.flush()
     cmd = [
         os.path.join(options['bin-directory']) + '/flake8',
         '--ignore=%s' % options['flake8-ignore'],
@@ -175,16 +178,18 @@ def code_analysis_flake8(options):
     )
     output, err = process.communicate()
     if process.returncode:
-        print("Flake 8           [\033[00;31m FAILURE \033[0m]")
+        print("           [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
-        print("Flake 8                [\033[00;32m OK \033[0m]")
+        print("                [\033[00;32m OK \033[0m]")
 
 
 def code_analysis_jshint(options):
+    sys.stdout.write("JS Hint")
+    sys.stdout.flush()
     files = _find_files(options, '.*\.js')
     if not files:
-        print("JS Hint                [\033[00;32m OK \033[0m]")
+        print("                [\033[00;32m OK \033[0m]")
         return
     cmd = [
         options['jshint-bin'],
@@ -197,16 +202,18 @@ def code_analysis_jshint(options):
     )
     output, err = process.communicate()
     if process.returncode:
-        print("JS Hint           [\033[00;31m FAILURE \033[0m]")
+        print("           [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
-        print("JS Hint                [\033[00;32m OK \033[0m]")
+        print("                [\033[00;32m OK \033[0m]")
 
 
 def code_analysis_csslint(options):
+    sys.stdout.write("CSS Lint")
+    sys.stdout.flush()
     files = _find_files(options, '.*\.css')
     if not files:
-        print("CSS Lint               [\033[00;32m OK \033[0m]")
+        print("               [\033[00;32m OK \033[0m]")
         return
     cmd = [
         options['csslint-bin'],
@@ -220,7 +227,7 @@ def code_analysis_csslint(options):
     )
     output, err = process.communicate()
     if output != '':
-        print("CSS Lint          [\033[00;31m FAILURE \033[0m]")
+        print("          [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
-        print("CSS Lint               [\033[00;32m OK \033[0m]")
+        print("               [\033[00;32m OK \033[0m]")
