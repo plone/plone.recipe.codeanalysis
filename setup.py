@@ -17,7 +17,7 @@ long_description = (
     'Detailed Documentation\n'
     '**********************\n'
     + '\n' +
-    read('plone', 'recipe', 'codeanalysis', 'README.txt')
+    read('plone', 'recipe', 'codeanalysis', 'README.rst')
     + '\n' +
     'Contributors\n'
     '************\n'
