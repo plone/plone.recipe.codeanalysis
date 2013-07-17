@@ -82,3 +82,7 @@ deprecated-methods
 utf8-header
     If set to True, python files without a utf-8 header (like
     ``# -*- coding: utf-8 -*-``) will cause a warning. Default to False.
+
+clean-lines
+    If set to True, **any file** containing trailing spaces or tabs anywhere
+    on the lines will cause a warning. Default to False.

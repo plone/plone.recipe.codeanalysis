@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
 import os
+import re
 import sys
 import time
 import zc.buildout
@@ -43,6 +44,8 @@ class Recipe(object):
         self.options.setdefault('deprecated-methods', 'False')
         # utf-8 header
         self.options.setdefault('utf8-header', 'False')
+        # clean lines
+        self.options.setdefault('clean-lines', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -160,6 +163,18 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-clean-lines
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-clean-lines',
+                self.__module__,
+                'code_analysis_clean_lines'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -211,6 +226,8 @@ def code_analysis(options):
         code_analysis_deprecated_methods(options)
     if 'utf8-header' in options and options['utf8-header'] != 'False':
         code_analysis_utf8_header(options)
+    if 'clean-lines' in options and options['clean-lines'] != 'False':
+        code_analysis_clean_lines(options)
 
 
 def code_analysis_flake8(options):
@@ -419,3 +436,63 @@ def code_analysis_utf8_header(options):
             print(err)
     else:
         print('   [\033[00;32m OK \033[0m]')
+
+
+def code_analysis_clean_lines(options):
+    sys.stdout.write('Check clean lines ')
+    sys.stdout.flush()
+
+    files = ''
+    for suffix in ('py', 'pt', 'zcml', 'xml',  # standard plone extensions
+                   'js', 'css', 'html',  # html stuff
+                   'rst', 'txt',  # documentation
+                   ):
+        found_files = _find_files(options, '.*\.{0}'.format(suffix))
+        if found_files:
+            files += found_files
+
+    if len(files) == 0:
+        print('     [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_clean_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('     [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('     [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_clean_lines_parser(lines, file_path):
+    errors = []
+    linenumber = 0
+
+    trailing_spaces = re.compile(r' $')
+    tabs = re.compile(r'\t')
+
+    for line in lines:
+        linenumber += 1
+
+        if trailing_spaces.search(line):
+            errors.append('{0}: {1}: found trailing spaces'.format(
+                file_path,
+                linenumber, ))
+        if tabs.search(line):
+            errors.append('{0}: {1}: found tabs'.format(
+                file_path,
+                linenumber, ))
+    return errors

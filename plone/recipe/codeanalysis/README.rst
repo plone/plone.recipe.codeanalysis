@@ -45,6 +45,11 @@ The script to check if python files have an utf-8 encoding header is installed::
     >>> '/sample-buildout/bin/code-analysis-utf8-header' in buildout_output_lower
     True
 
+The script to warn about trailing spaces or tabs on files is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-clean-lines' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 
