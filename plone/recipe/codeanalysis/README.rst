@@ -60,6 +60,11 @@ The script to check for old style string formatting is installed::
     >>> '/sample-buildout/bin/code-analysis-string-formatting' in buildout_output_lower
     True
 
+The script to check for plone.api style imports is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-imports' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 

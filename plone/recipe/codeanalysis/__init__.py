@@ -50,6 +50,8 @@ class Recipe(object):
         self.options.setdefault('prefer-single-quotes', 'False')
         # String formatting
         self.options.setdefault('string-formatting', 'False')
+        # imports
+        self.options.setdefault('imports', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -203,6 +205,18 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-imports
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-imports',
+                self.__module__,
+                'code_analysis_imports'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -262,6 +276,8 @@ def code_analysis(options):
     if 'string-formatting' in options and \
             options['string-formatting'] != 'False':
         code_analysis_string_formatting(options)
+    if 'imports' in options and options['imports'] != 'False':
+        code_analysis_imports(options)
 
 
 def code_analysis_flake8(options):
@@ -671,5 +687,47 @@ def _code_analysis_string_formatting_lines_parser(lines, file_path):
                     file_path,
                     linenumber,
                     formatter,
+                ))
+    return errors
+
+
+def code_analysis_imports(options):
+    sys.stdout.write('Check imports ')
+    sys.stdout.flush()
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('                [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+        errors = _code_analysis_imports_parser(file_handler.readlines(),
+                                               file_path)
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('         [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('         [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_imports_parser(lines, relative_path):
+    errors = []
+    linenumber = 0
+    for line in lines:
+        linenumber += 1
+
+        if line.find('from ') == 0:
+            if line.find(', ') != -1 or line.find(' (') != -1:
+                errors.append('{0}: {1}: found grouped imports'.format(
+                    relative_path,
+                    linenumber,
                 ))
     return errors
