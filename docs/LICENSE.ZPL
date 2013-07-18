@@ -9,25 +9,25 @@ GPL compatible by the Free Software Foundation (FSF).
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-    1. Redistributions in source code must retain the accompanying copyright 
-       notice, this list of conditions, and the following disclaimer. 
+    1. Redistributions in source code must retain the accompanying copyright
+       notice, this list of conditions, and the following disclaimer.
 
-    2. Redistributions in binary form must reproduce the accompanying 
-       copyright notice, this list of conditions, and the following 
-       disclaimer in the documentation and/or other materials provided with 
+    2. Redistributions in binary form must reproduce the accompanying
+       copyright notice, this list of conditions, and the following
+       disclaimer in the documentation and/or other materials provided with
        the distribution.
 
     3. Names of the copyright holders must not be used to endorse or promote
-       products derived from this software without prior written permission 
+       products derived from this software without prior written permission
        from the copyright holders.
 
-    4. The right to distribute this software or to use it for any purpose does 
-       not give you the right to use Servicemarks (sm) or Trademarks (tm) of the 
-       copyright holders. Use of them is covered by separate agreement with the 
+    4. The right to distribute this software or to use it for any purpose does
+       not give you the right to use Servicemarks (sm) or Trademarks (tm) of the
+       copyright holders. Use of them is covered by separate agreement with the
        copyright holders.
 
     5. If any files are modified, you must cause the modified files to carry
-       prominent notices stating that you changed the files and the date of any 
+       prominent notices stating that you changed the files and the date of any
        change.
 
 Disclaimer
