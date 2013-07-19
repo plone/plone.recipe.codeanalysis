@@ -90,3 +90,8 @@ clean-lines
 prefer-single-quotes
     If set to True, python files will be scanned searching for strings quoted
     with double quote signs (``"``). Default to False.
+
+string-formatting
+    If set to True, python files will be scanned searching for old-style string
+    formatting (i.e. ``'%s' % var``). See `PEP 3101
+    <http://www.python.org/dev/peps/pep-3101/>`_. Default to False.
