@@ -40,6 +40,11 @@ Deprecate method analysis script is installed::
     >>> '/sample-buildout/bin/code-analysis-deprecated-methods' in buildout_output_lower
     True
 
+The script to check if python files have an utf-8 encoding header is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-utf8-header' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 

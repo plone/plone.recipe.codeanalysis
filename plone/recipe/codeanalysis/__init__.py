@@ -41,6 +41,8 @@ class Recipe(object):
         self.options.setdefault('zptlint-bin', 'zptlint')
         # Warn about usage of deprecated methods
         self.options.setdefault('deprecated-methods', 'False')
+        # utf-8 header
+        self.options.setdefault('utf8-header', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -146,6 +148,18 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-utf8-header
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-utf8-header',
+                self.__module__,
+                'code_analysis_utf8_header'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -195,6 +209,8 @@ def code_analysis(options):
     if 'deprecated-methods' in options and \
             options['deprecated-methods'] != 'False':
         code_analysis_deprecated_methods(options)
+    if 'utf8-header' in options and options['utf8-header'] != 'False':
+        code_analysis_utf8_header(options)
 
 
 def code_analysis_flake8(options):
@@ -373,3 +389,33 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
                     continue
 
     return errors
+
+
+def code_analysis_utf8_header(options):
+    sys.stdout.write('Check utf-8 headers ')
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('   [\033[00;32m OK \033[0m]')
+        return
+
+    errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        lines = file_handler.readlines()
+        if len(lines) == 0:
+            continue
+        elif lines[0].find('coding: utf-8') == -1:
+            errors.append('{0}: missing utf-8 header'.format(file_path))
+
+        file_handler.close()
+
+    if len(errors) > 0:
+        print('   [\033[00;31m FAILURE \033[0m]')
+        for err in errors:
+            print(err)
+    else:
+        print('   [\033[00;32m OK \033[0m]')

@@ -78,3 +78,7 @@ zptlint-bin
 deprecated-methods
     If set to True, warnings about deprecated methods will be printed. Default
     to False.
+
+utf8-header
+    If set to True, python files without a utf-8 header (like
+    ``# -*- coding: utf-8 -*-``) will cause a warning. Default to False.
