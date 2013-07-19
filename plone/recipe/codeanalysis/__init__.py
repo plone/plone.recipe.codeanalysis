@@ -28,7 +28,7 @@ class Recipe(object):
         # Flake 8
         self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-ignore', '')
-        self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,*.eggs')
+        self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,*.egg')
         self.options.setdefault('flake8-complexity', '10')
         # JSHint
         self.options.setdefault('jshint', 'False')

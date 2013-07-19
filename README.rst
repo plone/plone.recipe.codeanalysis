@@ -42,9 +42,9 @@ flake8-ignore
 
 flake8-exclude
     Comma-separated filename and glob patterns default. Say you want to
-    exclude bootstrap.py, setup.py and all collective.* and plone.* packages. Just set "flake8-exclude=bootstrap.py,docs,*.eggs,setup.py,collective.*,
+    exclude bootstrap.py, setup.py and all collective.* and plone.* packages. Just set "flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,
     plone.*" in your buildout configuration. Default is 'bootstrap.py,docs,
-    *.eggs'.
+    *.egg'.
 
 flake8-complexity
     McCabe complexity threshold. Default is 10.
