@@ -36,6 +36,9 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
+        # ZPT Lint
+        self.options.setdefault('zptlint', 'False')
+        self.options.setdefault('zptlint-bin', 'zptlint')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -117,6 +120,18 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-zptlint
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-zptlint',
+                self.__module__,
+                'code_analysis_zptlint'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -161,6 +176,8 @@ def code_analysis(options):
         code_analysis_jshint(options)
     if options['csslint'] != 'False':
         code_analysis_csslint(options)
+    if options['zptlint'] != 'False':
+        code_analysis_zptlint(options)
 
 
 def code_analysis_flake8(options):
@@ -236,3 +253,36 @@ def code_analysis_csslint(options):
         print(output)
     else:
         print("               [\033[00;32m OK \033[0m]")
+
+
+def code_analysis_zptlint(options):
+    sys.stdout.write("ZPT Lint")
+    sys.stdout.flush()
+
+    files = ''
+    for suffix in ('pt', 'cpt', 'zpt', ):
+        found_files = _find_files(options, '.*\.{0}'.format(suffix))
+        if found_files:
+            files += found_files
+
+    if len(files) == 0:
+        print('               [\033[00;32m OK \033[0m]')
+        return
+
+    # put all files in a single line
+    files = ' '.join(files.strip().split('\n'))
+    cmd = [
+        options['zptlint-bin'],
+        files,
+    ]
+    process = subprocess.Popen(
+        cmd,
+        stderr=subprocess.STDOUT,
+        stdout=subprocess.PIPE
+    )
+    output, err = process.communicate()
+    if output != '':
+        print('          [\033[00;31m FAILURE \033[0m]')
+        print(output)
+    else:
+        print('               [\033[00;32m OK \033[0m]')
