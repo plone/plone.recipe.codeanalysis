@@ -86,3 +86,7 @@ utf8-header
 clean-lines
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default to False.
+
+prefer-single-quotes
+    If set to True, python files will be scanned searching for strings quoted
+    with double quote signs (``"``). Default to False.

@@ -50,6 +50,11 @@ The script to warn about trailing spaces or tabs on files is installed::
     >>> '/sample-buildout/bin/code-analysis-clean-lines' in buildout_output_lower
     True
 
+Double quotes checker script is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-prefer-single-quotes' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 
