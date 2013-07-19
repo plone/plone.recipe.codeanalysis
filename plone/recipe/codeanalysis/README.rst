@@ -35,6 +35,11 @@ system::
     >>> '/sample-buildout/bin/flake8' in buildout_output_lower
     True
 
+Deprecate method analysis script is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-deprecated-methods' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 
