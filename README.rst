@@ -64,3 +64,6 @@ jshint-bin
         scripts = jshint
 
     set jshint-bin to '${buildout:directory}/bin/jshint'.
+
+zptlint
+    If set to True, zptlint code analysis is run. Default to False.
