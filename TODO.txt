@@ -11,7 +11,7 @@ TODO
 
  [ ] Check for print statements
 
- [ ] Check ZPTLint
+ [X] Check ZPTLint
 
  [ ] Check CSSLint
 
