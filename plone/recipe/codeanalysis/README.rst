@@ -35,9 +35,9 @@ system::
     >>> '/sample-buildout/bin/flake8' in buildout_output_lower
     True
 
-zptlint analysis script is installed::
+Deprecate method analysis script is installed::
 
-    >>> '/sample-buildout/bin/code-analysis-zptlint' in buildout_output_lower
+    >>> '/sample-buildout/bin/code-analysis-deprecated-methods' in buildout_output_lower
     True
 
 By default a git pre-commit hook is installed. Though, this does not work if

@@ -39,6 +39,8 @@ class Recipe(object):
         # ZPT Lint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', 'zptlint')
+        # Warn about usage of deprecated methods
+        self.options.setdefault('deprecated-methods', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -126,6 +128,12 @@ class Recipe(object):
                 self.name + '-zptlint',
                 self.__module__,
                 'code_analysis_zptlint'
+        # bin/code-analysis-deprecated-methods
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-deprecated-methods',
+                self.__module__,
+                'code_analysis_deprecated_methods'
             )],
             self.egg.working_set()[1],
             self.buildout[self.buildout['buildout']['python']]['executable'],
@@ -178,6 +186,8 @@ def code_analysis(options):
         code_analysis_csslint(options)
     if options['zptlint'] != 'False':
         code_analysis_zptlint(options)
+    if options['deprecated-methods'] != 'False':
+        code_analysis_deprecated_methods(options)
 
 
 def code_analysis_flake8(options):
@@ -286,3 +296,73 @@ def code_analysis_zptlint(options):
         print(output)
     else:
         print('               [\033[00;32m OK \033[0m]')
+
+
+def code_analysis_deprecated_methods(options):
+    sys.stdout.write('Deprecated methods ')
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('    [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_deprecated_methods_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('    [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('    [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
+    errors = []
+    multiline = False
+    linenumber = 0
+
+    # Keep adding deprecated methods and its newer counterparts as:
+    # NEWER_VERSION : (LIST OF OLD METHODS)
+    deprecated_methods = {
+        'assertEqual': ('failUnlessEqual', 'assertEquals', ),  # noqa
+        'assertNotEqual': ('failIfEqual', ),  # noqa
+        'assertTrue': ('failUnless', 'assert_', ),  # noqa
+        'assertFalse': ('failIf', ),  # noqa
+        'assertRaises': ('failUnlessRaises', ),  # noqa
+        'assertAlmostEqual': ('failUnlessAlmostEqual', ),  # noqa
+        'assertNotAlmostEqual': ('failIfAlmostEqual', ),  # noqa
+    }
+
+    msg = '{0}: {1}: found {2} replace it with {3}'
+
+    for line in lines:
+        linenumber += 1
+
+        # allow to skip some methods if the comment # noqa is found
+        if line.find('# noqa') != -1:
+            continue
+
+        for newer_version, old_alias in deprecated_methods.iteritems():
+            for alias in old_alias:
+                if line.find(alias) != -1:
+                    errors.append(msg.format(
+                        file_path,
+                        linenumber,
+                        alias,
+                        newer_version ))
+                    continue
+
+    return errors
