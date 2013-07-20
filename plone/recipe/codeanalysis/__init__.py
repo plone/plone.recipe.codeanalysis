@@ -128,6 +128,12 @@ class Recipe(object):
                 self.name + '-zptlint',
                 self.__module__,
                 'code_analysis_zptlint'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
         # bin/code-analysis-deprecated-methods
         zc.buildout.easy_install.scripts(
             [(
