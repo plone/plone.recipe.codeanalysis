@@ -24,3 +24,6 @@ TODO
  [ ] Check for XXX/BBB statements
 
  [ ] Support output formats that Jenkins can read and process
+
+ [ ] Check for code best practices defined in http://ploneapi.readthedocs.org/en/1.0.0-rc.1/contribute/conventions.html
+
