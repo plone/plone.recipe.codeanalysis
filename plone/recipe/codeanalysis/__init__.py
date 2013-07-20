@@ -337,7 +337,6 @@ def code_analysis_deprecated_methods(options):
 
 def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
     errors = []
-    multiline = False
     linenumber = 0
 
     # Keep adding deprecated methods and its newer counterparts as:
