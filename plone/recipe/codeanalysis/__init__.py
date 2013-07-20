@@ -367,7 +367,8 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
                         file_path,
                         linenumber,
                         alias,
-                        newer_version ))
+                        newer_version)
+                    )
                     continue
 
     return errors
