@@ -184,15 +184,16 @@ def _find_files(options, regex):
 
 
 def code_analysis(options):
-    if options['flake8'] != 'False':
+    if 'flake8' in options and options['flake8'] != 'False':
         code_analysis_flake8(options)
-    if options['jshint'] != 'False':
+    if 'jshint' in options and options['jshint'] != 'False':
         code_analysis_jshint(options)
-    if options['csslint'] != 'False':
+    if 'csslint' in options and options['csslint'] != 'False':
         code_analysis_csslint(options)
-    if options['zptlint'] != 'False':
+    if 'zptlint' in options and options['zptlint'] != 'False':
         code_analysis_zptlint(options)
-    if options['deprecated-methods'] != 'False':
+    if 'deprecated-methods' in options and \
+            options['deprecated-methods'] != 'False':
         code_analysis_deprecated_methods(options)
 
 
