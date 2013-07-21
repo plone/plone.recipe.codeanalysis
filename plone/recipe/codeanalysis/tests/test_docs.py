@@ -27,6 +27,12 @@ def setUp(test):
     # Install any other recipes that should be available in the tests
     zc.buildout.testing.install('zc.recipe.egg', test)
 
+    # Seems like we have to install the dependencies defined in
+    # install_requires manually to be available in the test
+    # See:
+    # http://mail.python.org/pipermail/distutils-sig/2009-December/014950.html
+    zc.buildout.testing.install_develop('flake8', test)
+    zc.buildout.testing.install_develop('zptlint', test)
 
 def test_suite():
     suite = unittest.TestSuite((
