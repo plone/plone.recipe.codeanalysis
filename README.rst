@@ -71,6 +71,10 @@ zptlint
     Note that the buildout itself already depends on zptlint, so no extra
     configuration is needed.
 
+zptlint-bin
+    Set the path to a custom version of zptlint. Defaults to the first binary
+    ``zptlint`` found in ``PATH``.
+
 deprecated-methods
     If set to True, warnings about deprecated methods will be printed. Default
     to False.
