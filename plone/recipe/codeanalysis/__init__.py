@@ -52,6 +52,8 @@ class Recipe(object):
         self.options.setdefault('string-formatting', 'False')
         # imports
         self.options.setdefault('imports', 'False')
+        # Debug statements
+        self.options.setdefault('debug-statements', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -217,6 +219,18 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-debug-statements
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-debug-statements',
+                self.__module__,
+                'code_analysis_debug_statements'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -278,6 +292,9 @@ def code_analysis(options):
         code_analysis_string_formatting(options)
     if 'imports' in options and options['imports'] != 'False':
         code_analysis_imports(options)
+    if 'debug-statements' in options and \
+            options['debug-statements'] != 'False':
+        code_analysis_debug_statements(options)
 
 
 def code_analysis_flake8(options):
@@ -730,4 +747,63 @@ def _code_analysis_imports_parser(lines, relative_path):
                     relative_path,
                     linenumber,
                 ))
+    return errors
+
+
+def code_analysis_debug_statements(options):
+    sys.stdout.write('Debug statements ')
+
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('      [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_debug_statements_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('      [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('      [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_debug_statements_lines_parser(lines, file_path):
+    errors = []
+    linenumber = 0
+
+    debug_statements = (
+        'print',  # noqa
+        'pdb',  # noqa
+    )
+
+    for line in lines:
+        linenumber += 1
+
+        # allow to skip some methods if the comment # noqa is found
+        if line.find('# noqa') != -1:
+            continue
+
+        for statement in debug_statements:
+            if line.find(statement) != -1:
+                errors.append('{0}: {1}: found {2}'.format(
+                    file_path,
+                    linenumber,
+                    statement)
+                )
+
     return errors

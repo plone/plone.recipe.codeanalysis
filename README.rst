@@ -100,3 +100,7 @@ imports
     If set to True, checks that imports in python files follow `the Plone style
     guide <http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports>`_.
     Default to False.
+
+debug-statements
+    If set to True, scan python files looking for debug-like statements.
+    Default to False.

@@ -7,9 +7,9 @@ TODO
 
  [ ] Make 1.0a1 release
 
- [ ] Check for pdbs
+ [X] Check for pdbs
 
- [ ] Check for print statements
+ [X] Check for print statements
 
  [X] Check ZPTLint
 
