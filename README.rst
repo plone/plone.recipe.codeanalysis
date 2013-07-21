@@ -70,3 +70,7 @@ zptlint
 
     Note that the buildout itself alreadz depends on zptlint, so no extra
     configuration is needed.
+
+deprecated-methods
+    If set to True, warnings about deprecated methods will be printed. Default
+    to False.
