@@ -6,11 +6,9 @@ __docformat__ = 'restructuredtext'
 
 import unittest
 import doctest
-import os
 import zc.buildout.tests
 import zc.buildout.testing
 
-from pkg_resources import working_set, Requirement
 from zope.testing import renormalizing
 
 optionflags = (
@@ -18,23 +16,6 @@ optionflags = (
     doctest.NORMALIZE_WHITESPACE |
     doctest.REPORT_ONLY_FIRST_FAILURE
 )
-
-def install_with_deps(test,*packages):
-    base = os.path.join(
-        test.globs['sample_buildout'],'eggs'
-        )
-
-    seen = set()
-
-    for dist in working_set.resolve(
-        [Requirement.parse(p) for p in packages]
-        ):
-        name = dist.project_name
-        if name in seen or name=='setuptools':
-            continue
-        seen.add(name)
-        open(os.path.join(base, name+'.egg-link'), 'w'
-             ).write(dist.location)
 
 
 def setUp(test):
@@ -75,7 +56,6 @@ def setUp(test):
     zc.buildout.testing.install('zope.tales', test)
     zc.buildout.testing.install('zope.traversing', test)
 
-    install_with_deps(test,'zc.buildout')
 
 def test_suite():
     suite = unittest.TestSuite((
