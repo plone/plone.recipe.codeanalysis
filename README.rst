@@ -67,3 +67,6 @@ jshint-bin
 
 zptlint
     If set to True, zptlint code analysis is run. Default to False.
+
+    Note that the buildout itself alreadz depends on zptlint, so no extra
+    configuration is needed.
