@@ -6,9 +6,11 @@ __docformat__ = 'restructuredtext'
 
 import unittest
 import doctest
+import os
 import zc.buildout.tests
 import zc.buildout.testing
 
+from pkg_resources import working_set, Requirement
 from zope.testing import renormalizing
 
 optionflags = (
@@ -16,6 +18,23 @@ optionflags = (
     doctest.NORMALIZE_WHITESPACE |
     doctest.REPORT_ONLY_FIRST_FAILURE
 )
+
+def install_with_deps(test,*packages):
+    base = os.path.join(
+        test.globs['sample_buildout'],'eggs'
+        )
+
+    seen = set()
+
+    for dist in working_set.resolve(
+        [Requirement.parse(p) for p in packages]
+        ):
+        name = dist.project_name
+        if name in seen or name=='setuptools':
+            continue
+        seen.add(name)
+        open(os.path.join(base, name+'.egg-link'), 'w'
+             ).write(dist.location)
 
 
 def setUp(test):
@@ -26,13 +45,37 @@ def setUp(test):
 
     # Install any other recipes that should be available in the tests
     zc.buildout.testing.install('zc.recipe.egg', test)
+    zc.buildout.testing.install('flake8', test)
+    zc.buildout.testing.install('zptlint', test)
 
-    # Seems like we have to install the dependencies defined in
-    # install_requires manually to be available in the test
-    # See:
-    # http://mail.python.org/pipermail/distutils-sig/2009-December/014950.html
-    zc.buildout.testing.install_develop('flake8', test)
-    zc.buildout.testing.install_develop('zptlint', test)
+    # Install second level install_requires dependencies
+    zc.buildout.testing.install('pep8', test)
+    zc.buildout.testing.install('pyflakes', test)
+    zc.buildout.testing.install('pytz', test)
+    zc.buildout.testing.install('mccabe', test)
+    zc.buildout.testing.install('six', test)
+    zc.buildout.testing.install('transaction', test)
+    zc.buildout.testing.install('zope.browser', test)
+    zc.buildout.testing.install('zope.component', test)
+    zc.buildout.testing.install('zope.configuration', test)
+    zc.buildout.testing.install('zope.contentprovider', test)
+    zc.buildout.testing.install('zope.contenttype', test)
+    zc.buildout.testing.install('zope.event', test)
+    zc.buildout.testing.install('zope.exceptions', test)
+    zc.buildout.testing.install('zope.i18n', test)
+    zc.buildout.testing.install('zope.i18nmessageid', test)
+    zc.buildout.testing.install('zope.interface', test)
+    zc.buildout.testing.install('zope.location', test)
+    zc.buildout.testing.install('zope.pagetemplate', test)
+    zc.buildout.testing.install('zope.publisher', test)
+    zc.buildout.testing.install('zope.proxy', test)
+    zc.buildout.testing.install('zope.schema', test)
+    zc.buildout.testing.install('zope.security', test)
+    zc.buildout.testing.install('zope.tal', test)
+    zc.buildout.testing.install('zope.tales', test)
+    zc.buildout.testing.install('zope.traversing', test)
+
+    install_with_deps(test,'zc.buildout')
 
 def test_suite():
     suite = unittest.TestSuite((
