@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
 import os
+import re
 import sys
 import time
 import zc.buildout
@@ -41,6 +42,18 @@ class Recipe(object):
         self.options.setdefault('zptlint-bin', 'zptlint')
         # Warn about usage of deprecated methods
         self.options.setdefault('deprecated-methods', 'False')
+        # utf-8 header
+        self.options.setdefault('utf8-header', 'False')
+        # clean lines
+        self.options.setdefault('clean-lines', 'False')
+        # Prefer single quotes over double quotes
+        self.options.setdefault('prefer-single-quotes', 'False')
+        # String formatting
+        self.options.setdefault('string-formatting', 'False')
+        # imports
+        self.options.setdefault('imports', 'False')
+        # Debug statements
+        self.options.setdefault('debug-statements', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -146,6 +159,78 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'],
             arguments=self.options.__repr__(),
         )
+        # bin/code-analysis-utf8-header
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-utf8-header',
+                self.__module__,
+                'code_analysis_utf8_header'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
+        # bin/code-analysis-clean-lines
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-clean-lines',
+                self.__module__,
+                'code_analysis_clean_lines'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
+        # bin/code-analysis-prefer-single-quotes
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-prefer-single-quotes',
+                self.__module__,
+                'code_analysis_prefer_single_quotes'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
+        # bin/code-analysis-string-formatting
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-string-formatting',
+                self.__module__,
+                'code_analysis_string_formatting'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
+        # bin/code-analysis-imports
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-imports',
+                self.__module__,
+                'code_analysis_imports'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
+        # bin/code-analysis-debug-statements
+        zc.buildout.easy_install.scripts(
+            [(
+                self.name + '-debug-statements',
+                self.__module__,
+                'code_analysis_debug_statements'
+            )],
+            self.egg.working_set()[1],
+            self.buildout[self.buildout['buildout']['python']]['executable'],
+            self.buildout['buildout']['bin-directory'],
+            arguments=self.options.__repr__(),
+        )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -195,6 +280,21 @@ def code_analysis(options):
     if 'deprecated-methods' in options and \
             options['deprecated-methods'] != 'False':
         code_analysis_deprecated_methods(options)
+    if 'utf8-header' in options and options['utf8-header'] != 'False':
+        code_analysis_utf8_header(options)
+    if 'clean-lines' in options and options['clean-lines'] != 'False':
+        code_analysis_clean_lines(options)
+    if 'prefer-single-quotes' in options and \
+            options['prefer-single-quotes'] != 'False':
+        code_analysis_prefer_single_quotes(options)
+    if 'string-formatting' in options and \
+            options['string-formatting'] != 'False':
+        code_analysis_string_formatting(options)
+    if 'imports' in options and options['imports'] != 'False':
+        code_analysis_imports(options)
+    if 'debug-statements' in options and \
+            options['debug-statements'] != 'False':
+        code_analysis_debug_statements(options)
 
 
 def code_analysis_flake8(options):
@@ -371,5 +471,339 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
                         newer_version)
                     )
                     continue
+
+    return errors
+
+
+def code_analysis_utf8_header(options):
+    sys.stdout.write('Check utf-8 headers ')
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('   [\033[00;32m OK \033[0m]')
+        return
+
+    errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        lines = file_handler.readlines()
+        if len(lines) == 0:
+            continue
+        elif lines[0].find('coding: utf-8') == -1:
+            errors.append('{0}: missing utf-8 header'.format(file_path))
+
+        file_handler.close()
+
+    if len(errors) > 0:
+        print('   [\033[00;31m FAILURE \033[0m]')
+        for err in errors:
+            print(err)
+    else:
+        print('   [\033[00;32m OK \033[0m]')
+
+
+def code_analysis_clean_lines(options):
+    sys.stdout.write('Check clean lines ')
+    sys.stdout.flush()
+
+    files = ''
+    for suffix in ('py', 'pt', 'zcml', 'xml',  # standard plone extensions
+                   'js', 'css', 'html',  # html stuff
+                   'rst', 'txt',  # documentation
+                   ):
+        found_files = _find_files(options, '.*\.{0}'.format(suffix))
+        if found_files:
+            files += found_files
+
+    if len(files) == 0:
+        print('     [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_clean_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('     [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('     [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_clean_lines_parser(lines, file_path):
+    errors = []
+    linenumber = 0
+
+    trailing_spaces = re.compile(r' $')
+    tabs = re.compile(r'\t')
+
+    for line in lines:
+        linenumber += 1
+
+        if trailing_spaces.search(line):
+            errors.append('{0}: {1}: found trailing spaces'.format(
+                file_path,
+                linenumber, ))
+        if tabs.search(line):
+            errors.append('{0}: {1}: found tabs'.format(
+                file_path,
+                linenumber, ))
+    return errors
+
+
+def code_analysis_prefer_single_quotes(options):
+    sys.stdout.write('Double quotes ')
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('         [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_prefer_single_quotes_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('         [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('         [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
+    errors = []
+    multiline = False
+    linenumber = 0
+
+    for line in lines:
+        linenumber += 1
+
+        # if there is no double quote sign
+        # there's nothing to do
+        if line.find('"') == -1:
+            continue
+
+        # if it's a comment line ignore it
+        if line.strip().startswith('#'):
+            continue
+
+        # if it's a multiline string, is
+        # ok to have doublequotes
+        if line.find('"""') != -1:
+            # don't get trapped on multiline
+            # strings that are on a single line
+            if line.count('"""') == 2:
+                continue
+            elif multiline:
+                multiline = False
+            else:
+                multiline = True
+            continue
+
+        # until the multiline is finished
+        # it doesn't matter if single or
+        # double quotes are used
+        if multiline:
+            continue
+
+        # if in the same line are both single
+        # and double quotes, ignore it
+        if line.find('"') != -1 and \
+                line.find("'") != -1:
+            continue
+
+        double_quotes_count = line.count('"')
+        errors.append("{0}: {1}: found {2} double quotes".format(
+            file_path,
+            linenumber,
+            double_quotes_count, ))
+
+    return errors
+
+
+def code_analysis_string_formatting(options):
+    sys.stdout.write('String formatting ')
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('     [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_string_formatting_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('     [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('     [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_string_formatting_lines_parser(lines, file_path):
+    errors = []
+    linenumber = 0
+
+    string_formatters=('s', 'i', 'p', 'r')
+
+    for line in lines:
+        linenumber += 1
+
+        # if '# noqa' is on the line, ignore it
+        if line.find('# noqa') != -1:
+            continue
+
+        # if there is no formatting
+        # going on skip it
+        if line.find('%') == -1:
+            continue
+
+        # check if it's a formatting string
+        for formatter in string_formatters:
+            formatter = '%{0}'.format(formatter)
+            if line.find(formatter) != -1:
+                errors.append('{0}: {1}: found {2} formatter'.format(
+                    file_path,
+                    linenumber,
+                    formatter,
+                ))
+    return errors
+
+
+def code_analysis_imports(options):
+    sys.stdout.write('Check imports ')
+    sys.stdout.flush()
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('                [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+        errors = _code_analysis_imports_parser(file_handler.readlines(),
+                                               file_path)
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('         [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('         [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_imports_parser(lines, relative_path):
+    errors = []
+    linenumber = 0
+    for line in lines:
+        linenumber += 1
+
+        if line.find('from ') == 0:
+            if line.find(', ') != -1 or line.find(' (') != -1:
+                errors.append('{0}: {1}: found grouped imports'.format(
+                    relative_path,
+                    linenumber,
+                ))
+    return errors
+
+
+def code_analysis_debug_statements(options):
+    sys.stdout.write('Debug statements ')
+
+    sys.stdout.flush()
+
+    files = _find_files(options, '.*\.py')
+    if not files:
+        print('      [\033[00;32m OK \033[0m]')
+        return
+
+    total_errors = []
+    file_paths = files.strip().split('\n')
+    for file_path in file_paths:
+        file_handler = open(file_path, 'r')
+
+        errors = _code_analysis_debug_statements_lines_parser(
+            file_handler.readlines(),
+            file_path)
+
+        file_handler.close()
+
+        if len(errors) > 0:
+            total_errors += errors
+
+    if len(total_errors) > 0:
+        print('      [\033[00;31m FAILURE \033[0m]')
+        for err in total_errors:
+            print(err)
+    else:
+        print('      [\033[00;32m OK \033[0m]')
+
+
+def _code_analysis_debug_statements_lines_parser(lines, file_path):
+    errors = []
+    linenumber = 0
+
+    debug_statements = (
+        'print',  # noqa
+        'pdb',  # noqa
+    )
+
+    for line in lines:
+        linenumber += 1
+
+        # allow to skip some methods if the comment # noqa is found
+        if line.find('# noqa') != -1:
+            continue
+
+        for statement in debug_statements:
+            if line.find(statement) != -1:
+                errors.append('{0}: {1}: found {2}'.format(
+                    file_path,
+                    linenumber,
+                    statement)
+                )
 
     return errors

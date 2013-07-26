@@ -7,15 +7,15 @@ TODO
 
  [ ] Make 1.0a1 release
 
- [ ] Check for pdbs
+ [X] Check for pdbs
 
- [ ] Check for print statements
+ [X] Check for print statements
 
  [X] Check ZPTLint
 
  [ ] Check CSSLint
 
- [ ] Check UTF-8 Headers
+ [X] Check UTF-8 Headers
 
  [ ] Check translations
 
