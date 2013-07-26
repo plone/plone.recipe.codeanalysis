@@ -84,157 +84,75 @@ class Recipe(object):
         self.install()
 
     def install_scripts(self):
-        # bin/code-analysis
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name,
-                self.__module__,
-                'code_analysis'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
+        # data for all scripts
+        scripts = (
+            # bin/code-analysis
+            {'bin': (self.name,
+                     self.__module__,
+                     'code_analysis'), },
+            # flake8
+            {'bin': 'flake8',
+             'arguments': False, },
+            # bin/code-analysis-flake8
+            {'suffix': 'flake8', },
+            # bin/code-analysis-jshint
+            {'suffix': 'jshint', },
+            # bin/code-analysis-csslint
+            {'suffix': 'csslint', },
+            # bin/code-analysis-zptlint
+            {'suffix': 'zptlint', },
+            # bin/code-analysis-deprecated-methods
+            {'suffix': 'deprecated-methods', },
+            # bin/code-analysis-utf8-header
+            {'suffix': 'utf8-header', },
+            # bin/code-analysis-clean-lines
+            {'suffix': 'clean-lines', },
+            # bin/code-analysis-prefer-single-quotes
+            {'suffix': 'prefer-single-quotes', },
+            # bin/code-analysis-string-formatting
+            {'suffix': 'string-formatting', },
+            # bin/code-analysis-imports
+            {'suffix': 'imports', },
+            # bin/code-analysis-debug-statements
+            {'suffix': 'debug-statements', },
         )
-        # bin/flake8
-        zc.buildout.easy_install.scripts(
-            ['flake8'],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-        )
-        # bin/code-analysis-flake8
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-flake8',
-                self.__module__,
-                'code_analysis_flake8'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-jshint
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-jshint',
-                self.__module__,
-                'code_analysis_jshint'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-csslint
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-csslint',
-                self.__module__,
-                'code_analysis_csslint'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-zptlint
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-zptlint',
-                self.__module__,
-                'code_analysis_zptlint'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-deprecated-methods
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-deprecated-methods',
-                self.__module__,
-                'code_analysis_deprecated_methods'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-utf8-header
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-utf8-header',
-                self.__module__,
-                'code_analysis_utf8_header'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-clean-lines
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-clean-lines',
-                self.__module__,
-                'code_analysis_clean_lines'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-prefer-single-quotes
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-prefer-single-quotes',
-                self.__module__,
-                'code_analysis_prefer_single_quotes'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-string-formatting
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-string-formatting',
-                self.__module__,
-                'code_analysis_string_formatting'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-imports
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-imports',
-                self.__module__,
-                'code_analysis_imports'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
-        # bin/code-analysis-debug-statements
-        zc.buildout.easy_install.scripts(
-            [(
-                self.name + '-debug-statements',
-                self.__module__,
-                'code_analysis_debug_statements'
-            )],
-            self.egg.working_set()[1],
-            self.buildout[self.buildout['buildout']['python']]['executable'],
-            self.buildout['buildout']['bin-directory'],
-            arguments=self.options.__repr__(),
-        )
+
+        eggs = self.egg.working_set()[1]
+        python_buildout = self.buildout['buildout']['python']
+        python = self.buildout[python_buildout]['executable']
+        directory = self.buildout['buildout']['bin-directory']
+        arguments = self.options.__repr__()
+
+        for script in scripts:
+            cmd = None
+            if 'suffix' in script:
+                suffix = script['suffix']
+                py_method = suffix.replace('-', '_')
+
+                cmd = ('{0}-{1}'.format(self.name, suffix),
+                       self.__module__,
+                       'code_analysis_{0}'.format(py_method), )
+            elif 'bin' in script:
+                cmd = script['bin']
+            else:
+                raise ValueError('Error trying to install a script. Either'
+                                 '"bin" or "suffix" are required.')
+
+            if 'arguments' in script and not script['arguments']:
+                zc.buildout.easy_install.scripts(
+                    [cmd],
+                    eggs,
+                    python,
+                    directory,
+                )
+            else:
+                zc.buildout.easy_install.scripts(
+                    [cmd],
+                    eggs,
+                    python,
+                    directory,
+                    arguments=arguments,
+                )
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
