@@ -682,7 +682,7 @@ def _code_analysis_string_formatting_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
 
-    string_formatters=('s', 'i', 'p', 'r')
+    string_formatters = ('s', 'i', 'p', 'r')
 
     for line in lines:
         linenumber += 1
