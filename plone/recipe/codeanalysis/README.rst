@@ -40,6 +40,36 @@ Deprecate method analysis script is installed::
     >>> '/sample-buildout/bin/code-analysis-deprecated-methods' in buildout_output_lower
     True
 
+The script to check if python files have an utf-8 encoding header is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-utf8-header' in buildout_output_lower
+    True
+
+The script to warn about trailing spaces or tabs on files is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-clean-lines' in buildout_output_lower
+    True
+
+Double quotes checker script is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-prefer-single-quotes' in buildout_output_lower
+    True
+
+The script to check for old style string formatting is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-string-formatting' in buildout_output_lower
+    True
+
+The script to check for plone.api style imports is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-imports' in buildout_output_lower
+    True
+
+The script to check for debug-like statements in python code is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-debug-statements' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 
