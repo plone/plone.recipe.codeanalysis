@@ -13,7 +13,7 @@ TODO
 
  [X] Check ZPTLint
 
- [ ] Check CSSLint
+ [X] Check CSSLint
 
  [X] Check UTF-8 Headers
 
