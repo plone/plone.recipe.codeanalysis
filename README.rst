@@ -72,8 +72,7 @@ zptlint
     configuration is needed.
 
 zptlint-bin
-    Set the path to a custom version of zptlint. Defaults to the first binary
-    ``zptlint`` found in ``PATH``.
+    Set the path to a custom version of zptlint. Defaults to ``bin/zptlint``.
 
 deprecated-methods
     If set to True, warnings about deprecated methods will be printed. Default
