@@ -50,7 +50,7 @@ The recipe supports the following options:
     plone.*" in your buildout configuration. Default is 
     'bootstrap.py,docs,*.egg'.
 
-**flake8-complexity**
+**flake8-max-complexity**
     McCabe complexity threshold. Default is 10.
 
 **jshint**
