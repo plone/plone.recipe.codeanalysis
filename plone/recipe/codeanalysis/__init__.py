@@ -40,7 +40,10 @@ class Recipe(object):
         self.options.setdefault('csslint-bin', 'csslint')
         # ZPT Lint
         self.options.setdefault('zptlint', 'False')
-        self.options.setdefault('zptlint-bin', 'zptlint')
+        zptlint_path = os.path.join(
+            self.buildout['buildout']['bin-directory'], 'zptlint'
+        )
+        self.options.setdefault('zptlint-bin', zptlint_path)
         # Warn about usage of deprecated methods
         self.options.setdefault('deprecated-methods', 'False')
         # utf-8 header

@@ -79,7 +79,7 @@ The recipe supports the following options:
     configuration is needed.
 
 **zptlint-bin**
-    Set the path to a custom version of zptlint. Defaults to ``bin/zptlint``.
+    Set the path to a custom version of zptlint. Default is ``bin/zptlint``.
 
 **deprecated-methods**
     If set to True, warnings about deprecated methods will be printed. Default
