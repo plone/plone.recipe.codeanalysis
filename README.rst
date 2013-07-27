@@ -179,6 +179,13 @@ The recipe supports the following options:
     need this option (this is better handled by the Jenkins Violations
     plugin).
 
+**find-untranslated**
+    If set to True, scan Zope templates to find untranslated strings. Default
+    is False.
+
+**i18ndude-bin**
+    Set the path to a custom version of i18ndude. Default is ``bin/i18ndude``.
+
 
 Known Issues
 ============

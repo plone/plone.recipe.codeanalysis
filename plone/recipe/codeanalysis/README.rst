@@ -74,6 +74,11 @@ The script to check for debug-like statements in python code is installed::
     >>> '/sample-buildout/bin/code-analysis-debug-statements' in buildout_output_lower
     True
 
+The script to check for untranslated strings in templates is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-find-untranslated' in buildout_output_lower
+    True
+
 By default a git pre-commit hook is installed. Though, this does not work if
 the current directory is not a git repository::
 

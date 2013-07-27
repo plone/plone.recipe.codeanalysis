@@ -28,6 +28,7 @@ def setUp(test):
     zc.buildout.testing.install('zc.recipe.egg', test)
     zc.buildout.testing.install('flake8', test)
     zc.buildout.testing.install('zptlint', test)
+    zc.buildout.testing.install('i18ndude', test)
 
     # Install second level install_requires dependencies
     zc.buildout.testing.install('pep8', test)
