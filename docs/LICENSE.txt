@@ -1,4 +1,4 @@
-plone.recipe.codeanalysis Copyright (c) 2013 <YOUR NAME HERE>.
+plone.recipe.codeanalysis Copyright (c) 2013 the Plone Foundation
 All Rights Reserved.
 
 This software is subject to the provisions of the Zope Public License,
