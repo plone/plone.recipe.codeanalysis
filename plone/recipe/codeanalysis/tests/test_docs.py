@@ -35,7 +35,7 @@ def setUp(test):
     zc.buildout.testing.install('pytz', test)
     zc.buildout.testing.install('mccabe', test)
     zc.buildout.testing.install('six', test)
-    zc.buildout.testing.install('transaction', test)
+    #zc.buildout.testing.install('transaction', test)
     zc.buildout.testing.install('zope.browser', test)
     zc.buildout.testing.install('zope.component', test)
     zc.buildout.testing.install('zope.configuration', test)
