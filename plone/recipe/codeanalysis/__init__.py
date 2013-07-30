@@ -310,12 +310,9 @@ def code_analysis_zptlint(options):
         print('               [\033[00;32m OK \033[0m]')
         return
 
-    # put all files in a single line
-    files = ' '.join(files.strip().split('\n'))
-    cmd = [
-        options['zptlint-bin'],
-        files,
-    ]
+    # cmd is a sequence of program arguments
+    # first argument is child program
+    cmd = [options['zptlint-bin']] + files.split()
     process = subprocess.Popen(
         cmd,
         stderr=subprocess.STDOUT,
