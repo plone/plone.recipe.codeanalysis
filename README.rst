@@ -60,17 +60,31 @@ The recipe supports the following options:
     If set to True, jshint code analysis is run. Default is False.
 
 **jshint-bin**
-    JSHint executable. Default is 'jshint'. If you have jshint installed on
-    your system and in your path, there is nothing to do. If you install
-    jshint in your buildout, e.g.::
+    JSHint executable. Default is 'jshint'. If you have JSHint installed on
+    your system and in your path, there is nothing to do. To install JSHint in
+    your buildout, use the following::
 
-        [node]
+        [jshint]
         recipe = gp.recipe.node
         npms = jshint
-        url = http://nodejs.org/dist/v0.5.9/node-v0.5.9.tar.gz
         scripts = jshint
 
     set jshint-bin to '${buildout:directory}/bin/jshint'.
+
+**csslint**
+    If set to True, CSSLint code analysis is run. Default is False.
+
+**csslint-bin**
+    CSSLint executable. Default is 'csslint'. If you have CSSLint installed on
+    your system and in your path, there is nothing to do. To install CSSLint
+    in your buildout, use the following::
+
+        [csslint]
+        recipe = gp.recipe.node
+        npms = csslint
+        scripts = csslint
+
+    set csslint-bin to '${buildout:directory}/bin/csslint'.
 
 **zptlint**
     If set to True, zptlint code analysis is run. Default is False.
