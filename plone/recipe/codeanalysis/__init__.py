@@ -254,10 +254,10 @@ def code_analysis_jshint(options):
     if not files:
         print("                [\033[00;32m OK \033[0m]")
         return
-    cmd = [
-        options['jshint-bin'],
-        files.replace("\n", "")
-    ]
+
+    # cmd is a sequence of program arguments
+    # first argument is child program
+    cmd = [options['jshint-bin']] + files.split()
     process = subprocess.Popen(
         cmd,
         stderr=subprocess.STDOUT,
