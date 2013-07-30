@@ -376,7 +376,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
         'assertNotAlmostEqual': ('failIfAlmostEqual', ),  # noqa
     }
 
-    msg = '{0}: {1}: found {2} replace it with {3}'
+    msg = '{0}:{1}: found {2} replace it with {3}'
 
     for line in lines:
         linenumber += 1
@@ -479,11 +479,11 @@ def _code_analysis_clean_lines_parser(lines, file_path):
         linenumber += 1
 
         if trailing_spaces.search(line):
-            errors.append('{0}: {1}: found trailing spaces'.format(
+            errors.append('{0}:{1}: found trailing spaces'.format(
                 file_path,
                 linenumber, ))
         if tabs.search(line):
-            errors.append('{0}: {1}: found tabs'.format(
+            errors.append('{0}:{1}: found tabs'.format(
                 file_path,
                 linenumber, ))
     return errors
@@ -563,7 +563,7 @@ def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
             continue
 
         double_quotes_count = line.count('"')
-        errors.append("{0}: {1}: found {2} double quotes".format(
+        errors.append("{0}:{1}: found {2} double quotes".format(
             file_path,
             linenumber,
             double_quotes_count, ))
@@ -624,7 +624,7 @@ def _code_analysis_string_formatting_lines_parser(lines, file_path):
         for formatter in string_formatters:
             formatter = '%{0}'.format(formatter)
             if line.find(formatter) != -1:
-                errors.append('{0}: {1}: found {2} formatter'.format(
+                errors.append('{0}:{1}: found {2} formatter'.format(
                     file_path,
                     linenumber,
                     formatter,
@@ -667,7 +667,7 @@ def _code_analysis_imports_parser(lines, relative_path):
 
         if line.find('from ') == 0:
             if line.find(', ') != -1 or line.find(' (') != -1:
-                errors.append('{0}: {1}: found grouped imports'.format(
+                errors.append('{0}:{1}: found grouped imports'.format(
                     relative_path,
                     linenumber,
                 ))
@@ -724,7 +724,7 @@ def _code_analysis_debug_statements_lines_parser(lines, file_path):
 
         for statement in debug_statements:
             if line.find(statement) != -1:
-                errors.append('{0}: {1}: found {2}'.format(
+                errors.append('{0}:{1}: found {2}'.format(
                     file_path,
                     linenumber,
                     statement)
