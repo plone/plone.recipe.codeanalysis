@@ -71,6 +71,9 @@ The recipe supports the following options:
 
     set jshint-bin to '${buildout:directory}/bin/jshint'.
 
+**jshint-exclude**
+    Exclude files matching the given filename pattern. Default is none.
+
 **csslint**
     If set to True, CSSLint code analysis is run. Default is False.
 

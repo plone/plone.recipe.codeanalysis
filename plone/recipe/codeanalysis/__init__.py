@@ -46,6 +46,7 @@ class Recipe(object):
         # JSHint
         self.options.setdefault('jshint', 'False')
         self.options.setdefault('jshint-bin', 'jshint')
+        self.options.setdefault('jshint-exclude', '')
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
@@ -235,6 +236,9 @@ def code_analysis(options):
 def code_analysis_flake8(options):
     sys.stdout.write("Flake8")
     sys.stdout.flush()
+
+    # cmd is a sequence of program arguments
+    # first argument is child program
     cmd = [
         os.path.join(options['bin-directory']) + '/flake8',
         '--ignore=%s' % options['flake8-ignore'],
@@ -270,7 +274,11 @@ def code_analysis_jshint(options):
 
     # cmd is a sequence of program arguments
     # first argument is child program
-    cmd = [options['jshint-bin']] + files.split()
+    cmd = [
+        options['jshint-bin'],
+        '--exclude={0}'.format(options['jshint-exclude']),
+    ]
+    cmd.extend(files.split())
     process = subprocess.Popen(
         cmd,
         stderr=subprocess.STDOUT,
@@ -288,6 +296,8 @@ def code_analysis_csslint(options):
     sys.stdout.write("CSS Lint")
     sys.stdout.flush()
 
+    # cmd is a sequence of program arguments
+    # first argument is child program
     cmd = [
         options['csslint-bin'],
         '--format=compact',
