@@ -86,6 +86,33 @@ The recipe supports the following options:
 
     set csslint-bin to '${buildout:directory}/bin/csslint'.
 
+**csslint-ignore**
+    This option allows you to specify which CSSLint rules to turn off. The
+    rules are represented as a comma-delimited list of rule IDs. By default,
+    the following rules will be ignored as they are `considered useless`_::
+
+    * adjoining-classes
+    * floats
+    * font-faces
+    * font-sizes
+    * ids
+    * qualified-headings
+    * unique-headings
+
+    For a detailed list and description of the rules see
+    `CSSLint documentation`_.
+
+**csslint-exclude-list**
+    This option specifies the files and directories CSSLint will ignore.
+    Default is no exclude list.
+
+    You can specify more than one file or directory using a comma, such as::
+
+        csslint-exclude-list = style.css,extras/
+
+.. Note::
+    You should use the full path of the file or directory you want to exclude.
+
 **zptlint**
     If set to True, zptlint code analysis is run. Default is False.
 
@@ -124,6 +151,8 @@ The recipe supports the following options:
     If set to True, scan Python files looking for debug-like statements.
     Default is False.
 
+.. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
+.. _`CSSLint documentation`: https://github.com/stubbornella/csslint/wiki/Rules
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`PEP 3101`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports

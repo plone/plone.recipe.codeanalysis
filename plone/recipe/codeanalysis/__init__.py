@@ -11,6 +11,17 @@ import subprocess
 
 current_dir = os.path.dirname(__file__)
 
+# XXX: see http://2002-2012.mattwilcox.net/archive/entry/id/1054/
+CSSLINT_IGNORE = ','.join([
+    'adjoining-classes',
+    'floats',
+    'font-faces',
+    'font-sizes',
+    'ids',
+    'qualified-headings',
+    'unique-headings',
+])
+
 
 class Recipe(object):
     """zc.buildout recipe"""
@@ -38,6 +49,8 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
+        self.options.setdefault('csslint-ignore', CSSLINT_IGNORE)
+        self.options.setdefault('csslint-exclude-list', '')
         # ZPT Lint
         self.options.setdefault('zptlint', 'False')
         zptlint_path = os.path.join(
@@ -274,14 +287,13 @@ def code_analysis_jshint(options):
 def code_analysis_csslint(options):
     sys.stdout.write("CSS Lint")
     sys.stdout.flush()
-    files = _find_files(options, '.*\.css')
-    if not files:
-        print("               [\033[00;32m OK \033[0m]")
-        return
+
     cmd = [
         options['csslint-bin'],
         '--format=compact',
-        files.replace("\n", "")
+        '--ignore={0}'.format(options['csslint-ignore']),
+        '--exclude-list={0}'.format(options['csslint-exclude-list']),
+        options['directory'],
     ]
     process = subprocess.Popen(
         cmd,
