@@ -54,7 +54,7 @@ The recipe supports the following options:
     McCabe complexity threshold. Default is 10.
 
 **flake8-max-line-length**
-    Set maximum allowed line length. Default is 79.
+    Set maximum allowed line length. Default is 99.
 
 **jshint**
     If set to True, jshint code analysis is run. Default is False.
@@ -125,8 +125,8 @@ The recipe supports the following options:
 **zptlint-bin**
     Set the path to a custom version of zptlint. Default is ``bin/zptlint``.
 
-**deprecated-methods**
-    If set to True, warnings about deprecated methods will be printed. Default
+**deprecated-aliases**
+    If set to True, warnings about deprecated aliases will be printed. Default
     is False.
 
 **utf8-header**
