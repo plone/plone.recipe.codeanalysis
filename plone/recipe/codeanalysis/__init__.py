@@ -42,7 +42,7 @@ class Recipe(object):
         self.options.setdefault('flake8-ignore', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,docs,*.egg')
         self.options.setdefault('flake8-max-complexity', '10')
-        self.options.setdefault('flake8-max-line-length', '99')
+        self.options.setdefault('flake8-max-line-length', '79')
         # JSHint
         self.options.setdefault('jshint', 'False')
         self.options.setdefault('jshint-bin', 'jshint')
@@ -384,7 +384,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
     linenumber = 0
 
     # Keep adding deprecated methods and its newer counterparts as:
-    # NEWER_VERSION: (LIST OF OLD METHODS)
+    # NEWER_VERSION : (LIST OF OLD METHODS)
     deprecated_methods = {
         'assertEqual': ('failUnlessEqual', 'assertEquals', ),  # noqa
         'assertNotEqual': ('failIfEqual', ),  # noqa
@@ -395,7 +395,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
         'assertNotAlmostEqual': ('failIfAlmostEqual', ),  # noqa
     }
 
-    msg = '{0}:{1}: {2} alias is deprecated; replace it with {3}'
+    msg = '{0}:{1}: found {2} replace it with {3}'
 
     for line in lines:
         linenumber += 1
@@ -498,11 +498,11 @@ def _code_analysis_clean_lines_parser(lines, file_path):
         linenumber += 1
 
         if trailing_spaces.search(line):
-            errors.append('{0}:{1}: trailing spaces found'.format(
+            errors.append('{0}:{1}: found trailing spaces'.format(
                 file_path,
                 linenumber, ))
         if tabs.search(line):
-            errors.append('{0}:{1}: tabs found'.format(
+            errors.append('{0}:{1}: found tabs'.format(
                 file_path,
                 linenumber, ))
     return errors
