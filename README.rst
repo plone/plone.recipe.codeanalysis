@@ -54,7 +54,7 @@ The recipe supports the following options:
     McCabe complexity threshold. Default is 10.
 
 **flake8-max-line-length**
-    Set maximum allowed line length. Default is 99.
+    Set maximum allowed line length. Default is 79.
 
 **jshint**
     If set to True, jshint code analysis is run. Default is False.
