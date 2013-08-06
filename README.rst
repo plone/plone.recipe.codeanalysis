@@ -78,9 +78,9 @@ The recipe supports the following options:
     If set to True, CSSLint code analysis is run. Default is False.
 
 **csslint-bin**
-    CSSLint executable. Default is 'csslint'. If you have CSSLint installed on
-    your system and in your path, there is nothing to do. To install CSSLint
-    in your buildout, use the following::
+    CSS Lint executable. Default is 'csslint'. If you have CSS Lint installed
+    on your system and in your path, there is nothing to do. To install CSS
+    Lint in your buildout, use the following::
 
         [csslint]
         recipe = gp.recipe.node
@@ -90,7 +90,7 @@ The recipe supports the following options:
     set csslint-bin to '${buildout:directory}/bin/csslint'.
 
 **csslint-ignore**
-    This option allows you to specify which CSSLint rules to turn off. The
+    This option allows you to specify which CSS Lint rules to turn off. The
     rules are represented as a comma-delimited list of rule IDs. By default,
     the following rules will be ignored as they are `considered useless`_::
 
@@ -106,7 +106,7 @@ The recipe supports the following options:
     `CSSLint documentation`_.
 
 **csslint-exclude-list**
-    This option specifies the files and directories CSSLint will ignore.
+    This option specifies the files and directories CSS Lint will ignore.
     Default is no exclude list.
 
     You can specify more than one file or directory using a comma, such as::
