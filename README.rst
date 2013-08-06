@@ -72,7 +72,10 @@ The recipe supports the following options:
     set jshint-bin to '${buildout:directory}/bin/jshint'.
 
 **jshint-exclude**
-    Exclude files matching the given filename pattern. Default is none.
+    Allows you to specify directories which you don't want to be linted.
+    Default is none. If you want JSHint to skip some files you can list them
+    in a file named ``.jshintignore``. See `JSHint documentation`_ for more
+    details.
 
 **csslint**
     If set to True, CSSLint code analysis is run. Default is False.
@@ -109,7 +112,7 @@ The recipe supports the following options:
     * unique-headings
 
     For a detailed list and description of the rules see
-    `CSSLint documentation`_.
+    `CSS Lint documentation`_.
 
 **csslint-exclude-list**
     This option specifies the files and directories CSS Lint will ignore.
@@ -161,7 +164,8 @@ The recipe supports the following options:
     Default is False.
 
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
-.. _`CSSLint documentation`: https://github.com/stubbornella/csslint/wiki/Rules
+.. _`CSS Lint documentation`: https://github.com/stubbornella/csslint/wiki/Rules
+.. _`JSHint documentation`: http://jshint.com/docs/
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`PEP 3101`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
