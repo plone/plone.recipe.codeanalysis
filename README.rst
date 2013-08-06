@@ -89,6 +89,12 @@ The recipe supports the following options:
 
     set csslint-bin to '${buildout:directory}/bin/csslint'.
 
+**csslint-quiet**
+    Normally, CSS Lint outputs information about every file that is checked
+    regardless of problems. This option instructs CSS Lint to only output
+    information to the console when errors are present. Otherwise, nothing is
+    output. Default is ``True``.
+
 **csslint-ignore**
     This option allows you to specify which CSS Lint rules to turn off. The
     rules are represented as a comma-delimited list of rule IDs. By default,

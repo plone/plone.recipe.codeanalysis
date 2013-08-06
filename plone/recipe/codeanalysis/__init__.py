@@ -50,6 +50,7 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
+        self.options.setdefault('csslint-quiet', 'True')
         self.options.setdefault('csslint-ignore', CSSLINT_IGNORE)
         self.options.setdefault('csslint-exclude-list', '')
         # ZPT Lint
@@ -301,6 +302,7 @@ def code_analysis_csslint(options):
     cmd = [
         options['csslint-bin'],
         '--format=compact',
+        '--quiet' if options['csslint-quiet'] == 'True' else ' ',
         '--ignore={0}'.format(options['csslint-ignore']),
         '--exclude-list={0}'.format(options['csslint-exclude-list']),
         options['directory'],
@@ -311,11 +313,15 @@ def code_analysis_csslint(options):
         stdout=subprocess.PIPE
     )
     output, err = process.communicate()
-    if output != '':
+    if process.returncode:
         print("          [\033[00;31m FAILURE \033[0m]")
         print(output)
     else:
         print("               [\033[00;32m OK \033[0m]")
+        # HACK: CSS Lint fails to honor '--quiet' command line option
+        #       this is a workaround to fix this
+        if options['csslint-quiet'] != 'True':
+            print(output)
 
 
 def code_analysis_zptlint(options):
