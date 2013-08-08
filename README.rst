@@ -7,19 +7,25 @@ Introduction
 ============
 
 plone.recipe.codeanalysis provides static code analysis for buildout-based
-Python projects. For now this includes flake8 and jshint. The recipe creates a
-script to run the code analysis::
+Python projects, including flake8, jshint, csslint, zptlint, and other code
+checks.
+
+This buildout recipe creates a script to run the code analysis::
 
     bin/code-analysis
 
-By default plone.recipe.codeanalysis also creates a git pre-commit hook, so
-the code analysis is run automatically before each commit.
+By default plone.recipe.codeanalysis also creates a git pre-commit hook, in
+order to run the code analysis automatically before each commit.
 
-Code repository::
+Code repository:
 
     https://github.com/plone/plone.recipe.codeanalysis
 
-Issue Tracker::
+Continuous Integration:
+
+    https://travis-ci.org/plone/plone.recipe.codeanalysis
+
+Issue Tracker:
 
     https://github.com/plone/plone.recipe.codeanalysis/issues
 
@@ -47,7 +53,7 @@ The recipe supports the following options:
     Comma-separated filename and glob patterns default. Say you want to
     exclude bootstrap.py, setup.py and all collective.* and plone.* packages.
     Just set "flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,
-    plone.*" in your buildout configuration. Default is 
+    plone.*" in your buildout configuration. Default is
     'bootstrap.py,docs,*.egg'.
 
 **flake8-max-complexity**
