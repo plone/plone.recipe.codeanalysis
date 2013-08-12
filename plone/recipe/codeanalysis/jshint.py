@@ -35,4 +35,5 @@ def code_analysis_jshint(options):
         print(output)
     else:
         print("                [\033[00;32m OK \033[0m]")
-        print(output)  # XXX: there should be warnings on the output
+        if output != '':
+            print(output)  # XXX: there should be warnings on the output
