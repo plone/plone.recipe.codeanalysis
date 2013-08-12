@@ -37,9 +37,8 @@ class Recipe(object):
             options
         )
 
-        if not options.get('working-directory', ''):
-            options['location'] = os.path.join(
-                buildout['buildout']['parts-directory'], name)
+        options['location'] = os.path.join(
+            buildout['buildout']['parts-directory'], name)
 
         # Set required default options
         self.options.setdefault('directory', '.')
@@ -84,7 +83,7 @@ class Recipe(object):
 
         # Figure out default output file
         plone_jenkins = os.path.join(
-            self.buildout['buildout']['parts-directory'], __name__
+            self.buildout['buildout']['parts-directory'], 'code-analysis'
         )
         if not os.path.exists(plone_jenkins):
             os.makedirs(plone_jenkins)
@@ -116,7 +115,7 @@ class Recipe(object):
 
     def install_scripts(self):
         # data for all scripts
-        scripts = (
+        scripts = [
             # bin/code-analysis
             {'bin': (self.name,
                      self.__module__,
@@ -149,8 +148,16 @@ class Recipe(object):
             {'suffix': 'imports', },
             # bin/code-analysis-debug-statements
             {'suffix': 'debug-statements', },
-        )
+        ]
 
+        # bin/jenkins-code-analysis
+        if self.options['jenkins'] == 'True':
+            scripts.append({
+                'bin': (
+                    'jenkins-' + self.name,
+                    self.__module__,
+                    'jenkins_code_analysis'),
+            })
         eggs = self.egg.working_set()[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
@@ -251,6 +258,10 @@ def code_analysis(options):
     if 'debug-statements' in options and \
             options['debug-statements'] != 'False':
         code_analysis_debug_statements(options)
+
+
+def jenkins_code_analysis(options):
+    pass
 
 
 def code_analysis_zptlint(options):
