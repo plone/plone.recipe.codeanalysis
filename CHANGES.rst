@@ -1,4 +1,4 @@
-1.0a2 (unreleased)
+1.0b1 (2013-08-12)
 ------------------
 
 - Workaround over JSHint limitations to avoid displaying warning messages as
