@@ -29,7 +29,7 @@ long_description = (
     + '\n' +
     read('CHANGES.rst')
     + '\n' +
-   'Download\n'
+    'Download\n'
     '********\n')
 
 entry_point = 'plone.recipe.codeanalysis:Recipe'
@@ -45,7 +45,7 @@ tests_require = [
 
 setup(name='plone.recipe.codeanalysis',
       version=version,
-      description="",
+      description="Static code analysis for buildout-based Python projects.",
       long_description=long_description,
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
