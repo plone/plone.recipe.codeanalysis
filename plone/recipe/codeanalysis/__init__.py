@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
+from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 
@@ -237,37 +238,6 @@ def code_analysis(options):
     if 'debug-statements' in options and \
             options['debug-statements'] != 'False':
         code_analysis_debug_statements(options)
-
-
-def code_analysis_csslint(options):
-    sys.stdout.write("CSS Lint")
-    sys.stdout.flush()
-
-    # cmd is a sequence of program arguments
-    # first argument is child program
-    cmd = [
-        options['csslint-bin'],
-        '--format=compact',
-        '--quiet' if options['csslint-quiet'] == 'True' else ' ',
-        '--ignore={0}'.format(options['csslint-ignore']),
-        '--exclude-list={0}'.format(options['csslint-exclude-list']),
-        options['directory'],
-    ]
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
-    output, err = process.communicate()
-    if process.returncode:
-        print("          [\033[00;31m FAILURE \033[0m]")
-        print(output)
-    else:
-        print("               [\033[00;32m OK \033[0m]")
-        # HACK: CSS Lint fails to honor '--quiet' command line option
-        #       this is a workaround to fix this
-        if options['csslint-quiet'] != 'True':
-            print(output)
 
 
 def code_analysis_zptlint(options):
