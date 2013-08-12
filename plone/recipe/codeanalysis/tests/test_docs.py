@@ -74,6 +74,15 @@ def test_suite():
                 zc.buildout.testing.normalize_path,
             ]),
         ),
+        doctest.DocFileSuite(
+            'flake8.rst',
+            setUp=setUp,
+            tearDown=zc.buildout.testing.buildoutTearDown,
+            optionflags=optionflags,
+            checker=renormalizing.RENormalizing([
+                zc.buildout.testing.normalize_path,
+            ]),
+        ),
     ))
     return suite
 
