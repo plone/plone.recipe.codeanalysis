@@ -3,6 +3,8 @@
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
+from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
+from plone.recipe.codeanalysis.utils import _find_files
 
 import os
 import re
@@ -214,23 +216,6 @@ class Recipe(object):
         print("Install Git pre-commit hook.")
 
 
-def _find_files(options, regex):
-    cmd = [
-        'find',
-        '-L',
-        options['directory'],
-        '-regex',
-        regex
-    ]
-    process_files = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
-    files, err = process_files.communicate()
-    return files
-
-
 def code_analysis(options):
     if 'flake8' in options and options['flake8'] != 'False':
         code_analysis_flake8(options)
@@ -262,36 +247,6 @@ def code_analysis(options):
 
 def jenkins_code_analysis(options):
     pass
-
-
-def code_analysis_zptlint(options):
-    sys.stdout.write("ZPT Lint")
-    sys.stdout.flush()
-
-    files = ''
-    for suffix in ('pt', 'cpt', 'zpt', ):
-        found_files = _find_files(options, '.*\.{0}'.format(suffix))
-        if found_files:
-            files += found_files
-
-    if len(files) == 0:
-        print('               [\033[00;32m OK \033[0m]')
-        return
-
-    # cmd is a sequence of program arguments
-    # first argument is child program
-    cmd = [options['zptlint-bin']] + files.split()
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
-    output, err = process.communicate()
-    if output != '':
-        print('          [\033[00;31m FAILURE \033[0m]')
-        print(output)
-    else:
-        print('               [\033[00;32m OK \033[0m]')
 
 
 def code_analysis_deprecated_methods(options):
