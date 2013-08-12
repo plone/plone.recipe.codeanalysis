@@ -63,7 +63,8 @@ The recipe supports the following options:
     Set maximum allowed line length. Default is 79.
 
 **jshint**
-    If set to True, jshint code analysis is run. Default is False.
+    If set to True, jshint code analysis is run. Default is False. Please note
+    that plone.recipe.codeanalysis requires jshint >= 1.0.
 
 **jshint-bin**
     JSHint executable. Default is 'jshint'. If you have JSHint installed on
