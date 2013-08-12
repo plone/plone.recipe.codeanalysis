@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
+from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
+
 import os
 import re
 import sys
-import time
 import zc.buildout
 import zc.recipe.egg
 
@@ -235,37 +236,6 @@ def code_analysis(options):
     if 'debug-statements' in options and \
             options['debug-statements'] != 'False':
         code_analysis_debug_statements(options)
-
-
-def code_analysis_flake8(options):
-    sys.stdout.write("Flake8")
-    sys.stdout.flush()
-
-    # cmd is a sequence of program arguments
-    # first argument is child program
-    cmd = [
-        os.path.join(options['bin-directory']) + '/flake8',
-        '--ignore=%s' % options['flake8-ignore'],
-        '--exclude=%s' % options['flake8-exclude'],
-        '--max-complexity=%s' % options['flake8-max-complexity'],
-        '--max-line-length=%s' % options['flake8-max-line-length'],
-        options['directory'],
-    ]
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
-    while process.poll() is None:
-        sys.stdout.write(".")
-        sys.stdout.flush()
-        time.sleep(1)
-    output, err = process.communicate()
-    if process.returncode:
-        print("          [\033[00;31m FAILURE \033[0m]")
-        print(output)
-    else:
-        print("               [\033[00;32m OK \033[0m]")
 
 
 def jshint_errors(output):
