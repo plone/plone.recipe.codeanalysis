@@ -83,6 +83,15 @@ def test_suite():
                 zc.buildout.testing.normalize_path,
             ]),
         ),
+        doctest.DocFileSuite(
+            'jenkins.rst',
+            setUp=setUp,
+            tearDown=zc.buildout.testing.buildoutTearDown,
+            optionflags=optionflags,
+            checker=renormalizing.RENormalizing([
+                zc.buildout.testing.normalize_path,
+            ]),
+        ),
     ))
     return suite
 

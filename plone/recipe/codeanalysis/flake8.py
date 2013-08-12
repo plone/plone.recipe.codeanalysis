@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import subprocess
 import sys
@@ -33,3 +34,9 @@ def code_analysis_flake8(options):
         print(output)
     else:
         print("               [\033[00;32m OK \033[0m]")
+    if options['jenkins']:
+        flake8_log_filename = os.path.join(
+            options['location'], "flake8.log")
+        flake8_log = open(flake8_log_filename, "w")
+        flake8_log.write(output)
+        flake8_log.close()

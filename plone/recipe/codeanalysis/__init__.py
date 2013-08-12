@@ -37,6 +37,10 @@ class Recipe(object):
             options
         )
 
+        if not options.get('working-directory', ''):
+            options['location'] = os.path.join(
+                buildout['buildout']['parts-directory'], name)
+
         # Set required default options
         self.options.setdefault('directory', '.')
         self.options.setdefault('pre-commit-hook', 'True')
@@ -58,10 +62,9 @@ class Recipe(object):
         self.options.setdefault('csslint-exclude-list', '')
         # ZPT Lint
         self.options.setdefault('zptlint', 'False')
-        zptlint_path = os.path.join(
+        self.options.setdefault('zptlint-bin', os.path.join(
             self.buildout['buildout']['bin-directory'], 'zptlint'
-        )
-        self.options.setdefault('zptlint-bin', zptlint_path)
+        ))
         # Warn about usage of deprecated methods
         self.options.setdefault('deprecated-methods', 'False')
         # utf-8 header
@@ -76,6 +79,8 @@ class Recipe(object):
         self.options.setdefault('imports', 'False')
         # Debug statements
         self.options.setdefault('debug-statements', 'False')
+        # Jenkins output
+        self.options.setdefault('jenkins', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -96,6 +101,14 @@ class Recipe(object):
         self.install_scripts()
         if self.options['pre-commit-hook'] != 'False':
             self.install_pre_commit_hook()
+        # Create location
+        wd = self.options.get('working-directory', '')
+        if not wd:
+            wd = self.options['location']
+            if os.path.exists(wd):
+                assert os.path.isdir(wd)
+            else:
+                os.mkdir(wd)
         return self.files
 
     def update(self):
