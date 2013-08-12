@@ -12,7 +12,7 @@
   [hvelarde]
 
 
-1.0a1 (unreleased)
+1.0a1 (2013-08-04)
 ------------------
 
 - Initial release.
