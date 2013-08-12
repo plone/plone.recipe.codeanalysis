@@ -170,6 +170,19 @@ The recipe supports the following options:
     If set to True, scan Python files looking for debug-like statements.
     Default is False.
 
+
+Known Issues
+============
+
+JSHint "ERROR: Unknown option --verbose"::
+
+    JSHint                [ OK ]
+    ERROR: Unknown option --verbose
+
+Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
+
+    $ sudo npm install -g jshint
+
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
 .. _`CSS Lint documentation`: https://github.com/stubbornella/csslint/wiki/Rules
 .. _`JSHint documentation`: http://jshint.com/docs/
