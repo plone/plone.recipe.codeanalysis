@@ -25,8 +25,13 @@ Jenkins are stored::
     >>> os.path.exists(os.path.join(os.getcwd(), 'parts', 'code-analysis'))
     True
 
-If the jenkins param is set, the buildout creates a jenkins-code-analysis
-script::
+When running the code-analysis script::
 
-    >>> '/sample-buildout/bin/jenkins-code-analysis' in buildout_output_lower
+    >>> import subprocess
+    >>> subprocess.call(['bin/code-analysis'])
+    0
+
+a flake8 log file is written to the 'code-analyis' directory::
+
+    >>> os.path.exists(os.path.join(os.getcwd(), 'parts', 'code-analysis', 'flake8.log'))
     True
