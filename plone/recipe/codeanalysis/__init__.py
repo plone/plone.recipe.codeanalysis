@@ -310,7 +310,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
         'assertNotAlmostEqual': ('failIfAlmostEqual', ),  # noqa
     }
 
-    msg = '{0}:{1}: {2} alias is deprecated; replace it with {3}'
+    msg = '{0}:{1}: found {2} replace it with {3}'
 
     for line in lines:
         linenumber += 1
