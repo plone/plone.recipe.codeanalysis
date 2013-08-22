@@ -1,7 +1,8 @@
 1.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Implement removal of pre-commit hook (fixes #21).
+  [hvelarde]
 
 
 1.0b1 (2013-08-12)
