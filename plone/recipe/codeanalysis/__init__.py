@@ -100,8 +100,13 @@ class Recipe(object):
 
     def install(self):
         self.install_scripts()
+
+        # XXX: this has to be handled on a better way; what about 'false'?
         if self.options['pre-commit-hook'] != 'False':
             self.install_pre_commit_hook()
+        else:
+            self.uninstall_pre_commit_hook()
+
         # Create location
         wd = self.options.get('working-directory', '')
         if not wd:
@@ -214,6 +219,15 @@ class Recipe(object):
             git_hooks_directory + '/pre-commit',
         ])
         print("Install Git pre-commit hook.")
+
+    def uninstall_pre_commit_hook(self):
+        git_hooks_directory = self.buildout['buildout']['directory'] + \
+            '/.git/hooks'
+        try:
+            os.remove(git_hooks_directory + '/pre-commit')
+        except OSError:
+            pass
+        print("Uninstall Git pre-commit hook.")
 
 
 def code_analysis(options):
