@@ -100,8 +100,13 @@ class Recipe(object):
 
     def install(self):
         self.install_scripts()
+
+        # XXX: this has to be handled on a better way; what about 'false'?
         if self.options['pre-commit-hook'] != 'False':
             self.install_pre_commit_hook()
+        else:
+            self.uninstall_pre_commit_hook()
+
         # Create location
         wd = self.options.get('working-directory', '')
         if not wd:
@@ -215,6 +220,15 @@ class Recipe(object):
         ])
         print("Install Git pre-commit hook.")
 
+    def uninstall_pre_commit_hook(self):
+        git_hooks_directory = self.buildout['buildout']['directory'] + \
+            '/.git/hooks'
+        try:
+            os.remove(git_hooks_directory + '/pre-commit')
+        except OSError:
+            pass
+        print("Uninstall Git pre-commit hook.")
+
 
 def code_analysis(options):
     if 'flake8' in options and options['flake8'] != 'False':
@@ -296,7 +310,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
         'assertNotAlmostEqual': ('failIfAlmostEqual', ),  # noqa
     }
 
-    msg = '{0}:{1}: found {2} replace it with {3}'
+    msg = '{0}:{1}: {2} alias is deprecated; replace it with {3}'
 
     for line in lines:
         linenumber += 1
