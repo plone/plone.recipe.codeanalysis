@@ -24,11 +24,15 @@ def code_analysis_jshint(options):
         '--exclude={0}'.format(options['jshint-exclude'] or ' '),
         options['directory'],
     ]
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
+    try:
+        process = subprocess.Popen(
+            cmd,
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE
+        )
+    except OSError:
+        print("           [\033[00;31m SKIP \033[0m]")
+        sys.exit(0)
     output, err = process.communicate()
     if jshint_errors(output):  # HACK: workaround for JSHint limitations
         print("           [\033[00;31m FAILURE \033[0m]")
