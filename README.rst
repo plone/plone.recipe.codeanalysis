@@ -17,6 +17,26 @@ This buildout recipe creates a script to run the code analysis::
 By default plone.recipe.codeanalysis also creates a git pre-commit hook, in
 order to run the code analysis automatically before each commit.
 
+
+Installation
+============
+
+Just add a code-analysis section to your buildout.cfg::
+
+    [buildout]
+    parts += code-analysis
+
+    [code-analysis]
+    recipe = plone.recipe.codeanalysis
+    directory = ${buildout:directory}/src
+
+The directory option is not required. Though, if you don't specify a directory
+the code analysis will check every file in your buildout directory.
+
+
+Links
+=====
+
 Code repository:
 
     https://github.com/plone/plone.recipe.codeanalysis
@@ -36,7 +56,7 @@ Supported options
 The recipe supports the following options:
 
 **directory**
-    Directory that is subject to the code analysis. This option is required.
+    Directory that is subject to the code analysis.
 
 **pre-commit-hook**
     If set to True, a git pre-commit hook is installed that runs the code
