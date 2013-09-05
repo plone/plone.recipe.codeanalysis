@@ -37,9 +37,7 @@ def code_analysis_jshint(options):
     if jshint_errors(output):  # HACK: workaround for JSHint limitations
         print("           [\033[00;31m FAILURE \033[0m]")
         print(output)
-        return False
     else:
         print("                [\033[00;32m OK \033[0m]")
         if output != '':
             print(output)  # XXX: there should be warnings on the output
-        return True

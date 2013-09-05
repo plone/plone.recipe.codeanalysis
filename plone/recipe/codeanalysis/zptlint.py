@@ -30,7 +30,5 @@ def code_analysis_zptlint(options):
     if output != '':
         print('          [\033[00;31m FAILURE \033[0m]')
         print(output)
-        return False
     else:
         print('               [\033[00;32m OK \033[0m]')
-        return True

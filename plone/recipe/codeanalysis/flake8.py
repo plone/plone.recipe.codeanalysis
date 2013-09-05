@@ -29,16 +29,14 @@ def code_analysis_flake8(options):
         sys.stdout.flush()
         time.sleep(1)
     output, err = process.communicate()
+    if process.returncode:
+        print("          [\033[00;31m FAILURE \033[0m]")
+        print(output)
+    else:
+        print("               [\033[00;32m OK \033[0m]")
     if options['jenkins']:
         flake8_log_filename = os.path.join(
             options['location'], "flake8.log")
         flake8_log = open(flake8_log_filename, "w")
         flake8_log.write(output)
         flake8_log.close()
-    if process.returncode:
-        print("          [\033[00;31m FAILURE \033[0m]")
-        print(output)
-        return False
-    else:
-        print("               [\033[00;32m OK \033[0m]")
-        return True

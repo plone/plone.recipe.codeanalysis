@@ -26,11 +26,9 @@ def code_analysis_csslint(options):
     if process.returncode:
         print("          [\033[00;31m FAILURE \033[0m]")
         print(output)
-        return False
     else:
         print("               [\033[00;32m OK \033[0m]")
         # HACK: CSS Lint fails to honor '--quiet' command line option
         #       this is a workaround to fix this
         if options['csslint-quiet'] != 'True':
             print(output)
-        return True

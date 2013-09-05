@@ -127,7 +127,6 @@ class Recipe(object):
             {'bin': (self.name,
                      self.__module__,
                      'code_analysis'), },
-            {'suffix': 'pre-commit-hook'},
             # flake8
             {'bin': 'flake8',
              'arguments': False, },
@@ -212,7 +211,7 @@ class Recipe(object):
                 "this does not seem to be a git repository.")
             return
         output_file = open(git_hooks_directory + '/pre-commit', 'w')
-        output_file.write("#!/bin/bash\nbin/code-analysis-pre-commit-hook")
+        output_file.write("#!/bin/bash\nbin/code-analysis")
         output_file.close()
         subprocess.call([
             "chmod",
@@ -232,54 +231,32 @@ class Recipe(object):
 
 
 def code_analysis(options):
-    """Code analysis script "bin/code-analysis" that returns proper error
-       codes. The script returns 0 if all code analysis steps have been
-       successful and 1 if one of the steps failed.
-    """
-    status_ok = code_analysis_pre_commit_hook(options)
-    if not status_ok:
-        sys.exit(1)
-
-
-def code_analysis_pre_commit_hook(options):
-    """Code analysis script "bin/code-analysis-pre-commit-hook" which is
-       supposed to be called only by the git pre-commit hook. This script
-       does not return proper error codes, because an error code 1 would
-       exit the script and the git commit would never be reached.
-    """
-    status_codes = []
     if 'flake8' in options and options['flake8'] != 'False':
-        status_codes.append(code_analysis_flake8(options))
+        code_analysis_flake8(options)
     if 'jshint' in options and options['jshint'] != 'False':
-        status_codes.append(code_analysis_jshint(options))
+        code_analysis_jshint(options)
     if 'csslint' in options and options['csslint'] != 'False':
-        status_codes.append(code_analysis_csslint(options))
+        code_analysis_csslint(options)
     if 'zptlint' in options and options['zptlint'] != 'False':
-        status_codes.append(code_analysis_zptlint(options))
+        code_analysis_zptlint(options)
     if 'deprecated-methods' in options and \
             options['deprecated-methods'] != 'False':
-        status_codes.append(code_analysis_deprecated_methods(options))
+        code_analysis_deprecated_methods(options)
     if 'utf8-header' in options and options['utf8-header'] != 'False':
-        status_codes.append(code_analysis_utf8_header(options))
+        code_analysis_utf8_header(options)
     if 'clean-lines' in options and options['clean-lines'] != 'False':
-        status_codes.append(code_analysis_clean_lines(options))
+        code_analysis_clean_lines(options)
     if 'prefer-single-quotes' in options and \
             options['prefer-single-quotes'] != 'False':
-        status_codes.append(code_analysis_prefer_single_quotes(options))
+        code_analysis_prefer_single_quotes(options)
     if 'string-formatting' in options and \
             options['string-formatting'] != 'False':
-        status_codes.append(code_analysis_string_formatting(options))
+        code_analysis_string_formatting(options)
     if 'imports' in options and options['imports'] != 'False':
-        status_codes.append(code_analysis_imports(options))
+        code_analysis_imports(options)
     if 'debug-statements' in options and \
             options['debug-statements'] != 'False':
-        status_codes.append(code_analysis_debug_statements(options))
-    # Check all status codes and return with exit code 1 if one of the code
-    # analysis steps did not return True
-    for status_code in status_codes:
-        if not status_code:
-            return False
-    return True
+        code_analysis_debug_statements(options)
 
 
 def jenkins_code_analysis(options):
@@ -313,10 +290,8 @@ def code_analysis_deprecated_methods(options):
         print('    [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
-        return False
     else:
         print('    [\033[00;32m OK \033[0m]')
-        return True
 
 
 def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
@@ -384,10 +359,8 @@ def code_analysis_utf8_header(options):
         print('   [\033[00;31m FAILURE \033[0m]')
         for err in errors:
             print(err)
-        return False
     else:
         print('   [\033[00;32m OK \033[0m]')
-        return True
 
 
 def code_analysis_clean_lines(options):
@@ -425,10 +398,8 @@ def code_analysis_clean_lines(options):
         print('     [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
-        return False
     else:
         print('     [\033[00;32m OK \033[0m]')
-        return True
 
 
 def _code_analysis_clean_lines_parser(lines, file_path):
@@ -479,10 +450,8 @@ def code_analysis_prefer_single_quotes(options):
         print('         [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
-        return False
     else:
         print('         [\033[00;32m OK \033[0m]')
-        return True
 
 
 def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
@@ -563,10 +532,8 @@ def code_analysis_string_formatting(options):
         print('     [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
-        return False
     else:
         print('     [\033[00;32m OK \033[0m]')
-        return True
 
 
 def _code_analysis_string_formatting_lines_parser(lines, file_path):
@@ -622,10 +589,8 @@ def code_analysis_imports(options):
         print('         [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
-        return False
     else:
         print('         [\033[00;32m OK \033[0m]')
-        return True
 
 
 def _code_analysis_imports_parser(lines, relative_path):
@@ -671,10 +636,8 @@ def code_analysis_debug_statements(options):
         print('      [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
-        return False
     else:
         print('      [\033[00;32m OK \033[0m]')
-        return True
 
 
 def _code_analysis_debug_statements_lines_parser(lines, file_path):
