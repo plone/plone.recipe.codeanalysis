@@ -85,30 +85,18 @@ The recipe supports the following options:
     details.
 
 **csslint**
-    If set to True, CSSLint code analysis is run. Default is False.
+    If set to True, CSS Lint code analysis is run. Default is ``False``.
 
-**csslint-bin**
-    CSS Lint executable. Default is 'csslint'. If you have CSS Lint installed
-    on your system and in your path, there is nothing to do. To install CSS
-    Lint in your buildout, use the following::
+    CSS Lint options should be configured using a ``.csslintrc`` file. A
+    typical ``.csslintrc`` file will look like this::
 
-        [csslint]
-        recipe = gp.recipe.node
-        npms = csslint
-        scripts = csslint
+        --format=compact
+        --quiet
+        --ignore=adjoining-classes,floats,font-faces,font-sizes,ids,qualified-headings,unique-headings
+        --exclude-list=foo/bar/static/third-party.css
 
-    set csslint-bin to '${buildout:directory}/bin/csslint'.
-
-**csslint-quiet**
-    Normally, CSS Lint outputs information about every file that is checked
-    regardless of problems. This option instructs CSS Lint to only output
-    information to the console when errors are present. Otherwise, nothing is
-    output. Default is ``True``.
-
-**csslint-ignore**
-    This option allows you to specify which CSS Lint rules to turn off. The
-    rules are represented as a comma-delimited list of rule IDs. By default,
-    the following rules will be ignored as they are `considered useless`_::
+    This configuration includes a list of CSS rules that will be ignored as
+    they are `considered useless`_::
 
     * adjoining-classes
     * floats
@@ -121,16 +109,16 @@ The recipe supports the following options:
     For a detailed list and description of the rules see
     `CSS Lint documentation`_.
 
-**csslint-exclude-list**
-    This option specifies the files and directories CSS Lint will ignore.
-    Default is no exclude list.
+**csslint-bin**
+    Set the path to a custom version of CSS Lint. Default is ``bin/csslint``.
 
-    You can specify more than one file or directory using a comma, such as::
+    If you have CSS Lint installed in your system and path, set csslint-bin to
+    'csslint'. To install CSS Lint in your buildout, use the following::
 
-        csslint-exclude-list = style.css,extras/
-
-.. Note::
-    You should use the full path of the file or directory you want to exclude.
+        [csslint]
+        recipe = gp.recipe.node
+        npms = csslint
+        scripts = csslint
 
 **zptlint**
     If set to True, zptlint code analysis is run. Default is False.

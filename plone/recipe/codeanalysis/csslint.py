@@ -11,10 +11,6 @@ def code_analysis_csslint(options):
     # first argument is child program
     cmd = [
         options['csslint-bin'],
-        '--format=compact',
-        '--quiet' if options['csslint-quiet'] == 'True' else ' ',
-        '--ignore={0}'.format(options['csslint-ignore']),
-        '--exclude-list={0}'.format(options['csslint-exclude-list']),
         options['directory'],
     ]
     process = subprocess.Popen(
@@ -28,7 +24,3 @@ def code_analysis_csslint(options):
         print(output)
     else:
         print("               [\033[00;32m OK \033[0m]")
-        # HACK: CSS Lint fails to honor '--quiet' command line option
-        #       this is a workaround to fix this
-        if options['csslint-quiet'] != 'True':
-            print(output)

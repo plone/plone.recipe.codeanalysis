@@ -57,10 +57,9 @@ class Recipe(object):
         self.options.setdefault('jshint-exclude', '')
         # CSS Lint
         self.options.setdefault('csslint', 'False')
-        self.options.setdefault('csslint-bin', 'csslint')
-        self.options.setdefault('csslint-quiet', 'True')
-        self.options.setdefault('csslint-ignore', CSSLINT_IGNORE)
-        self.options.setdefault('csslint-exclude-list', '')
+        self.options.setdefault('csslint-bin', os.path.join(
+            self.buildout['buildout']['bin-directory'], 'csslint'
+        ))
         # ZPT Lint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', os.path.join(
