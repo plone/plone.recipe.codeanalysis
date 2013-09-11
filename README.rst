@@ -6,9 +6,9 @@
 Introduction
 ============
 
-plone.recipe.codeanalysis provides static code analysis for buildout-based
-Python projects, including flake8, jshint, csslint, zptlint, and other code
-checks.
+plone.recipe.codeanalysis provides static code analysis for Buildout-based
+Python projects, including `flake8`_, `JSHint`_, `CSS Lint`_, `zptlint`_, and
+other code checks.
 
 This buildout recipe creates a script to run the code analysis::
 
@@ -63,31 +63,31 @@ The recipe supports the following options:
     analysis before each commit.
 
 **flake8**
-    If set to True, run Flake8 code analysis. Default is True.
+    If set to True, run Flake8 code analysis. Default is ``True``.
 
 **flake8-ignore**
     Skip errors or warnings. See `Flake8 documentation`_ for error codes.
-    Default is None.
+    Default is none.
 
 **flake8-exclude**
     Comma-separated filename and glob patterns default. Say you want to
     exclude bootstrap.py, setup.py and all collective.* and plone.* packages.
     Just set "flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,
     plone.*" in your buildout configuration. Default is
-    'bootstrap.py,docs,*.egg'.
+    ``bootstrap.py,docs,*.egg``.
 
 **flake8-max-complexity**
-    McCabe complexity threshold. Default is 10.
+    McCabe complexity threshold. Default is ``10``.
 
 **flake8-max-line-length**
-    Set maximum allowed line length. Default is 79.
+    Set maximum allowed line length. Default is ``79``.
 
 **jshint**
-    If set to True, jshint code analysis is run. Default is False. Please note
+    If set to True, jshint code analysis is run. Default is ``False``. Note
     that plone.recipe.codeanalysis requires jshint >= 1.0.
 
 **jshint-bin**
-    JSHint executable. Default is 'jshint'. If you have JSHint installed on
+    JSHint executable. Default is ``jshint``. If you have JSHint installed on
     your system and in your path, there is nothing to do. To install JSHint in
     your buildout, use the following::
 
@@ -115,19 +115,11 @@ The recipe supports the following options:
         --ignore=adjoining-classes,floats,font-faces,font-sizes,ids,qualified-headings,unique-headings
         --exclude-list=foo/bar/static/third-party.css
 
-    This configuration includes a list of CSS rules that will be ignored as
-    they are `considered useless`_::
+    This typical configuration includes a list of CSS rules that will be
+    ignored as they are `considered useless`_.
 
-    * adjoining-classes
-    * floats
-    * font-faces
-    * font-sizes
-    * ids
-    * qualified-headings
-    * unique-headings
-
-    For a detailed list and description of the rules see
-    `CSS Lint documentation`_.
+    See `CSS Lint documentation`_ for a detailed list and description of the
+    rules.
 
 **csslint-bin**
     Set the path to a custom version of CSS Lint. Default is ``bin/csslint``.
@@ -141,7 +133,7 @@ The recipe supports the following options:
         scripts = csslint
 
 **zptlint**
-    If set to True, zptlint code analysis is run. Default is False.
+    If set to True, zptlint code analysis is run. Default is ``False``.
 
     Note that the buildout itself already depends on zptlint, so no extra
     configuration is needed.
@@ -155,28 +147,28 @@ The recipe supports the following options:
 
 **utf8-header**
     If set to True, Python files without a utf-8 header (like
-    ``# -*- coding: utf-8 -*-``) will cause a warning. Default is False.
+    ``# -*- coding: utf-8 -*-``) will cause a warning. Default is ``False``.
 
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
-    on the lines will cause a warning. Default is False.
+    on the lines will cause a warning. Default is ``False``.
 
 **prefer-single-quotes**
     If set to True, Python files will be scanned searching for strings quoted
-    with double quote signs (``"``). Default is False.
+    with double quote signs (``"``). Default is ``False``.
 
 **string-formatting**
     If set to True, Python files will be scanned searching for old-style
     string formatting (i.e. ``'%s' % var``). See `PEP 3101`_. Default is
-    False.
+    ``False``.
 
 **imports**
     If set to True, checks that imports in Python files follow `plone.api
-    conventions`_. Default is False.
+    conventions`_. Default is ``False``.
 
 **debug-statements**
     If set to True, scan Python files looking for debug-like statements.
-    Default is False.
+    Default is ``False``.
 
 
 Known Issues
@@ -193,7 +185,11 @@ Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
 
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
 .. _`CSS Lint documentation`: https://github.com/stubbornella/csslint/wiki/Rules
-.. _`JSHint documentation`: http://jshint.com/docs/
+.. _`CSS Lint`: http://csslint.net/
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
+.. _`flake8`: https://pypi.python.org/pypi/flake8
+.. _`JSHint documentation`: http://jshint.com/docs/
+.. _`JSHint`: http://www.jshint.com/
 .. _`PEP 3101`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
+.. _`zptlint`: https://pypi.python.org/pypi/zptlint
