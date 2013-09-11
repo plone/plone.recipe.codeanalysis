@@ -31,7 +31,7 @@ When running the code-analysis script::
     >>> subprocess.call(['bin/code-analysis'])
     0
 
-a flake8 log file is written to the 'code-analyis' directory::
+a flake8 log file is written to the 'code-analysis' directory::
 
     >>> os.path.exists(os.path.join(os.getcwd(), 'parts', 'code-analysis', 'flake8.log'))
     True

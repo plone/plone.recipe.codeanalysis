@@ -32,8 +32,10 @@ def code_analysis_flake8(options):
     if process.returncode:
         print("          [\033[00;31m FAILURE \033[0m]")
         print(output)
+        return False
     else:
         print("               [\033[00;32m OK \033[0m]")
+        return True
     if options['jenkins']:
         flake8_log_filename = os.path.join(
             options['location'], "flake8.log")
