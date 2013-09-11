@@ -1,6 +1,12 @@
 1.0b2 (unreleased)
 ------------------
 
+- Deprecate 'csslint-quiet', 'csslint-ignore' and 'csslint-exclude-list'
+  options; CSS Lint must be configured now using a '.csslintrc' file.
+  'csslint-bin' option now defaults to ``bin/csslint``; documentation was
+  updated (closes #20).
+  [hvelarde]
+
 - Implement removal of pre-commit hook (fixes #21).
   [hvelarde]
 
