@@ -1,4 +1,4 @@
-1.0b2 (unreleased)
+1.0b2 (2013-09-11)
 ------------------
 
 - Deprecate 'csslint-quiet', 'csslint-ignore' and 'csslint-exclude-list'
