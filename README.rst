@@ -172,6 +172,13 @@ The recipe supports the following options:
     If set to True, scan Python files looking for debug-like statements.
     Default is ``False``.
 
+**return-status-codes**
+    If set to True, the code-analysis script returns an error code that
+    Continuous Integration servers (like Travis CI) can use to fail or pass a
+    job, based on the code analyis output. Note that Jenkins usually does not
+    need this option (this is better handled by the Jenkins Violations
+    plugin).
+
 
 Known Issues
 ============
