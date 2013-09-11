@@ -1,6 +1,9 @@
 1.0b3 (unreleased)
 ------------------
 
+- Add return-status-codes option that allows to fail a CI-build on Travis.
+  [timo]
+
 - Make system wide installed csslint the default value for
   the csslint-bin option.
   [timo]

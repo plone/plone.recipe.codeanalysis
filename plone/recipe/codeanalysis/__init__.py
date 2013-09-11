@@ -79,6 +79,8 @@ class Recipe(object):
         self.options.setdefault('debug-statements', 'False')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
+        # Error codes
+        self.options.setdefault('return-status-codes', 'False')
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -154,14 +156,6 @@ class Recipe(object):
             {'suffix': 'debug-statements', },
         ]
 
-        # bin/jenkins-code-analysis
-        if self.options['jenkins'] == 'True':
-            scripts.append({
-                'bin': (
-                    'jenkins-' + self.name,
-                    self.__module__,
-                    'jenkins_code_analysis'),
-            })
         eggs = self.egg.working_set()[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
@@ -228,36 +222,43 @@ class Recipe(object):
 
 
 def code_analysis(options):
+    status_codes = []
     if 'flake8' in options and options['flake8'] != 'False':
-        code_analysis_flake8(options)
+        status_codes.append(code_analysis_flake8(options))
     if 'jshint' in options and options['jshint'] != 'False':
-        code_analysis_jshint(options)
+        status_codes.append(code_analysis_jshint(options))
     if 'csslint' in options and options['csslint'] != 'False':
-        code_analysis_csslint(options)
+        status_codes.append(code_analysis_csslint(options))
     if 'zptlint' in options and options['zptlint'] != 'False':
-        code_analysis_zptlint(options)
+        status_codes.append(code_analysis_zptlint(options))
     if 'deprecated-methods' in options and \
             options['deprecated-methods'] != 'False':
-        code_analysis_deprecated_methods(options)
+        status_codes.append(code_analysis_deprecated_methods(options))
     if 'utf8-header' in options and options['utf8-header'] != 'False':
-        code_analysis_utf8_header(options)
+        status_codes.append(code_analysis_utf8_header(options))
     if 'clean-lines' in options and options['clean-lines'] != 'False':
-        code_analysis_clean_lines(options)
+        status_codes.append(code_analysis_clean_lines(options))
     if 'prefer-single-quotes' in options and \
             options['prefer-single-quotes'] != 'False':
-        code_analysis_prefer_single_quotes(options)
+        status_codes.append(code_analysis_prefer_single_quotes(options))
     if 'string-formatting' in options and \
             options['string-formatting'] != 'False':
-        code_analysis_string_formatting(options)
+        status_codes.append(code_analysis_string_formatting(options))
     if 'imports' in options and options['imports'] != 'False':
-        code_analysis_imports(options)
+        status_codes.append(code_analysis_imports(options))
     if 'debug-statements' in options and \
             options['debug-statements'] != 'False':
-        code_analysis_debug_statements(options)
+        status_codes.append(code_analysis_debug_statements(options))
 
-
-def jenkins_code_analysis(options):
-    pass
+    # Check all status codes and return with exit code 1 if one of the code
+    # analysis steps did not return True
+    if options['return-status-codes'] != 'False':
+        for status_code in status_codes:
+            if not status_code:
+                print('The command "bin/code-analysis" exited with 1.')
+                exit(1)
+        print('The command "bin/code-analysis" exited with 0.')
+        exit(0)
 
 
 def code_analysis_deprecated_methods(options):
@@ -287,8 +288,10 @@ def code_analysis_deprecated_methods(options):
         print('    [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
+        return False
     else:
         print('    [\033[00;32m OK \033[0m]')
+        return True
 
 
 def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
@@ -395,8 +398,10 @@ def code_analysis_clean_lines(options):
         print('     [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
+        return False
     else:
         print('     [\033[00;32m OK \033[0m]')
+        return True
 
 
 def _code_analysis_clean_lines_parser(lines, file_path):
@@ -447,8 +452,10 @@ def code_analysis_prefer_single_quotes(options):
         print('         [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
+        return False
     else:
         print('         [\033[00;32m OK \033[0m]')
+        return True
 
 
 def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
@@ -529,8 +536,10 @@ def code_analysis_string_formatting(options):
         print('     [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
+        return False
     else:
         print('     [\033[00;32m OK \033[0m]')
+        return True
 
 
 def _code_analysis_string_formatting_lines_parser(lines, file_path):
@@ -586,8 +595,10 @@ def code_analysis_imports(options):
         print('         [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
+        return False
     else:
         print('         [\033[00;32m OK \033[0m]')
+        return True
 
 
 def _code_analysis_imports_parser(lines, relative_path):
@@ -633,8 +644,10 @@ def code_analysis_debug_statements(options):
         print('      [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
+        return False
     else:
         print('      [\033[00;32m OK \033[0m]')
+        return True
 
 
 def _code_analysis_debug_statements_lines_parser(lines, file_path):
