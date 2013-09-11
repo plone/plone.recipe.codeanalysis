@@ -1,7 +1,9 @@
 1.0b3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make system wide installed csslint the default value for
+  the csslint-bin option.
+  [timo]
 
 
 1.0b2 (2013-09-11)

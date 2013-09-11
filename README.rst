@@ -122,10 +122,12 @@ The recipe supports the following options:
     rules.
 
 **csslint-bin**
-    Set the path to a custom version of CSS Lint. Default is ``bin/csslint``.
+    Set the path to a custom version of CSS Lint, e.g.
+    "/usr/local/bin/csslint".
 
-    If you have CSS Lint installed in your system and path, set csslint-bin to
-    'csslint'. To install CSS Lint in your buildout, use the following::
+    If you have CSS Lint installed in your system and path, there is usually nothing you have to do. To install CSS Lint with buildout, add the
+    following section to your buildout and set csslint-bin to
+    "{buildout:bin-directory}/csslint":
 
         [csslint]
         recipe = gp.recipe.node
