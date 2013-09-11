@@ -156,14 +156,6 @@ class Recipe(object):
             {'suffix': 'debug-statements', },
         ]
 
-        # bin/jenkins-code-analysis
-        if self.options['jenkins'] == 'True':
-            scripts.append({
-                'bin': (
-                    'jenkins-' + self.name,
-                    self.__module__,
-                    'jenkins_code_analysis'),
-            })
         eggs = self.egg.working_set()[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
@@ -267,9 +259,6 @@ def code_analysis(options):
                 exit(1)
         print('The command "bin/code-analysis" exited with 0.')
         exit(0)
-
-def jenkins_code_analysis(options):
-    pass
 
 
 def code_analysis_deprecated_methods(options):
