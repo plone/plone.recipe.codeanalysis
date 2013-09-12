@@ -1,7 +1,10 @@
 1.0b4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove unused CSSLINT_IGNORE remainings.
+  [timo]
+
+- Simpilfy code analysis method and make it more readable.
   [timo]
 
 

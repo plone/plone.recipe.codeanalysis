@@ -16,17 +16,6 @@ import subprocess
 
 current_dir = os.path.dirname(__file__)
 
-# XXX: see http://2002-2012.mattwilcox.net/archive/entry/id/1054/
-CSSLINT_IGNORE = ','.join([
-    'adjoining-classes',
-    'floats',
-    'font-faces',
-    'font-sizes',
-    'ids',
-    'qualified-headings',
-    'unique-headings',
-])
-
 
 class Recipe(object):
     """zc.buildout recipe"""
