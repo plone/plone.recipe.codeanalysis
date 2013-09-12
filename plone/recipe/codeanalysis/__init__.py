@@ -222,33 +222,23 @@ class Recipe(object):
 
 
 def code_analysis(options):
+    checks = [
+        ['flake8', code_analysis_flake8(options)],
+        ['jshint', code_analysis_jshint(options)],
+        ['csslint', code_analysis_csslint(options)],
+        ['zptlint', code_analysis_zptlint(options)],
+        ['deprecated-methods', code_analysis_deprecated_methods(options)],
+        ['utf8-header', code_analysis_utf8_header(options)],
+        ['clean-lines', code_analysis_clean_lines(options)],
+        ['prefer-single-quotes', code_analysis_prefer_single_quotes(options)],
+        ['string-formatting', code_analysis_string_formatting(options)],
+        ['imports', code_analysis_imports(options)],
+        ['debug-statements', code_analysis_debug_statements(options)],
+    ]
     status_codes = []
-    if 'flake8' in options and options['flake8'] != 'False':
-        status_codes.append(code_analysis_flake8(options))
-    if 'jshint' in options and options['jshint'] != 'False':
-        status_codes.append(code_analysis_jshint(options))
-    if 'csslint' in options and options['csslint'] != 'False':
-        status_codes.append(code_analysis_csslint(options))
-    if 'zptlint' in options and options['zptlint'] != 'False':
-        status_codes.append(code_analysis_zptlint(options))
-    if 'deprecated-methods' in options and \
-            options['deprecated-methods'] != 'False':
-        status_codes.append(code_analysis_deprecated_methods(options))
-    if 'utf8-header' in options and options['utf8-header'] != 'False':
-        status_codes.append(code_analysis_utf8_header(options))
-    if 'clean-lines' in options and options['clean-lines'] != 'False':
-        status_codes.append(code_analysis_clean_lines(options))
-    if 'prefer-single-quotes' in options and \
-            options['prefer-single-quotes'] != 'False':
-        status_codes.append(code_analysis_prefer_single_quotes(options))
-    if 'string-formatting' in options and \
-            options['string-formatting'] != 'False':
-        status_codes.append(code_analysis_string_formatting(options))
-    if 'imports' in options and options['imports'] != 'False':
-        status_codes.append(code_analysis_imports(options))
-    if 'debug-statements' in options and \
-            options['debug-statements'] != 'False':
-        status_codes.append(code_analysis_debug_statements(options))
+    for option, check in checks:
+        if option in options and options[option] != 'False':
+            status_codes.append(check)
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
