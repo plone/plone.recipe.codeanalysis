@@ -1,4 +1,4 @@
-1.0b3 (unreleased)
+1.0b3 (2013-09-12)
 ------------------
 
 - Add return-status-codes option that allows to fail a CI-build on Travis.
