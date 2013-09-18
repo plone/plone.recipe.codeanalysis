@@ -159,10 +159,10 @@ The recipe supports the following options:
     If set to True, Python files will be scanned searching for strings quoted
     with double quote signs (``"``). Default is ``False``.
 
-**string-formatting**
-    If set to True, Python files will be scanned searching for old-style
-    string formatting (i.e. ``'%s' % var``). See `PEP 3101`_. Default is
-    ``False``.
+**pep3101**
+    If set to True, Python files will be scanned in search of existing '%'
+    string formatting operators. Default is ``False``. See `PEP 3101 (Advanced
+    String Formatting)`_ for more information.
 
 **imports**
     If set to True, checks that imports in Python files follow `plone.api
@@ -199,6 +199,6 @@ Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
 .. _`flake8`: https://pypi.python.org/pypi/flake8
 .. _`JSHint documentation`: http://jshint.com/docs/
 .. _`JSHint`: http://www.jshint.com/
-.. _`PEP 3101`: http://www.python.org/dev/peps/pep-3101/
+.. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
 .. _`zptlint`: https://pypi.python.org/pypi/zptlint

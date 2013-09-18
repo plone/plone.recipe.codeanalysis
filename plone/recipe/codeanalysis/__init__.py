@@ -60,8 +60,8 @@ class Recipe(object):
         self.options.setdefault('clean-lines', 'False')
         # Prefer single quotes over double quotes
         self.options.setdefault('prefer-single-quotes', 'False')
-        # String formatting
-        self.options.setdefault('string-formatting', 'False')
+        # PEP 3101 (Advanced String Formatting)
+        self.options.setdefault('pep3101', 'False')
         # imports
         self.options.setdefault('imports', 'False')
         # Debug statements
@@ -137,8 +137,8 @@ class Recipe(object):
             {'suffix': 'clean-lines', },
             # bin/code-analysis-prefer-single-quotes
             {'suffix': 'prefer-single-quotes', },
-            # bin/code-analysis-string-formatting
-            {'suffix': 'string-formatting', },
+            # bin/code-analysis-pep3101
+            {'suffix': 'pep3101', },
             # bin/code-analysis-imports
             {'suffix': 'imports', },
             # bin/code-analysis-debug-statements
@@ -220,7 +220,7 @@ def code_analysis(options):
         ['utf8-header', code_analysis_utf8_header(options)],
         ['clean-lines', code_analysis_clean_lines(options)],
         ['prefer-single-quotes', code_analysis_prefer_single_quotes(options)],
-        ['string-formatting', code_analysis_string_formatting(options)],
+        ['pep3101', code_analysis_pep3101(options)],
         ['imports', code_analysis_imports(options)],
         ['debug-statements', code_analysis_debug_statements(options)],
     ]
@@ -488,8 +488,8 @@ def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
     return errors
 
 
-def code_analysis_string_formatting(options):
-    sys.stdout.write('String formatting ')
+def code_analysis_pep3101(options):
+    sys.stdout.write('PEP 3101')
     sys.stdout.flush()
 
     files = _find_files(options, '.*\.py')
@@ -502,7 +502,7 @@ def code_analysis_string_formatting(options):
     for file_path in file_paths:
         file_handler = open(file_path, 'r')
 
-        errors = _code_analysis_string_formatting_lines_parser(
+        errors = _code_analysis_pep3101_lines_parser(
             file_handler.readlines(),
             file_path)
 
@@ -521,7 +521,7 @@ def code_analysis_string_formatting(options):
         return True
 
 
-def _code_analysis_string_formatting_lines_parser(lines, file_path):
+def _code_analysis_pep3101_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
 
