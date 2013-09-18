@@ -1,6 +1,9 @@
 1.0b4 (unreleased)
 ------------------
 
+- Rename 'string-formatting' option to 'pep3101' to keep consistency.
+  [hvelarde]
+
 - Remove unused CSSLINT_IGNORE remainings.
   [timo]
 
