@@ -61,7 +61,7 @@ Double quotes checker script is installed::
 
 The script to check for old style string formatting is installed::
 
-    >>> '/sample-buildout/bin/code-analysis-string-formatting' in buildout_output_lower
+    >>> '/sample-buildout/bin/code-analysis-pep3101' in buildout_output_lower
     True
 
 The script to check for plone.api style imports is installed::
