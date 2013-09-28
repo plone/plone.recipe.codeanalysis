@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="der.freitag">
+<body>
+
+<metal:main fill-slot="main">
+
+  <div class="listing">
+    <header>
+      <h1>
+        <a class="parent"
+           title="Parent"
+           tal:condition="view/parent_url | nothing"
+           tal:attributes="href view/parent_url"
+           i18n:translate="parent_title_link"
+           i18n:attributes="title parent_title_link">Parent</a>
+        <a tal:condition="view/target_path" tal:attributes="href string:${portal_url}/${view/target_path}" tal:content="context/Title">Title</a>
+        <span tal:condition="not:view/target_path" tal:replace="context/Title">Title</span>
+      </h1>
+    </header>
+
+    <a title="lalala">aa</a>
+
+  </div>
+
+</metal:main>
+
+</body>
+</html>

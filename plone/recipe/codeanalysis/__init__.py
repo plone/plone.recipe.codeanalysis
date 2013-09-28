@@ -3,16 +3,16 @@
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
-from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
 from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
 
 import os
 import re
+import subprocess
 import sys
 import zc.buildout
 import zc.recipe.egg
 
-import subprocess
 
 current_dir = os.path.dirname(__file__)
 
