@@ -2,6 +2,7 @@
 """Recipe codeanalysis"""
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
+from plone.recipe.codeanalysis.i18n import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
 from plone.recipe.codeanalysis.utils import _find_files
@@ -71,6 +72,12 @@ class Recipe(object):
         self.options.setdefault('jenkins', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
+        # Find untranslated strings
+        self.options.setdefault('find-untranslated', 'False')
+        i18ndude_path = os.path.join(
+            self.buildout['buildout']['bin-directory'], 'i18ndude'
+        )
+        self.options.setdefault('i18ndude-bin', i18ndude_path)
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -144,6 +151,8 @@ class Recipe(object):
             {'suffix': 'imports', },
             # bin/code-analysis-debug-statements
             {'suffix': 'debug-statements', },
+            # bin/code-analysis-find-untranslated
+            {'suffix': 'find-untranslated', },
         ]
 
         eggs = self.egg.working_set()[1]
@@ -224,6 +233,7 @@ def code_analysis(options):
         ['pep3101', code_analysis_pep3101(options)],
         ['imports', code_analysis_imports(options)],
         ['debug-statements', code_analysis_debug_statements(options)],
+        ['find-untranslated', code_analysis_find_untranslated(options)],
     ]
     status_codes = []
     for option, check in checks:
