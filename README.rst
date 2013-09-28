@@ -143,8 +143,8 @@ The recipe supports the following options:
 **zptlint-bin**
     Set the path to a custom version of zptlint. Default is ``bin/zptlint``.
 
-**deprecated-methods**
-    If set to True, warnings about deprecated methods will be printed. Default
+**deprecated-alias**
+    If set to True, warnings about deprecated alias will be printed. Default
     is False.
 
 **utf8-header**

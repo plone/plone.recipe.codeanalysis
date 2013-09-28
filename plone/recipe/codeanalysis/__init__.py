@@ -53,8 +53,8 @@ class Recipe(object):
         self.options.setdefault('zptlint-bin', os.path.join(
             self.buildout['buildout']['bin-directory'], 'zptlint'
         ))
-        # Warn about usage of deprecated methods
-        self.options.setdefault('deprecated-methods', 'False')
+        # Warn about usage of deprecated alias
+        self.options.setdefault('deprecated-alias', 'False')
         # utf-8 header
         self.options.setdefault('utf8-header', 'False')
         # clean lines
@@ -130,8 +130,8 @@ class Recipe(object):
             {'suffix': 'csslint', },
             # bin/code-analysis-zptlint
             {'suffix': 'zptlint', },
-            # bin/code-analysis-deprecated-methods
-            {'suffix': 'deprecated-methods', },
+            # bin/code-analysis-deprecated-alias
+            {'suffix': 'deprecated-alias', },
             # bin/code-analysis-utf8-header
             {'suffix': 'utf8-header', },
             # bin/code-analysis-clean-lines
@@ -217,7 +217,7 @@ def code_analysis(options):
         ['jshint', code_analysis_jshint(options)],
         ['csslint', code_analysis_csslint(options)],
         ['zptlint', code_analysis_zptlint(options)],
-        ['deprecated-methods', code_analysis_deprecated_methods(options)],
+        ['deprecated-alias', code_analysis_deprecated_alias(options)],
         ['utf8-header', code_analysis_utf8_header(options)],
         ['clean-lines', code_analysis_clean_lines(options)],
         ['prefer-single-quotes', code_analysis_prefer_single_quotes(options)],
@@ -241,13 +241,13 @@ def code_analysis(options):
         exit(0)
 
 
-def code_analysis_deprecated_methods(options):
-    sys.stdout.write('Deprecated methods ')
+def code_analysis_deprecated_alias(options):
+    sys.stdout.write('Deprecated alias ')
     sys.stdout.flush()
 
     files = _find_files(options, '.*\.py')
     if not files:
-        print('    [\033[00;32m OK \033[0m]')
+        print('      [\033[00;32m OK \033[0m]')
         return
 
     total_errors = []
@@ -255,7 +255,7 @@ def code_analysis_deprecated_methods(options):
     for file_path in file_paths:
         file_handler = open(file_path, 'r')
 
-        errors = _code_analysis_deprecated_methods_lines_parser(
+        errors = _code_analysis_deprecated_alias_lines_parser(
             file_handler.readlines(),
             file_path)
 
@@ -265,22 +265,22 @@ def code_analysis_deprecated_methods(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('    [\033[00;31m FAILURE \033[0m]')
+        print('      [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('    [\033[00;32m OK \033[0m]')
+        print('      [\033[00;32m OK \033[0m]')
         return True
 
 
-def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
+def _code_analysis_deprecated_alias_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
 
-    # Keep adding deprecated methods and its newer counterparts as:
+    # Keep adding deprecated alias and its newer counterparts as:
     # NEWER_VERSION : (LIST OF OLD METHODS)
-    deprecated_methods = {
+    deprecated_alias = {
         'assertEqual': ('failUnlessEqual', 'assertEquals', ),  # noqa
         'assertNotEqual': ('failIfEqual', ),  # noqa
         'assertTrue': ('failUnless', 'assert_', ),  # noqa
@@ -299,7 +299,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
         if line.find('# noqa') != -1:
             continue
 
-        for newer_version, old_alias in deprecated_methods.iteritems():
+        for newer_version, old_alias in deprecated_alias.iteritems():
             for alias in old_alias:
                 if line.find(alias) != -1:
                     errors.append(msg.format(
