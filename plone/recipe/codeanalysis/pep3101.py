@@ -44,7 +44,8 @@ def _code_analysis_pep3101_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
 
-    string_formatters = ('s', 'i', 'p', 'r')
+    # the ( is to catch keyword formatters '%(something)s'
+    string_formatters = ('s', 'i', 'p', 'r', '(')
 
     for line in lines:
         linenumber += 1
