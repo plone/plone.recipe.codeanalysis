@@ -17,7 +17,7 @@ TODO
 
  [X] Check UTF-8 Headers
 
- [ ] Check translations
+ [X] Check translations
 
  [X] Check for outdated unittest statements
 
