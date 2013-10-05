@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.utils import _normalize_boolean
+
 import os
 import subprocess
 import sys
@@ -8,6 +10,7 @@ import time
 def code_analysis_flake8(options):
     sys.stdout.write("Flake8")
     sys.stdout.flush()
+    jenkins = _normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
     # first argument is child program
@@ -29,10 +32,9 @@ def code_analysis_flake8(options):
         sys.stdout.flush()
         time.sleep(1)
     output, err = process.communicate()
-    if options['jenkins']:
-        flake8_log_filename = os.path.join(
-            options['location'], "flake8.log")
-        with open(flake8_log_filename, 'w') as flake8_log:
+    if jenkins:
+        log_filename = os.path.join(options['location'], 'flake8.log')
+        with open(log_filename, 'w') as flake8_log:
             flake8_log.write(output)
     if process.returncode:
         print("          [\033[00;31m FAILURE \033[0m]")
