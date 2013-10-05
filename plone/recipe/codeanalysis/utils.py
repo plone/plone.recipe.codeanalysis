@@ -2,6 +2,14 @@
 import subprocess
 
 
+def _normalize_boolean(value):
+    """Convert a string into a Boolean value.
+
+    :param value: the string to be converted
+    """
+    return value.lower() == 'true'
+
+
 def _find_files(options, regex):
     cmd = [
         'find',
@@ -17,3 +25,15 @@ def _find_files(options, regex):
     )
     files, err = process_files.communicate()
     return files
+
+
+def _process_output(output, old, new):
+    """Replace all ocurrences of substring 'old' with 'new' in 'output'.
+
+    :param output: string containing command output
+    :param old: substring to be found
+    :param new: replace substring
+    :return: string containing processed command output
+    """
+    output = map(lambda x: x.replace(old, new), output.splitlines())
+    return u''.join(output)
