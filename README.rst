@@ -173,11 +173,12 @@ The recipe supports the following options:
     Default is ``False``.
 
 **return-status-codes**
-    If set to True, the code-analysis script returns an error code that
-    Continuous Integration servers (like Travis CI) can use to fail or pass a
-    job, based on the code analyis output. Note that Jenkins usually does not
-    need this option (this is better handled by the Jenkins Violations
-    plugin).
+    If set to True, the ``bin/code-analysis`` script returns an error code
+    that Continuous Integration servers (like Travis CI) can use to fail or
+    pass a job, based on the code analyis output. Note that Jenkins usually
+    does not need this option (this is better handled by the Jenkins
+    Violations plugin). Note that this option does not have any effect on the
+    other code analysis scripts. Default is ``False``.
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings. Default
