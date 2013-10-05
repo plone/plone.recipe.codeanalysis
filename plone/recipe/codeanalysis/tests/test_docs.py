@@ -39,7 +39,7 @@ def setUp(test):
     zc.buildout.testing.install('ordereddict', test)
     zc.buildout.testing.install('plone.i18n', test)
     zc.buildout.testing.install('unidecode', test)
-    #zc.buildout.testing.install('transaction', test)
+    zc.buildout.testing.install('transaction', test)
     zc.buildout.testing.install('zope.browser', test)
     zc.buildout.testing.install('zope.component', test)
     zc.buildout.testing.install('zope.configuration', test)
