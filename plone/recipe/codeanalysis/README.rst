@@ -41,7 +41,7 @@ install them on the system::
 
 Deprecate method analysis script is installed::
 
-    >>> '/sample-buildout/bin/code-analysis-deprecated-methods' in buildout_output_lower
+    >>> '/sample-buildout/bin/code-analysis-deprecated-alias' in buildout_output_lower
     True
 
 The script to check if python files have an utf-8 encoding header is installed::
@@ -61,7 +61,7 @@ Double quotes checker script is installed::
 
 The script to check for old style string formatting is installed::
 
-    >>> '/sample-buildout/bin/code-analysis-string-formatting' in buildout_output_lower
+    >>> '/sample-buildout/bin/code-analysis-pep3101' in buildout_output_lower
     True
 
 The script to check for plone.api style imports is installed::
@@ -72,6 +72,11 @@ The script to check for plone.api style imports is installed::
 The script to check for debug-like statements in python code is installed::
 
     >>> '/sample-buildout/bin/code-analysis-debug-statements' in buildout_output_lower
+    True
+
+The script to check for untranslated strings in templates is installed::
+
+    >>> '/sample-buildout/bin/code-analysis-find-untranslated' in buildout_output_lower
     True
 
 By default a git pre-commit hook is installed. Though, this does not work if

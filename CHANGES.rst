@@ -1,6 +1,12 @@
 1.0b4 (unreleased)
 ------------------
 
+- Rename 'deprecated-methods' to 'deprecated-alias'
+  [gforcada]
+
+- Rename 'string-formatting' option to 'pep3101' to keep consistency.
+  [hvelarde]
+
 - Remove unused CSSLINT_IGNORE remainings.
   [timo]
 

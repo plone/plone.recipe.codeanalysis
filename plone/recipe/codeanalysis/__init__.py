@@ -2,17 +2,19 @@
 """Recipe codeanalysis"""
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
+from plone.recipe.codeanalysis.i18n import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
-from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
+from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
 from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
 
 import os
 import re
+import subprocess
 import sys
 import zc.buildout
 import zc.recipe.egg
 
-import subprocess
 
 current_dir = os.path.dirname(__file__)
 
@@ -52,16 +54,16 @@ class Recipe(object):
         self.options.setdefault('zptlint-bin', os.path.join(
             self.buildout['buildout']['bin-directory'], 'zptlint'
         ))
-        # Warn about usage of deprecated methods
-        self.options.setdefault('deprecated-methods', 'False')
+        # Warn about usage of deprecated alias
+        self.options.setdefault('deprecated-alias', 'False')
         # utf-8 header
         self.options.setdefault('utf8-header', 'False')
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         # Prefer single quotes over double quotes
         self.options.setdefault('prefer-single-quotes', 'False')
-        # String formatting
-        self.options.setdefault('string-formatting', 'False')
+        # PEP 3101 (Advanced String Formatting)
+        self.options.setdefault('pep3101', 'False')
         # imports
         self.options.setdefault('imports', 'False')
         # Debug statements
@@ -70,6 +72,12 @@ class Recipe(object):
         self.options.setdefault('jenkins', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
+        # Find untranslated strings
+        self.options.setdefault('find-untranslated', 'False')
+        i18ndude_path = os.path.join(
+            self.buildout['buildout']['bin-directory'], 'i18ndude'
+        )
+        self.options.setdefault('i18ndude-bin', i18ndude_path)
 
         # Figure out default output file
         plone_jenkins = os.path.join(
@@ -129,20 +137,22 @@ class Recipe(object):
             {'suffix': 'csslint', },
             # bin/code-analysis-zptlint
             {'suffix': 'zptlint', },
-            # bin/code-analysis-deprecated-methods
-            {'suffix': 'deprecated-methods', },
+            # bin/code-analysis-deprecated-alias
+            {'suffix': 'deprecated-alias', },
             # bin/code-analysis-utf8-header
             {'suffix': 'utf8-header', },
             # bin/code-analysis-clean-lines
             {'suffix': 'clean-lines', },
             # bin/code-analysis-prefer-single-quotes
             {'suffix': 'prefer-single-quotes', },
-            # bin/code-analysis-string-formatting
-            {'suffix': 'string-formatting', },
+            # bin/code-analysis-pep3101
+            {'suffix': 'pep3101', },
             # bin/code-analysis-imports
             {'suffix': 'imports', },
             # bin/code-analysis-debug-statements
             {'suffix': 'debug-statements', },
+            # bin/code-analysis-find-untranslated
+            {'suffix': 'find-untranslated', },
         ]
 
         eggs = self.egg.working_set()[1]
@@ -216,13 +226,14 @@ def code_analysis(options):
         ['jshint', code_analysis_jshint(options)],
         ['csslint', code_analysis_csslint(options)],
         ['zptlint', code_analysis_zptlint(options)],
-        ['deprecated-methods', code_analysis_deprecated_methods(options)],
+        ['deprecated-alias', code_analysis_deprecated_alias(options)],
         ['utf8-header', code_analysis_utf8_header(options)],
         ['clean-lines', code_analysis_clean_lines(options)],
         ['prefer-single-quotes', code_analysis_prefer_single_quotes(options)],
-        ['string-formatting', code_analysis_string_formatting(options)],
+        ['pep3101', code_analysis_pep3101(options)],
         ['imports', code_analysis_imports(options)],
         ['debug-statements', code_analysis_debug_statements(options)],
+        ['find-untranslated', code_analysis_find_untranslated(options)],
     ]
     status_codes = []
     for option, check in checks:
@@ -240,13 +251,13 @@ def code_analysis(options):
         exit(0)
 
 
-def code_analysis_deprecated_methods(options):
-    sys.stdout.write('Deprecated methods ')
+def code_analysis_deprecated_alias(options):
+    sys.stdout.write('Deprecated alias ')
     sys.stdout.flush()
 
     files = _find_files(options, '.*\.py')
     if not files:
-        print('    [\033[00;32m OK \033[0m]')
+        print('      [\033[00;32m OK \033[0m]')
         return
 
     total_errors = []
@@ -254,7 +265,7 @@ def code_analysis_deprecated_methods(options):
     for file_path in file_paths:
         file_handler = open(file_path, 'r')
 
-        errors = _code_analysis_deprecated_methods_lines_parser(
+        errors = _code_analysis_deprecated_alias_lines_parser(
             file_handler.readlines(),
             file_path)
 
@@ -264,22 +275,22 @@ def code_analysis_deprecated_methods(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('    [\033[00;31m FAILURE \033[0m]')
+        print('      [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('    [\033[00;32m OK \033[0m]')
+        print('      [\033[00;32m OK \033[0m]')
         return True
 
 
-def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
+def _code_analysis_deprecated_alias_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
 
-    # Keep adding deprecated methods and its newer counterparts as:
+    # Keep adding deprecated alias and its newer counterparts as:
     # NEWER_VERSION : (LIST OF OLD METHODS)
-    deprecated_methods = {
+    deprecated_alias = {
         'assertEqual': ('failUnlessEqual', 'assertEquals', ),  # noqa
         'assertNotEqual': ('failIfEqual', ),  # noqa
         'assertTrue': ('failUnless', 'assert_', ),  # noqa
@@ -298,7 +309,7 @@ def _code_analysis_deprecated_methods_lines_parser(lines, file_path):
         if line.find('# noqa') != -1:
             continue
 
-        for newer_version, old_alias in deprecated_methods.iteritems():
+        for newer_version, old_alias in deprecated_alias.iteritems():
             for alias in old_alias:
                 if line.find(alias) != -1:
                     errors.append(msg.format(
@@ -485,69 +496,6 @@ def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
             linenumber,
             double_quotes_count, ))
 
-    return errors
-
-
-def code_analysis_string_formatting(options):
-    sys.stdout.write('String formatting ')
-    sys.stdout.flush()
-
-    files = _find_files(options, '.*\.py')
-    if not files:
-        print('     [\033[00;32m OK \033[0m]')
-        return
-
-    total_errors = []
-    file_paths = files.strip().split('\n')
-    for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_string_formatting_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
-
-        if len(errors) > 0:
-            total_errors += errors
-
-    if len(total_errors) > 0:
-        print('     [\033[00;31m FAILURE \033[0m]')
-        for err in total_errors:
-            print(err)
-        return False
-    else:
-        print('     [\033[00;32m OK \033[0m]')
-        return True
-
-
-def _code_analysis_string_formatting_lines_parser(lines, file_path):
-    errors = []
-    linenumber = 0
-
-    string_formatters = ('s', 'i', 'p', 'r')
-
-    for line in lines:
-        linenumber += 1
-
-        # if '# noqa' is on the line, ignore it
-        if line.find('# noqa') != -1:
-            continue
-
-        # if there is no formatting
-        # going on skip it
-        if line.find('%') == -1:
-            continue
-
-        # check if it's a formatting string
-        for formatter in string_formatters:
-            formatter = '%{0}'.format(formatter)
-            if line.find(formatter) != -1:
-                errors.append('{0}:{1}: found {2} formatter'.format(
-                    file_path,
-                    linenumber,
-                    formatter,
-                ))
     return errors
 
 

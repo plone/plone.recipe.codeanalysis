@@ -28,6 +28,7 @@ def setUp(test):
     zc.buildout.testing.install('zc.recipe.egg', test)
     zc.buildout.testing.install('flake8', test)
     zc.buildout.testing.install('zptlint', test)
+    zc.buildout.testing.install('i18ndude', test)
 
     # Install second level install_requires dependencies
     zc.buildout.testing.install('pep8', test)
@@ -35,7 +36,10 @@ def setUp(test):
     zc.buildout.testing.install('pytz', test)
     zc.buildout.testing.install('mccabe', test)
     zc.buildout.testing.install('six', test)
-    #zc.buildout.testing.install('transaction', test)
+    zc.buildout.testing.install('ordereddict', test)
+    zc.buildout.testing.install('plone.i18n', test)
+    zc.buildout.testing.install('unidecode', test)
+    zc.buildout.testing.install('transaction', test)
     zc.buildout.testing.install('zope.browser', test)
     zc.buildout.testing.install('zope.component', test)
     zc.buildout.testing.install('zope.configuration', test)
