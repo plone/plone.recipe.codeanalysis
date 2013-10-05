@@ -88,6 +88,15 @@ def test_suite():
             ]),
         ),
         doctest.DocFileSuite(
+            'jshint.rst',
+            setUp=setUp,
+            tearDown=zc.buildout.testing.buildoutTearDown,
+            optionflags=optionflags,
+            checker=renormalizing.RENormalizing([
+                zc.buildout.testing.normalize_path,
+            ]),
+        ),
+        doctest.DocFileSuite(
             'jenkins.rst',
             setUp=setUp,
             tearDown=zc.buildout.testing.buildoutTearDown,

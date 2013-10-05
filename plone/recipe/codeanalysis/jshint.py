@@ -34,6 +34,11 @@ def code_analysis_jshint(options):
         print("           [\033[00;31m SKIP \033[0m]")
         sys.exit(0)
     output, err = process.communicate()
+    if options['jenkins']:
+        jshint_log_filename = os.path.join(
+            options['location'], "jshint.log")
+        with open(jshint_log_filename, 'w') as jshint_log:
+            jshint_log.write(output)
     if jshint_errors(output):  # HACK: workaround for JSHint limitations
         print("           [\033[00;31m FAILURE \033[0m]")
         print(output)
