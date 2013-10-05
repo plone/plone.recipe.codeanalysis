@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
-import sys
+import re
 import subprocess
+import sys
+
+
+def csslint_errors(output):
+    """CSS Lint always return an exit code of 0 either if a file has errors or
+    warnings. This method search for markers of errors 'Error -'.
+    """
+    error = re.compile(r'Error -')
+    return error.search(output)
 
 
 def code_analysis_csslint(options):
@@ -19,10 +28,12 @@ def code_analysis_csslint(options):
         stdout=subprocess.PIPE
     )
     output, err = process.communicate()
-    if process.returncode:
+    if csslint_errors(output):  # HACK: workaround for CSS Lint limitations
         print("          [\033[00;31m FAILURE \033[0m]")
         print(output)
         return False
     else:
         print("               [\033[00;32m OK \033[0m]")
+        if output != '':
+            print(output)  # XXX: there should be warnings on the output
         return True
