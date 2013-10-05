@@ -2,6 +2,7 @@
 import re
 import subprocess
 import sys
+import os
 
 
 def jshint_errors(output):
