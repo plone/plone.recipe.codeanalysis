@@ -1,9 +1,8 @@
 1.0b4 (unreleased)
 ------------------
 
-- Implement a workaround for CSS Lint code analysis as it always return 0 as
-  exit code (fixes #31).
-  [hvelarde]
+- Implement Jenkins option on CSS Lint.
+  [hvelarde, ramiroluz]
 
 - Rename 'deprecated-methods' to 'deprecated-alias'.
   [gforcada]
