@@ -24,6 +24,9 @@ def code_analysis_jshint(options):
         '--exclude={0}'.format(options['jshint-exclude'] or ' '),
         options['directory'],
     ]
+    # Jenkins needs a specific format.
+    if options['jenkins']:
+        cmd.append('--jslint-reporter')
     try:
         process = subprocess.Popen(
             cmd,
