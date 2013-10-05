@@ -60,7 +60,7 @@ The recipe supports the following options:
 
 **pre-commit-hook**
     If set to True, a git pre-commit hook is installed that runs the code
-    analysis before each commit.
+    analysis before each commit. Default is ``True``.
 
 **flake8**
     If set to True, run Flake8 code analysis. Default is ``True``.
@@ -145,7 +145,7 @@ The recipe supports the following options:
 
 **deprecated-alias**
     If set to True, warnings about deprecated alias will be printed. Default
-    is False.
+    is ``False``.
 
 **utf8-header**
     If set to True, Python files without a utf-8 header (like
@@ -182,7 +182,7 @@ The recipe supports the following options:
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings. Default
-    is False.
+    is ``False``.
 
 **i18ndude-bin**
     Set the path to a custom version of i18ndude. Default is ``bin/i18ndude``.
