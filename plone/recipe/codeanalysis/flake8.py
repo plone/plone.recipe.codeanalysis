@@ -8,7 +8,7 @@ import time
 
 
 def code_analysis_flake8(options):
-    sys.stdout.write("Flake8")
+    sys.stdout.write('Flake8')
     sys.stdout.flush()
     jenkins = _normalize_boolean(options['jenkins'])
 
@@ -28,7 +28,7 @@ def code_analysis_flake8(options):
         stdout=subprocess.PIPE
     )
     while process.poll() is None:
-        sys.stdout.write(".")
+        sys.stdout.write('.')
         sys.stdout.flush()
         time.sleep(1)
     output, err = process.communicate()
@@ -37,9 +37,9 @@ def code_analysis_flake8(options):
         with open(log_filename, 'w') as flake8_log:
             flake8_log.write(output)
     if process.returncode:
-        print("          [\033[00;31m FAILURE \033[0m]")
+        print('          [\033[00;31m FAILURE \033[0m]')
         print(output)
         return False
     else:
-        print("               [\033[00;32m OK \033[0m]")
+        print('               [\033[00;32m OK \033[0m]')
         return True

@@ -5,7 +5,7 @@ import sys
 
 
 def code_analysis_zptlint(options):
-    sys.stdout.write("ZPT Lint")
+    sys.stdout.write('ZPT Lint')
     sys.stdout.flush()
 
     files = ''

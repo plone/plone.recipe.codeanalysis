@@ -212,18 +212,17 @@ class Recipe(object):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
             '/.git/hooks'
         if not os.path.exists(git_hooks_directory):
-            print(
-                "Unable to create git pre-commit hook, "
-                "this does not seem to be a git repository.")
+            print('Unable to create git pre-commit hook, '
+                  'this does not seem to be a git repository.')
             return
         with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
-            output_file.write("#!/bin/bash\nbin/code-analysis")
+            output_file.write('#!/bin/bash\nbin/code-analysis')
         subprocess.call([
-            "chmod",
-            "775",
+            'chmod',
+            '775',
             git_hooks_directory + '/pre-commit',
         ])
-        print("Install Git pre-commit hook.")
+        print('Install Git pre-commit hook.')
 
     def uninstall_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -232,7 +231,7 @@ class Recipe(object):
             os.remove(git_hooks_directory + '/pre-commit')
         except OSError:
             pass
-        print("Uninstall Git pre-commit hook.")
+        print('Uninstall Git pre-commit hook.')
 
 
 def code_analysis(options):
@@ -502,7 +501,7 @@ def _code_analysis_prefer_single_quotes_lines_parser(lines, file_path):
             continue
 
         double_quotes_count = line.count('"')
-        errors.append("{0}:{1}: found {2} double quotes".format(
+        errors.append('{0}:{1}: found {2} double quotes'.format(
             file_path,
             linenumber,
             double_quotes_count, ))

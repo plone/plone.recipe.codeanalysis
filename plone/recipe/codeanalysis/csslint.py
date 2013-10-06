@@ -29,7 +29,7 @@ def csslint_quiet_workaround(output):
 
 
 def code_analysis_csslint(options):
-    sys.stdout.write("CSS Lint")
+    sys.stdout.write('CSS Lint')
     sys.stdout.flush()
     jenkins = _normalize_boolean(options['jenkins'])
 
@@ -52,7 +52,7 @@ def code_analysis_csslint(options):
         with open(log_filename, 'w') as csslint_log:
             csslint_log.write(output)
     if csslint_errors(output, jenkins):
-        print("          [\033[00;31m FAILURE \033[0m]")
+        print('          [\033[00;31m FAILURE \033[0m]')
         # XXX: if we are generating an XML file for Jenkins consumption
         #      then we will have no output here because our workaround
         #      is going to filter the whole stuff; we need to think on
@@ -64,5 +64,5 @@ def code_analysis_csslint(options):
         print _process_output(output, old, new)
         return False
     else:
-        print("               [\033[00;32m OK \033[0m]")
+        print('               [\033[00;32m OK \033[0m]')
         return True
