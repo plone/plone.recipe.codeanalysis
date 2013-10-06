@@ -15,8 +15,7 @@ class TestJSHint(unittest.TestCase):
         options = {'jshint-bin': 'FAKE_EXECUTABLE',
                    'jshint-exclude': 'FAKE_EXCLUDE',
                    'directory': 'FAKE_DIRECTORY',
-                   'jenkins': 'False',
-        }
+                   'jenkins': 'False'}
         self.assertFalse(code_analysis_jshint(options))
 
     def test_analysis_should_return_true(self):
@@ -27,6 +26,5 @@ class TestJSHint(unittest.TestCase):
         options = {'jshint-bin': 'FAKE_EXECUTABLE',
                    'jshint-exclude': 'FAKE_EXCLUDE',
                    'directory': 'FAKE_DIRECTORY',
-                   'jenkins': 'False',
-        }
+                   'jenkins': 'False'}
         self.assertTrue(code_analysis_jshint(options))

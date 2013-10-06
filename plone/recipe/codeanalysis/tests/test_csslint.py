@@ -14,8 +14,7 @@ class TestCssLint(unittest.TestCase):
         subprocess.Popen = Mock(return_value=Process())
         options = {'csslint-bin': 'FAKE_EXECUTABLE',
                    'directory': 'FAKE_DIRECTORY',
-                   'jenkins': 'False',
-        }
+                   'jenkins': 'False'}
         self.assertFalse(code_analysis_csslint(options))
 
     def test_analysis_should_return_true(self):
@@ -25,6 +24,5 @@ class TestCssLint(unittest.TestCase):
         subprocess.Popen = Mock(return_value=Process())
         options = {'csslint-bin': 'FAKE_EXECUTABLE',
                    'directory': 'FAKE_DIRECTORY',
-                   'jenkins': 'False',
-        }
+                   'jenkins': 'False'}
         self.assertTrue(code_analysis_csslint(options))
