@@ -1,6 +1,14 @@
 Change history
 **************
 
+1.0b5 (unreleased)
+------------------
+
+- Rename 'deprecated-alias' to 'deprecated-aliases' and keep backward
+  compatibility.
+  [hvelarde]
+
+
 1.0b4 (2013-10-06)
 ------------------
 
@@ -16,7 +24,7 @@ Change history
 - Remove unused CSSLINT_IGNORE remainings.
   [timo]
 
-- Simpilfy code analysis method and make it more readable.
+- Simpifly code analysis method and make it more readable.
   [timo]
 
 

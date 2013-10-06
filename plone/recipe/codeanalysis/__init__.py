@@ -54,8 +54,19 @@ class Recipe(object):
         self.options.setdefault('zptlint-bin', os.path.join(
             self.buildout['buildout']['bin-directory'], 'zptlint'
         ))
-        # Warn about usage of deprecated alias
-        self.options.setdefault('deprecated-alias', 'False')
+        # Warn about usage of deprecated aliases
+        self.options.setdefault('deprecated-aliases', 'False')
+        # XXX: keep compatibility with previous versions
+        if self.options['deprecated-aliases'] == 'False':
+            self.options.setdefault('deprecated-alias', 'False')
+            deprecated_alias = self.options['deprecated-alias']
+            if deprecated_alias == 'False':
+                self.options.setdefault('deprecated-methods', 'False')
+                deprecated_methods = self.options['deprecated-methods']
+                if deprecated_methods != 'False':
+                    self.options['deprecated-aliases'] = deprecated_methods
+            else:
+                self.options['deprecated-aliases'] = deprecated_alias
         # utf-8 header
         self.options.setdefault('utf8-header', 'False')
         # clean lines
@@ -137,8 +148,8 @@ class Recipe(object):
             {'suffix': 'csslint', },
             # bin/code-analysis-zptlint
             {'suffix': 'zptlint', },
-            # bin/code-analysis-deprecated-alias
-            {'suffix': 'deprecated-alias', },
+            # bin/code-analysis-deprecated-aliases
+            {'suffix': 'deprecated-aliases', },
             # bin/code-analysis-utf8-header
             {'suffix': 'utf8-header', },
             # bin/code-analysis-clean-lines
@@ -225,7 +236,7 @@ def code_analysis(options):
         ['jshint', code_analysis_jshint(options)],
         ['csslint', code_analysis_csslint(options)],
         ['zptlint', code_analysis_zptlint(options)],
-        ['deprecated-alias', code_analysis_deprecated_alias(options)],
+        ['deprecated-aliases', code_analysis_deprecated_aliases(options)],
         ['utf8-header', code_analysis_utf8_header(options)],
         ['clean-lines', code_analysis_clean_lines(options)],
         ['prefer-single-quotes', code_analysis_prefer_single_quotes(options)],
@@ -250,9 +261,17 @@ def code_analysis(options):
         exit(0)
 
 
-def code_analysis_deprecated_alias(options):
-    sys.stdout.write('Deprecated alias ')
+def code_analysis_deprecated_aliases(options):
+    sys.stdout.write('Deprecated aliases')
     sys.stdout.flush()
+
+    # XXX: advice on usage of the right name
+    if options['deprecated-methods'] != 'False':
+        sys.stdout.write('deprecated-methods option is deprecated; '
+                         'use deprecated-aliases instead.')
+    if options['deprecated-alias'] != 'False':
+        sys.stdout.write('deprecated-alias option is deprecated; '
+                         'use deprecated-aliases instead.')
 
     files = _find_files(options, '.*\.py')
     if not files:
@@ -263,7 +282,7 @@ def code_analysis_deprecated_alias(options):
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
         with open(file_path, 'r') as file_handler:
-            errors = _code_analysis_deprecated_alias_lines_parser(
+            errors = _code_analysis_deprecated_aliases_lines_parser(
                 file_handler.readlines(), file_path)
 
         if len(errors) > 0:
@@ -279,13 +298,13 @@ def code_analysis_deprecated_alias(options):
         return True
 
 
-def _code_analysis_deprecated_alias_lines_parser(lines, file_path):
+def _code_analysis_deprecated_aliases_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
 
-    # Keep adding deprecated alias and its newer counterparts as:
+    # Keep adding deprecated aliases and its newer counterparts as:
     # NEWER_VERSION : (LIST OF OLD METHODS)
-    deprecated_alias = {
+    deprecated_aliases = {
         'assertEqual': ('failUnlessEqual', 'assertEquals', ),  # noqa
         'assertNotEqual': ('failIfEqual', ),  # noqa
         'assertTrue': ('failUnless', 'assert_', ),  # noqa
@@ -304,7 +323,7 @@ def _code_analysis_deprecated_alias_lines_parser(lines, file_path):
         if line.find('# noqa') != -1:
             continue
 
-        for newer_version, old_alias in deprecated_alias.iteritems():
+        for newer_version, old_alias in deprecated_aliases.iteritems():
             for alias in old_alias:
                 if line.find(alias) != -1:
                     errors.append(msg.format(
