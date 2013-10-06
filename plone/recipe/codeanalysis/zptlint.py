@@ -16,7 +16,7 @@ def code_analysis_zptlint(options):
 
     if len(files) == 0:
         print('               [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     # cmd is a sequence of program arguments
     # first argument is child program

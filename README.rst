@@ -3,6 +3,9 @@
 .. image:: https://travis-ci.org/plone/plone.recipe.codeanalysis.png?branch=master
     :target: http://travis-ci.org/plone/plone.recipe.codeanalysis
 
+.. image:: https://coveralls.io/repos/plone/plone.recipe.codeanalysis/badge.png?branch=master
+    :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
+
 Introduction
 ============
 
@@ -143,8 +146,8 @@ The recipe supports the following options:
 **zptlint-bin**
     Set the path to a custom version of zptlint. Default is ``bin/zptlint``.
 
-**deprecated-alias**
-    If set to True, warnings about deprecated alias will be printed. Default
+**deprecated-aliases**
+    If set to True, warnings about deprecated aliases will be printed. Default
     is ``False``.
 
 **utf8-header**

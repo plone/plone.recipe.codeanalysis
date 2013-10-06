@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
 
-import os
-import subprocess
 import sys
-import time
 
 
 def code_analysis_pep3101(options):
@@ -14,18 +11,14 @@ def code_analysis_pep3101(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('     [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_pep3101_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_pep3101_lines_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors

@@ -1,3 +1,6 @@
+Detailed Documentation
+**********************
+
 Example usage
 =============
 
@@ -39,9 +42,9 @@ install them on the system::
     True
 
 
-Deprecate method analysis script is installed::
+Deprecated aliases analysis script is installed::
 
-    >>> '/sample-buildout/bin/code-analysis-deprecated-alias' in buildout_output_lower
+    >>> '/sample-buildout/bin/code-analysis-deprecated-aliases' in buildout_output_lower
     True
 
 The script to check if python files have an utf-8 encoding header is installed::

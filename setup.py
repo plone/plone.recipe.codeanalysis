@@ -14,18 +14,9 @@ version = '1.0b4'
 long_description = (
     read('README.rst')
     + '\n' +
-    'Detailed Documentation\n'
-    '**********************\n'
-    + '\n' +
     read('plone', 'recipe', 'codeanalysis', 'README.rst')
     + '\n' +
-    'Contributors\n'
-    '************\n'
-    + '\n' +
     read('CONTRIBUTORS.rst')
-    + '\n' +
-    'Change history\n'
-    '**************\n'
     + '\n' +
     read('CHANGES.rst')
     + '\n' +
