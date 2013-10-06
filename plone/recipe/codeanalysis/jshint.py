@@ -47,8 +47,10 @@ def code_analysis_jshint(options):
         log_filename = os.path.join(options['location'], 'jshint.xml')
         with open(log_filename, 'w') as jshint_log:
             jshint_log.write(output)
-    if jshint_errors(output, jenkins):  # HACK: workaround for JSHint limitations
+    # HACK: workaround for JSHint limitations
+    if jshint_errors(output, jenkins):
         print('           [\033[00;31m FAILURE \033[0m]')
+        # Error messages pattern are (E999).
         old, new = '(?P<name>\(E\d\d\d\))', '(\033[00;31m\g<name>\033[0m)'
         print _process_output(output, old, new)
         return False
