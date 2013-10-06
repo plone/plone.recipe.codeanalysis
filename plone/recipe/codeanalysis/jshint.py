@@ -52,7 +52,7 @@ def code_analysis_jshint(options):
     if jshint_errors(output, jenkins):
         print('           [\033[00;31m FAILURE \033[0m]')
         # Name the pattern to use it in the substitution.
-        old, new = '(?P<name>Error [^ -]*)', u'\033[00;31m\g<name>\033[0m'
+        old, new = '\((?P<name>E\d\d\d)\)', u'(\033[00;31m\g<name>\033[0m)'
         print _process_output(output, old, new)
         return False
     else:
