@@ -1,4 +1,4 @@
-1.0b4 (unreleased)
+1.0b4 (2013-10-06)
 ------------------
 
 - Implement Jenkins option on CSS Lint and JSHint.
