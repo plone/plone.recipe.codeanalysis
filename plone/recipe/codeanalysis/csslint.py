@@ -60,7 +60,7 @@ def code_analysis_csslint(options):
         output = csslint_quiet_workaround(output)
         # TODO: pass color to _process_output
         # Name the pattern to use it in the substitution.
-        old, new = '(?P<name>Error [^ -]*)', '\033[00;31m\g<name>\033[0m'
+        old, new = '(?P<name>Error[^ -]*)', '\033[00;31m\g<name>\033[0m'
         print _process_output(output, old, new)
         return False
     else:
