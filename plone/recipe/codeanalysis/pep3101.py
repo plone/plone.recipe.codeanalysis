@@ -9,8 +9,8 @@ def code_analysis_pep3101(options):
     sys.stdout.flush()
 
     # XXX: advice on usage of the right option
-    if options['string-formatting'] != 'False':
-        sys.stdout.write('destring-formatting option is deprecated; '
+    if options.get('string-formatting', 'False') != 'False':
+        sys.stdout.write('\nstring-formatting option is deprecated; '
                          'use pep3101 instead.')
 
     files = _find_files(options, '.*\.py')

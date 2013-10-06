@@ -271,11 +271,11 @@ def code_analysis_deprecated_aliases(options):
     sys.stdout.flush()
 
     # XXX: advice on usage of the right option
-    if options['deprecated-methods'] != 'False':
-        sys.stdout.write('deprecated-methods option is deprecated; '
+    if options.get('deprecated-methods', 'False') != 'False':
+        sys.stdout.write('\ndeprecated-methods option is deprecated; '
                          'use deprecated-aliases instead.')
-    if options['deprecated-alias'] != 'False':
-        sys.stdout.write('deprecated-alias option is deprecated; '
+    if options.get('deprecated-alias', 'False') != 'False':
+        sys.stdout.write('\ndeprecated-alias option is deprecated; '
                          'use deprecated-aliases instead.')
 
     files = _find_files(options, '.*\.py')
