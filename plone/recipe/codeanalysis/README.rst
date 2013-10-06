@@ -1,3 +1,6 @@
+Detailed Documentation
+**********************
+
 Example usage
 =============
 
