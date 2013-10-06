@@ -16,10 +16,10 @@ def code_analysis_flake8(options):
     # first argument is child program
     cmd = [
         os.path.join(options['bin-directory']) + '/flake8',
-        '--ignore=%s' % options['flake8-ignore'],
-        '--exclude=%s' % options['flake8-exclude'],
-        '--max-complexity=%s' % options['flake8-max-complexity'],
-        '--max-line-length=%s' % options['flake8-max-line-length'],
+        '--ignore={0}'.format(options['flake8-ignore']),
+        '--exclude={0}'.format(options['flake8-exclude']),
+        '--max-complexity={0}'.format(options['flake8-max-complexity']),
+        '--max-line-length={0}'.format(options['flake8-max-line-length']),
         options['directory'],
     ]
     process = subprocess.Popen(
