@@ -11,7 +11,7 @@ def code_analysis_find_untranslated(options):
     files = _find_files(options, '.*\.pt')
     if not files:
         print('     [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     # put all files in a single line
     files = ' '.join(files.strip().split('\n'))
@@ -29,5 +29,7 @@ def code_analysis_find_untranslated(options):
     if '-ERROR-' in output:
         print('     [\033[00;31m FAILURE \033[0m]')
         print(output)
+        return False
     else:
         print('     [\033[00;32m OK \033[0m]')
+        return True

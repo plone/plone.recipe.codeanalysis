@@ -11,7 +11,7 @@ def code_analysis_pep3101(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('     [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')

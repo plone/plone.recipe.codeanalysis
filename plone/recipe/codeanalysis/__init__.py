@@ -257,7 +257,7 @@ def code_analysis_deprecated_alias(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('      [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')
@@ -325,7 +325,7 @@ def code_analysis_utf8_header(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('   [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     errors = []
     file_paths = files.strip().split('\n')
@@ -342,8 +342,10 @@ def code_analysis_utf8_header(options):
         print('   [\033[00;31m FAILURE \033[0m]')
         for err in errors:
             print(err)
+        return False
     else:
         print('   [\033[00;32m OK \033[0m]')
+        return True
 
 
 def code_analysis_clean_lines(options):
@@ -361,7 +363,7 @@ def code_analysis_clean_lines(options):
 
     if len(files) == 0:
         print('     [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')
@@ -411,7 +413,7 @@ def code_analysis_prefer_single_quotes(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('         [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')
@@ -490,7 +492,7 @@ def code_analysis_imports(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('                [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')
@@ -535,7 +537,7 @@ def code_analysis_debug_statements(options):
     files = _find_files(options, '.*\.py')
     if not files:
         print('      [\033[00;32m OK \033[0m]')
-        return
+        return True
 
     total_errors = []
     file_paths = files.strip().split('\n')
