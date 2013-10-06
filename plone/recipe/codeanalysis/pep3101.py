@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
 
-import os
-import subprocess
 import sys
-import time
 
 
 def code_analysis_pep3101(options):
