@@ -1,7 +1,7 @@
 1.0b4 (unreleased)
 ------------------
 
-- Implement Jenkins option on CSS Lint.
+- Implement Jenkins option on CSS Lint and JSHint.
   [hvelarde, ramiroluz]
 
 - Rename 'deprecated-methods' to 'deprecated-alias'.
