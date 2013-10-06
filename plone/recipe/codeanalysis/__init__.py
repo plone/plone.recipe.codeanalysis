@@ -582,6 +582,8 @@ def code_analysis_debug_statements(options):
         return True
 
 
+# FIXME: debug-statements parser is buggy
+#        see: https://github.com/plone/plone.recipe.codeanalysis/issues/18
 def _code_analysis_debug_statements_lines_parser(lines, file_path):
     errors = []
     linenumber = 0
