@@ -75,6 +75,11 @@ class Recipe(object):
         self.options.setdefault('prefer-single-quotes', 'False')
         # PEP 3101 (Advanced String Formatting)
         self.options.setdefault('pep3101', 'False')
+        # XXX: keep compatibility with previous versions
+        if self.options['pep3101'] == 'False':
+            self.options.setdefault('string-formatting', 'False')
+            if self.options['string-formatting'] != 'False':
+                self.options['pep3101'] = self.options['string-formatting']
         # imports
         self.options.setdefault('imports', 'False')
         # Debug statements
@@ -265,7 +270,7 @@ def code_analysis_deprecated_aliases(options):
     sys.stdout.write('Deprecated aliases')
     sys.stdout.flush()
 
-    # XXX: advice on usage of the right name
+    # XXX: advice on usage of the right option
     if options['deprecated-methods'] != 'False':
         sys.stdout.write('deprecated-methods option is deprecated; '
                          'use deprecated-aliases instead.')

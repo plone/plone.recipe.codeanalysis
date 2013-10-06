@@ -4,6 +4,9 @@ Change history
 1.0b5 (unreleased)
 ------------------
 
+- Keep backward compatibility with 'string-formatting' option.
+  [hvelarde]
+
 - Rename 'deprecated-alias' to 'deprecated-aliases' and keep backward
   compatibility.
   [hvelarde]
@@ -24,7 +27,7 @@ Change history
 - Remove unused CSSLINT_IGNORE remainings.
   [timo]
 
-- Simpifly code analysis method and make it more readable.
+- Simplify code analysis method and make it more readable.
   [timo]
 
 
