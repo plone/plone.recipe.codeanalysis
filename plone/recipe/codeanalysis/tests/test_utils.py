@@ -1,5 +1,4 @@
-# -*- utf-8 -*-
-
+# -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.utils import _process_output
 
