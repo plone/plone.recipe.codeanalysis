@@ -25,12 +25,11 @@ def code_analysis_jshint(options):
 
     # cmd is a sequence of program arguments
     # first argument is child program
+    paths = options['directory'].split('\n')
     cmd = [
         options['jshint-bin'],
         '--verbose',
-        '--exclude={0}'.format(options['jshint-exclude'] or ' '),
-        options['directory'],
-    ]
+        '--exclude={0}'.format(options['jshint-exclude'] or ' ')] + paths
     # Jenkins needs a specific format.
     if jenkins:
         cmd.append('--reporter=jshint')

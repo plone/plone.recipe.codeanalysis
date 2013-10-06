@@ -19,9 +19,12 @@ def code_analysis_flake8(options):
         '--ignore={0}'.format(options['flake8-ignore']),
         '--exclude={0}'.format(options['flake8-exclude']),
         '--max-complexity={0}'.format(options['flake8-max-complexity']),
-        '--max-line-length={0}'.format(options['flake8-max-line-length']),
-        options['directory'],
+        '--max-line-length={0}'.format(options['flake8-max-line-length'])
     ]
+
+    paths_to_check = options['directory'].split('\n')
+    cmd.extend(paths_to_check)
+
     process = subprocess.Popen(
         cmd,
         stderr=subprocess.STDOUT,

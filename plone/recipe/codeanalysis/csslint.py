@@ -35,10 +35,8 @@ def code_analysis_csslint(options):
 
     # cmd is a sequence of program arguments
     # first argument is child program
-    cmd = [
-        options['csslint-bin'],
-        options['directory'],
-    ]
+    paths = options['directory'].split('\n')
+    cmd = [options['csslint-bin']] + paths
     if jenkins:
         cmd.insert(1, '--format=lint-xml')
     process = subprocess.Popen(

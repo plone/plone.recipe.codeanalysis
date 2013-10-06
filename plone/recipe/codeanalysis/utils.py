@@ -12,13 +12,8 @@ def _normalize_boolean(value):
 
 
 def _find_files(options, regex):
-    cmd = [
-        'find',
-        '-L',
-        options['directory'],
-        '-regex',
-        regex
-    ]
+    paths = options['directory'].split('\n')
+    cmd = ['find', '-L'] + paths + ['-regex', regex]
     process_files = subprocess.Popen(
         cmd,
         stderr=subprocess.STDOUT,
