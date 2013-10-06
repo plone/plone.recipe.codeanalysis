@@ -19,13 +19,9 @@ def code_analysis_pep3101(options):
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_pep3101_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_pep3101_lines_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors

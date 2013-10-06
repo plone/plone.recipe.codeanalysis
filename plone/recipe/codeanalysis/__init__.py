@@ -200,9 +200,8 @@ class Recipe(object):
                 "Unable to create git pre-commit hook, "
                 "this does not seem to be a git repository.")
             return
-        output_file = open(git_hooks_directory + '/pre-commit', 'w')
-        output_file.write("#!/bin/bash\nbin/code-analysis")
-        output_file.close()
+        with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
+            output_file.write("#!/bin/bash\nbin/code-analysis")
         subprocess.call([
             "chmod",
             "775",
@@ -263,13 +262,9 @@ def code_analysis_deprecated_alias(options):
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_deprecated_alias_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_deprecated_alias_lines_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors
@@ -335,15 +330,13 @@ def code_analysis_utf8_header(options):
     errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
+        with open(file_path, 'r') as file_handler:
 
-        lines = file_handler.readlines()
-        if len(lines) == 0:
-            continue
-        elif lines[0].find('coding: utf-8') == -1:
-            errors.append('{0}: missing utf-8 header'.format(file_path))
-
-        file_handler.close()
+            lines = file_handler.readlines()
+            if len(lines) == 0:
+                continue
+            elif lines[0].find('coding: utf-8') == -1:
+                errors.append('{0}: missing utf-8 header'.format(file_path))
 
     if len(errors) > 0:
         print('   [\033[00;31m FAILURE \033[0m]')
@@ -373,13 +366,9 @@ def code_analysis_clean_lines(options):
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_clean_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_clean_lines_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors
@@ -427,13 +416,9 @@ def code_analysis_prefer_single_quotes(options):
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_prefer_single_quotes_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_prefer_single_quotes_lines_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors
@@ -510,10 +495,9 @@ def code_analysis_imports(options):
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-        errors = _code_analysis_imports_parser(file_handler.readlines(),
-                                               file_path)
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_imports_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors
@@ -556,13 +540,9 @@ def code_analysis_debug_statements(options):
     total_errors = []
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
-        file_handler = open(file_path, 'r')
-
-        errors = _code_analysis_debug_statements_lines_parser(
-            file_handler.readlines(),
-            file_path)
-
-        file_handler.close()
+        with open(file_path, 'r') as file_handler:
+            errors = _code_analysis_debug_statements_lines_parser(
+                file_handler.readlines(), file_path)
 
         if len(errors) > 0:
             total_errors += errors
