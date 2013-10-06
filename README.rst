@@ -3,6 +3,9 @@
 .. image:: https://travis-ci.org/plone/plone.recipe.codeanalysis.png?branch=master
     :target: http://travis-ci.org/plone/plone.recipe.codeanalysis
 
+.. image:: https://coveralls.io/repos/plone/plone.recipe.codeanalysis/badge.png?branch=master
+    :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
+
 Introduction
 ============
 
