@@ -59,7 +59,7 @@ def code_analysis_csslint(options):
         #      what's the best way to solve this later
         output = csslint_quiet_workaround(output)
         # TODO: pass color to _process_output
-        old, new = 'Error -', '\033[00;31mError\033[0m -'
+        old, new = '(?P<name>Error [^ -]*)', '\033[00;31m\g<name>\033[0m'
         print _process_output(output, old, new)
         return False
     else:
