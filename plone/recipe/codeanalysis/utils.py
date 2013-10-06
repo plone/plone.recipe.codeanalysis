@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import subprocess
+import re
 
 
 def _normalize_boolean(value):
@@ -35,5 +36,6 @@ def _process_output(output, old, new):
     :param new: replace substring
     :return: string containing processed command output
     """
-    output = map(lambda x: x.replace(old, new), output.splitlines())
-    return u''.join(output)
+    error = re.compile(old)
+    output = map(lambda x: error.sub(new, x), output.splitlines())
+    return u'\n'.join(output)
