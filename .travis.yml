@@ -6,5 +6,9 @@ install:
 script:
   - bin/test
   - bin/code-analysis
+after_success:
+  - bin/createcoverage run bin/test
+  - pip install -q coveralls
+  - coveralls
 after_failure:
   - bin/buildout annotate -c travis.cfg
