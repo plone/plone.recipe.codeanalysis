@@ -60,7 +60,7 @@ The recipe supports the following options:
 
 **pre-commit-hook**
     If set to True, a git pre-commit hook is installed that runs the code
-    analysis before each commit.
+    analysis before each commit. Default is ``True``.
 
 **flake8**
     If set to True, run Flake8 code analysis. Default is ``True``.
@@ -145,7 +145,7 @@ The recipe supports the following options:
 
 **deprecated-alias**
     If set to True, warnings about deprecated alias will be printed. Default
-    is False.
+    is ``False``.
 
 **utf8-header**
     If set to True, Python files without a utf-8 header (like
@@ -173,15 +173,16 @@ The recipe supports the following options:
     Default is ``False``.
 
 **return-status-codes**
-    If set to True, the code-analysis script returns an error code that
-    Continuous Integration servers (like Travis CI) can use to fail or pass a
-    job, based on the code analyis output. Note that Jenkins usually does not
-    need this option (this is better handled by the Jenkins Violations
-    plugin).
+    If set to True, the ``bin/code-analysis`` script returns an error code
+    that Continuous Integration servers (like Travis CI) can use to fail or
+    pass a job, based on the code analyis output. Note that Jenkins usually
+    does not need this option (this is better handled by the Jenkins
+    Violations plugin). Note that this option does not have any effect on the
+    other code analysis scripts. Default is ``False``.
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings. Default
-    is False.
+    is ``False``.
 
 **i18ndude-bin**
     Set the path to a custom version of i18ndude. Default is ``bin/i18ndude``.
