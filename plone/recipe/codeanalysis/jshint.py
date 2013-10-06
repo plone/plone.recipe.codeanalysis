@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from plone.recipe.codeanalysis.utils import _normalize_boolean
+from plone.recipe.codeanalysis.utils import _process_output
 import re
 import subprocess
 import sys
@@ -50,7 +51,7 @@ def code_analysis_jshint(options):
     # HACK: workaround for JSHint limitations
     if jshint_errors(output, jenkins):
         print('           [\033[00;31m FAILURE \033[0m]')
-        # Error messages pattern are (E999).
+        # Name the pattern to use it in the substitution.
         old, new = '(?P<name>\(E\d\d\d\))', '(\033[00;31m\g<name>\033[0m)'
         print _process_output(output, old, new)
         return False
