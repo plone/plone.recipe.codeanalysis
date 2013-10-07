@@ -236,23 +236,23 @@ class Recipe(object):
 
 def code_analysis(options):
     checks = [
-        ['flake8', code_analysis_flake8(options)],
-        ['jshint', code_analysis_jshint(options)],
-        ['csslint', code_analysis_csslint(options)],
-        ['zptlint', code_analysis_zptlint(options)],
-        ['deprecated-aliases', code_analysis_deprecated_aliases(options)],
-        ['utf8-header', code_analysis_utf8_header(options)],
-        ['clean-lines', code_analysis_clean_lines(options)],
-        ['prefer-single-quotes', code_analysis_prefer_single_quotes(options)],
-        ['pep3101', code_analysis_pep3101(options)],
-        ['imports', code_analysis_imports(options)],
-        ['debug-statements', code_analysis_debug_statements(options)],
-        ['find-untranslated', code_analysis_find_untranslated(options)],
+        ['flake8', code_analysis_flake8],
+        ['jshint', code_analysis_jshint],
+        ['csslint', code_analysis_csslint],
+        ['zptlint', code_analysis_zptlint],
+        ['deprecated-aliases', code_analysis_deprecated_aliases],
+        ['utf8-header', code_analysis_utf8_header],
+        ['clean-lines', code_analysis_clean_lines],
+        ['prefer-single-quotes', code_analysis_prefer_single_quotes],
+        ['pep3101', code_analysis_pep3101],
+        ['imports', code_analysis_imports],
+        ['debug-statements', code_analysis_debug_statements],
+        ['find-untranslated', code_analysis_find_untranslated],
     ]
     status_codes = []
     for option, check in checks:
         if option in options and options[option] != 'False':
-            status_codes.append(check)
+            status_codes.append(check(options))
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
