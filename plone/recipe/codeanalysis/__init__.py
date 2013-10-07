@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
+from plone.recipe.codeanalysis.debug_statements import \
+    code_analysis_debug_statements
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.i18n import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
@@ -549,63 +551,4 @@ def _code_analysis_imports_parser(lines, relative_path):
                     relative_path,
                     linenumber,
                 ))
-    return errors
-
-
-def code_analysis_debug_statements(options):
-    sys.stdout.write('Debug statements ')
-
-    sys.stdout.flush()
-
-    files = _find_files(options, '.*\.py')
-    if not files:
-        print('      [\033[00;32m OK \033[0m]')
-        return True
-
-    total_errors = []
-    file_paths = files.strip().split('\n')
-    for file_path in file_paths:
-        with open(file_path, 'r') as file_handler:
-            errors = _code_analysis_debug_statements_lines_parser(
-                file_handler.readlines(), file_path)
-
-        if len(errors) > 0:
-            total_errors += errors
-
-    if len(total_errors) > 0:
-        print('      [\033[00;31m FAILURE \033[0m]')
-        for err in total_errors:
-            print(err)
-        return False
-    else:
-        print('      [\033[00;32m OK \033[0m]')
-        return True
-
-
-# FIXME: debug-statements parser is buggy
-#        see: https://github.com/plone/plone.recipe.codeanalysis/issues/18
-def _code_analysis_debug_statements_lines_parser(lines, file_path):
-    errors = []
-    linenumber = 0
-
-    debug_statements = (
-        'print',  # noqa
-        'pdb',  # noqa
-    )
-
-    for line in lines:
-        linenumber += 1
-
-        # allow to skip some methods if the comment # noqa is found
-        if line.find('# noqa') != -1:
-            continue
-
-        for statement in debug_statements:
-            if line.find(statement) != -1:
-                errors.append('{0}:{1}: found {2}'.format(
-                    file_path,
-                    linenumber,
-                    statement)
-                )
-
     return errors
