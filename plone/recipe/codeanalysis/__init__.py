@@ -8,6 +8,8 @@ from plone.recipe.codeanalysis.i18n import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.imports import code_analysis_imports
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
+from plone.recipe.codeanalysis.python_utf8_header import \
+    code_analysis_utf8_header
 from plone.recipe.codeanalysis.quoting import \
     code_analysis_prefer_single_quotes
 from plone.recipe.codeanalysis.utils import _find_files
@@ -344,36 +346,6 @@ def _code_analysis_deprecated_aliases_lines_parser(lines, file_path):
                     continue
 
     return errors
-
-
-def code_analysis_utf8_header(options):
-    sys.stdout.write('Check utf-8 headers ')
-    sys.stdout.flush()
-
-    files = _find_files(options, '.*\.py')
-    if not files:
-        print('   [\033[00;32m OK \033[0m]')
-        return True
-
-    errors = []
-    file_paths = files.strip().split('\n')
-    for file_path in file_paths:
-        with open(file_path, 'r') as file_handler:
-
-            lines = file_handler.readlines()
-            if len(lines) == 0:
-                continue
-            elif lines[0].find('coding: utf-8') == -1:
-                errors.append('{0}: missing utf-8 header'.format(file_path))
-
-    if len(errors) > 0:
-        print('   [\033[00;31m FAILURE \033[0m]')
-        for err in errors:
-            print(err)
-        return False
-    else:
-        print('   [\033[00;32m OK \033[0m]')
-        return True
 
 
 def code_analysis_clean_lines(options):
