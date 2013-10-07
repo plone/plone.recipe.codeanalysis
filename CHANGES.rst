@@ -4,6 +4,10 @@ Change history
 1.0b5 (unreleased)
 ------------------
 
+- Fix code analysis method by making it call each check only if the option
+  is activated.
+  [flohcim]
+
 - Keep backward compatibility with 'string-formatting' option.
   [hvelarde]
 
