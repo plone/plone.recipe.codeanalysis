@@ -1,7 +1,7 @@
 Change history
 **************
 
-1.0b5 (unreleased)
+1.0b5 (2013-10-08)
 ------------------
 
 - Fix code analysis method by making it call each check only if the option
