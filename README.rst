@@ -194,8 +194,6 @@ The recipe supports the following options:
 Known Issues
 ============
 
-**debug-statements** parser is buggy; don't use it (see `#18`_).
-
 JSHint "ERROR: Unknown option --verbose"::
 
     JSHint                [ OK ]
@@ -215,4 +213,3 @@ Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
 .. _`zptlint`: https://pypi.python.org/pypi/zptlint
-.. _`#18`: https://github.com/plone/plone.recipe.codeanalysis/issues/18
