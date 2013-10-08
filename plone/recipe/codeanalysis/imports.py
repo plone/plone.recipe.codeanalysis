@@ -9,7 +9,7 @@ def code_analysis_imports(options):
     sys.stdout.flush()
     files = _find_files(options, '.*\.py')
     if not files:
-        print('                [\033[00;32m OK \033[0m]')
+        print('         [\033[00;32m OK \033[0m]')
         return True
 
     total_errors = []
