@@ -2,10 +2,11 @@
 
 from plone.recipe.codeanalysis.utils import _normalize_boolean
 from plone.recipe.codeanalysis.utils import _process_output
+
+import os
 import re
 import subprocess
 import sys
-import os
 
 
 def jshint_errors(output, jenkins=False):
