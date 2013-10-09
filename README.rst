@@ -147,8 +147,11 @@ The recipe supports the following options:
     Set the path to a custom version of zptlint. Default is ``bin/zptlint``.
 
 **deprecated-aliases**
-    If set to True, warnings about deprecated aliases will be printed. Default
-    is ``False``.
+    For historical reasons, some of the unittest.TestCase methods had one or
+    more aliases that are deprecated on Python 2.7. If this option is set to
+    True, warnings about deprecated aliases will be printed. Default is
+    ``False``. See `Unit testing framework documentation`_ for more
+    information.
 
 **utf8-header**
     If set to True, Python files without a utf-8 header (like
@@ -213,3 +216,4 @@ Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
 .. _`zptlint`: https://pypi.python.org/pypi/zptlint
+.. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
