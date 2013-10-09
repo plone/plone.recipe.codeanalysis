@@ -1,6 +1,4 @@
 # -*- utf-8 -*-
-import pdb
-
 import unittest
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from mock import MagicMock
@@ -24,7 +22,6 @@ class TestCssLint(unittest.TestCase):
         mock_class().communicate = MagicMock(
             return_value=(' x (W000) x ', 'IGNORED ERR',)
         )
-        # import pdb; pdb.set_trace()
         from subprocess import Popen
         options = {'csslint-bin': 'FAKE_EXECUTABLE',
                    'directory': 'FAKE_DIRECTORY',
