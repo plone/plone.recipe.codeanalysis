@@ -21,11 +21,15 @@ def code_analysis_zptlint(options):
     # cmd is a sequence of program arguments
     # first argument is child program
     cmd = [options['zptlint-bin']] + files.split()
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
+    try:
+        process = subprocess.Popen(
+            cmd,
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE
+        )
+    except OSError:
+        print('                 [\033[00;31m SKIP \033[0m]')
+        return False
     output, err = process.communicate()
     if output != '':
         print('          [\033[00;31m FAILURE \033[0m]')

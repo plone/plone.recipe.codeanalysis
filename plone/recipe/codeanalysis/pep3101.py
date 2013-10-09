@@ -29,12 +29,12 @@ def code_analysis_pep3101(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('     [\033[00;31m FAILURE \033[0m]')
+        print('               [\033[00;31m FAILURE \033[0m]')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('     [\033[00;32m OK \033[0m]')
+        print('[\033[00;32m OK \033[0m]')
         return True
 
 

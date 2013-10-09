@@ -39,11 +39,15 @@ def code_analysis_csslint(options):
     cmd = [options['csslint-bin']] + paths
     if jenkins:
         cmd.insert(1, '--format=lint-xml')
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
+    try:
+        process = subprocess.Popen(
+            cmd,
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE
+        )
+    except OSError:
+        print('               [\033[00;31m SKIP \033[0m]')
+        return False
     output, err = process.communicate()
     if jenkins:
         log_filename = os.path.join(options['location'], 'csslint.xml')

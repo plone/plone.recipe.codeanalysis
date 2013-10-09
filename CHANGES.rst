@@ -1,6 +1,14 @@
 Change history
 **************
 
+1.0b6 ()
+------------------
+
+- Improve the way to handle an exception if the command used in popen does 
+  not exist.
+  [flohcim]
+
+
 1.0b5 (2013-10-08)
 ------------------
 
