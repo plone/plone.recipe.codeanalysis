@@ -25,11 +25,15 @@ def code_analysis_flake8(options):
     paths_to_check = options['directory'].split('\n')
     cmd.extend(paths_to_check)
 
-    process = subprocess.Popen(
-        cmd,
-        stderr=subprocess.STDOUT,
-        stdout=subprocess.PIPE
-    )
+    try:
+        process = subprocess.Popen(
+            cmd,
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE
+        )
+    except OSError:
+        print('          [\033[00;31m SKIP \033[0m]')
+        return False
     while process.poll() is None:
         sys.stdout.write('.')
         sys.stdout.flush()
@@ -44,5 +48,5 @@ def code_analysis_flake8(options):
         print(output)
         return False
     else:
-        print('               [\033[00;32m OK \033[0m]')
+        print('                [\033[00;32m OK \033[0m]')
         return True

@@ -41,8 +41,8 @@ def code_analysis_jshint(options):
             stdout=subprocess.PIPE
         )
     except OSError:
-        print('           [\033[00;31m SKIP \033[0m]')
-        sys.exit(0)
+        print('                 [\033[00;31m SKIP \033[0m]')
+        return False
     output, err = process.communicate()
     if jenkins:
         log_filename = os.path.join(options['location'], 'jshint.xml')
