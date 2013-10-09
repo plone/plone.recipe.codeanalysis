@@ -1,4 +1,4 @@
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from mock import MagicMock

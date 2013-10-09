@@ -1,4 +1,4 @@
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from mock import MagicMock

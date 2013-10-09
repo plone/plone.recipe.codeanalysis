@@ -1,9 +1,9 @@
-# -*- utf-8 -*-
-
+# -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 from mock import MagicMock
 from mock import patch
+
 
 class TestJSHint(unittest.TestCase):
     @patch('subprocess.Popen')
