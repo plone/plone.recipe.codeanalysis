@@ -3,7 +3,6 @@ import unittest
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from mock import MagicMock
 from mock import patch
-import mock
 from mock import PropertyMock
 
 
@@ -15,7 +14,7 @@ class TestFlake8(unittest.TestCase):
         )
         returncode = PropertyMock(return_value=1)
         type(mock_class()).returncode = returncode
-        from subprocess import Popen
+        from subprocess import Popen  # noqa
         options = {
             'bin-directory': 'FAKE_BIN_DIRECTORY',
             'flake8-ignore': 'FAKE_IGNORE',
@@ -34,7 +33,7 @@ class TestFlake8(unittest.TestCase):
         )
         returncode = PropertyMock(return_value=0)
         type(mock_class()).returncode = returncode
-        from subprocess import Popen
+        from subprocess import Popen  # noqa
         options = {
             'bin-directory': 'FAKE_BIN_DIRECTORY',
             'flake8-ignore': 'FAKE_IGNORE',

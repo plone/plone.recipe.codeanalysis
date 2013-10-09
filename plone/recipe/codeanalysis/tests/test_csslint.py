@@ -11,7 +11,7 @@ class TestCssLint(unittest.TestCase):
         mock_class().communicate = MagicMock(
             return_value=(' x Error - x ', 'IGNORED ERR',)
         )
-        from subprocess import Popen
+        from subprocess import Popen  # noqa
         options = {'csslint-bin': 'FAKE_EXECUTABLE',
                    'directory': 'FAKE_DIRECTORY',
                    'jenkins': 'False'}
@@ -22,7 +22,7 @@ class TestCssLint(unittest.TestCase):
         mock_class().communicate = MagicMock(
             return_value=(' x no error x ', 'IGNORED ERR',)
         )
-        from subprocess import Popen
+        from subprocess import Popen  # noqa
         options = {'csslint-bin': 'FAKE_EXECUTABLE',
                    'directory': 'FAKE_DIRECTORY',
                    'jenkins': 'False'}

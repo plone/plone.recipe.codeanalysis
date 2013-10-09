@@ -11,7 +11,7 @@ class TestJSHint(unittest.TestCase):
         mock_class().communicate = MagicMock(
             return_value=(' x (E000) x ', 'IGNORED ERR',)
         )
-        from subprocess import Popen
+        from subprocess import Popen  # noqa
         options = {'jshint-bin': 'FAKE_EXECUTABLE',
                    'jshint-exclude': 'FAKE_EXCLUDE',
                    'directory': 'FAKE_DIRECTORY',
@@ -23,7 +23,7 @@ class TestJSHint(unittest.TestCase):
         mock_class().communicate = MagicMock(
             return_value=(' x (W000) x ', 'IGNORED ERR',)
         )
-        from subprocess import Popen
+        from subprocess import Popen  # noqa
         options = {'jshint-bin': 'FAKE_EXECUTABLE',
                    'jshint-exclude': 'FAKE_EXCLUDE',
                    'directory': 'FAKE_DIRECTORY',
