@@ -6,8 +6,14 @@ from mock import patch
 
 
 class TestCssLint(unittest.TestCase):
+    def test_analysis_should_return_false_when_exception_occurs(self):
+        options = {'csslint-bin': 'do_not_exist',
+                   'directory': 'do_not_exist',
+                   'jenkins': 'False'}
+        self.assertFalse(code_analysis_csslint(options))
+
     @patch('subprocess.Popen')
-    def test_analysis_should_return_false(self, mock_class):
+    def test_analysis_should_return_false_when_error_found(self, mock_class):
         mock_class().communicate = MagicMock(
             return_value=(' x Error - x ', 'IGNORED ERR',)
         )
@@ -16,18 +22,6 @@ class TestCssLint(unittest.TestCase):
                    'directory': 'FAKE_DIRECTORY',
                    'jenkins': 'False'}
         self.assertFalse(code_analysis_csslint(options))
-
-    @patch('subprocess.Popen')
-    def test_analysis_should_raise_oserror(self, mock_class):
-        mock_class().communicate = MagicMock(
-            side_effect=OSError(),
-            return_value=(' x Error - x ', 'IGNORED ERR',)
-        )
-        from subprocess import Popen  # noqa
-        options = {'csslint-bin': 'FAKE_EXECUTABLE',
-                   'directory': 'FAKE_DIRECTORY',
-                   'jenkins': 'False'}
-        self.assertRaises(OSError, code_analysis_csslint, options)
 
     @patch('subprocess.Popen')
     def test_analysis_should_return_true(self, mock_class):
