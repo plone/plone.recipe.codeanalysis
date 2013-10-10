@@ -26,7 +26,7 @@ class TestFlake8(unittest.TestCase):
         }
         self.assertFalse(code_analysis_flake8(options))
 
-    def test_analysis_should_raise_oserror(self):
+    def test_analysis_should_return_false_when_oserror(self):
         options = {
             'bin-directory': 'FAKE_BIN_DIRECTORY',
             'flake8-ignore': 'FAKE_IGNORE',
