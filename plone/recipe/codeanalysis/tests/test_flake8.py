@@ -27,6 +27,26 @@ class TestFlake8(unittest.TestCase):
         self.assertFalse(code_analysis_flake8(options))
 
     @patch('subprocess.Popen')
+    def test_analysis_should_raise_OSError(self, mock_class):
+        mock_class().communicate = MagicMock(
+            side_effect=OSError(),
+            return_value=(' x Error should return false x ', 'IGNORED ERR',)
+        )
+        returncode = PropertyMock(return_value=1)
+        type(mock_class()).returncode = returncode
+        from subprocess import Popen  # noqa
+        options = {
+            'bin-directory': 'FAKE_BIN_DIRECTORY',
+            'flake8-ignore': 'FAKE_IGNORE',
+            'flake8-exclude': 'FAKE_EXCLUDE',
+            'flake8-max-complexity': 'FAKE_MAX_COMPLEXITY',
+            'flake8-max-line-length': 'FAKE_MAX_LENGTH',
+            'directory': 'FAKE_DIRECTORY',
+            'jenkins': 'False',
+        }
+        self.assertRaises(OSError, code_analysis_flake8, options)
+
+    @patch('subprocess.Popen')
     def test_analysis_should_return_true(self, mock_class):
         mock_class().communicate = MagicMock(
             return_value=(' x ok, should return true x ', 'IGNORED ERR',)
