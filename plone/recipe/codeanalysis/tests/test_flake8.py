@@ -8,7 +8,7 @@ from mock import PropertyMock
 
 class TestFlake8(unittest.TestCase):
     @patch('subprocess.Popen')
-    def test_analysis_should_return_false(self, mock_class):
+    def test_analysis_should_return_false_when_error_found(self, mock_class):
         mock_class().communicate = MagicMock(
             return_value=(' x Error should return false x ', 'IGNORED ERR',)
         )
@@ -26,15 +26,7 @@ class TestFlake8(unittest.TestCase):
         }
         self.assertFalse(code_analysis_flake8(options))
 
-    @patch('subprocess.Popen')
-    def test_analysis_should_raise_oserror(self, mock_class):
-        mock_class().communicate = MagicMock(
-            side_effect=OSError(),
-            return_value=(' x Error should return false x ', 'IGNORED ERR',)
-        )
-        returncode = PropertyMock(return_value=1)
-        type(mock_class()).returncode = returncode
-        from subprocess import Popen  # noqa
+    def test_analysis_should_raise_oserror(self):
         options = {
             'bin-directory': 'FAKE_BIN_DIRECTORY',
             'flake8-ignore': 'FAKE_IGNORE',
@@ -44,7 +36,7 @@ class TestFlake8(unittest.TestCase):
             'directory': 'FAKE_DIRECTORY',
             'jenkins': 'False',
         }
-        self.assertRaises(OSError, code_analysis_flake8, options)
+        self.assertFalse(code_analysis_flake8(options))
 
     @patch('subprocess.Popen')
     def test_analysis_should_return_true(self, mock_class):
