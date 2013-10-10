@@ -27,7 +27,7 @@ class TestFlake8(unittest.TestCase):
         self.assertFalse(code_analysis_flake8(options))
 
     @patch('subprocess.Popen')
-    def test_analysis_should_raise_OSError(self, mock_class):
+    def test_analysis_should_raise_oserror(self, mock_class):
         mock_class().communicate = MagicMock(
             side_effect=OSError(),
             return_value=(' x Error should return false x ', 'IGNORED ERR',)
