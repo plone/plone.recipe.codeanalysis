@@ -6,7 +6,7 @@ import os
 import re
 import subprocess
 import sys
-
+from tempfile import TemporaryFile
 
 def csslint_errors(output, jenkins=False):
     """Search for error markers as CSS Lint always return an exit code of 0
@@ -37,22 +37,27 @@ def code_analysis_csslint(options):
     # first argument is child program
     paths = options['directory'].split('\n')
     cmd = [options['csslint-bin']] + paths
-    if jenkins:
-        cmd.insert(1, '--format=lint-xml')
     try:
-        process = subprocess.Popen(
-            cmd,
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
-        )
-    except OSError:
-        print('               [\033[00;31m SKIP \033[0m]')
-        return False
-    output, err = process.communicate()
-    if jenkins:
-        log_filename = os.path.join(options['location'], 'csslint.xml')
-        with open(log_filename, 'w') as csslint_log:
-            csslint_log.write(output)
+        if jenkins:
+            cmd.insert(1, '--format=lint-xml')
+            output_file_name = os.path.join(options['location'], 'csslint.xml')
+            outputfile = open(output_file_name, 'w')
+        else:
+            outputfile = TemporaryFile()
+
+        try:
+            process = subprocess.Popen(
+                cmd,
+                stderr=subprocess.STDOUT,
+                stdout=outputfile
+            )
+        except OSError:
+            print('               [\033[00;31m SKIP \033[0m]')
+            return False
+        output, err = process.communicate()
+    finally:
+        outputfile.close()
+
     if csslint_errors(output, jenkins):
         print('          [\033[00;31m FAILURE \033[0m]')
         # XXX: if we are generating an XML file for Jenkins consumption

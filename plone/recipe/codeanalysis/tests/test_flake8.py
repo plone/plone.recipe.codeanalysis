@@ -54,7 +54,7 @@ class TestFlake8(TestCase):
                 'IGNORED ERR',)
         )
         self.options['location'] = tmp_dir
-        self.options['jenkins'] = 'True' # need to activate jenkins.
+        self.options['jenkins'] = 'True'  # need to activate jenkins.
         code_analysis_flake8(self.options)
         file_exist = path_isfile(path_join(tmp_dir, 'flake8.log'))
         rmtree(tmp_dir)

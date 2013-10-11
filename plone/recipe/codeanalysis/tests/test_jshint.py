@@ -46,7 +46,7 @@ class TestJSHint(unittest.TestCase):
                 'IGNORED ERR',)
         )
         self.options['location'] = tmp_dir
-        self.options['jenkins'] = 'True' # need to activate jenkins.
+        self.options['jenkins'] = 'True'  # need to activate jenkins.
         code_analysis_jshint(self.options)
         file_exist = path_isfile(path_join(tmp_dir, 'jshint.xml'))
         rmtree(tmp_dir)
