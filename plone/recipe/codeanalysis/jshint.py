@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 import sys
+from tempfile import TemporaryFile
 
 
 def jshint_errors(output, jenkins=False):
@@ -31,23 +32,30 @@ def code_analysis_jshint(options):
         options['jshint-bin'],
         '--verbose',
         '--exclude={0}'.format(options['jshint-exclude'] or ' ')] + paths
-    # Jenkins needs a specific format.
-    if jenkins:
-        cmd.append('--reporter=jshint')
     try:
-        process = subprocess.Popen(
-            cmd,
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
-        )
-    except OSError:
-        print('                 [\033[00;31m SKIP \033[0m]')
-        return False
-    output, err = process.communicate()
-    if jenkins:
-        log_filename = os.path.join(options['location'], 'jshint.xml')
-        with open(log_filename, 'w') as jshint_log:
-            jshint_log.write(output)
+        if jenkins:
+            cmd.append('--reporter=jshint')
+            output_file_name = os.path.join(options['location'], 'jshint.xml')
+            outputfile = open(output_file_name, 'w+')
+        else:
+            outputfile = TemporaryFile('w+')
+
+        try:
+            subprocess.Popen(
+                cmd,
+                stderr=subprocess.STDOUT,
+                stdout=outputfile
+            )
+        except OSError:
+            print('               [\033[00;31m SKIP \033[0m]')
+            return False
+
+        outputfile.flush()
+        outputfile.seek(0)
+        output = outputfile.read()
+    finally:
+        outputfile.close()
+
     # HACK: workaround for JSHint limitations
     if jshint_errors(output, jenkins):
         print('           [\033[00;31m FAILURE \033[0m]')
