@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from unittest import TestCase
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
-from mock import MagicMock
 from mock import patch
 from mock import PropertyMock
 from shutil import rmtree

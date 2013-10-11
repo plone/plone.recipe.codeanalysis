@@ -48,7 +48,7 @@ def code_analysis_csslint(options):
             outputfile = TemporaryFile('w+')
 
         try:
-            process = subprocess.Popen(
+            subprocess.Popen(
                 cmd,
                 stderr=subprocess.STDOUT,
                 stdout=outputfile
