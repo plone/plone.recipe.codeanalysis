@@ -22,7 +22,8 @@ class TestCssLint(TestCase):
         # and return false.
         self.assertFalse(code_analysis_csslint(self.options))
 
-    # TODO: communicate method is not called any more, need to rewrite this test.
+    # TODO: communicate method is not called any more,
+    # need to rewrite this test.
     #@patch('subprocess.Popen')
     #def test_analysis_should_return_false_when_error_found(self, mock_class):
     #    mock_class().communicate = MagicMock(

@@ -57,10 +57,6 @@ def code_analysis_csslint(options):
             print('               [\033[00;31m SKIP \033[0m]')
             return False
 
-        while process.poll() is None:
-            sys.stdout.write('.')
-            sys.stdout.flush()
-            time.sleep(1)
         outputfile.flush()
         outputfile.seek(0)
         output = outputfile.read()
