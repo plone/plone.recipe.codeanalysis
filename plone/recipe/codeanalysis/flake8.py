@@ -5,11 +5,13 @@ import os
 import subprocess
 import sys
 import time
+from tempfile import TemporaryFile
 
 
 def code_analysis_flake8(options):
     sys.stdout.write('Flake8')
     sys.stdout.flush()
+
     jenkins = _normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
@@ -26,25 +28,35 @@ def code_analysis_flake8(options):
     cmd.extend(paths_to_check)
 
     try:
-        process = subprocess.Popen(
-            cmd,
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
-        )
-    except OSError:
-        print('          [\033[00;31m SKIP \033[0m]')
-        return False
-    while process.poll() is None:
-        sys.stdout.write('.')
-        sys.stdout.flush()
-        time.sleep(1)
-    output, err = process.communicate()
-    if jenkins:
-        log_filename = os.path.join(options['location'], 'flake8.log')
-        with open(log_filename, 'w') as flake8_log:
-            flake8_log.write(output)
+        if jenkins:
+            output_file_name = os.path.join(options['location'], 'flake8.log')
+            outputfile = open(output_file_name, 'w+')
+        else:
+            outputfile = TemporaryFile('w+')
+
+        try:
+            process = subprocess.Popen(
+                cmd,
+                stderr=subprocess.STDOUT,
+                stdout=outputfile
+            )
+        except OSError:
+            print('               [\033[00;31m SKIP \033[0m]')
+            return False
+
+        while process.poll() is None:
+            sys.stdout.write('.')
+            sys.stdout.flush()
+            time.sleep(1)
+        outputfile.flush()
+        outputfile.seek(0)
+        output = outputfile.read()
+    finally:
+        outputfile.close()
+
     if process.returncode:
         print('          [\033[00;31m FAILURE \033[0m]')
+        # Wrapper for print.
         print(output)
         return False
     else:

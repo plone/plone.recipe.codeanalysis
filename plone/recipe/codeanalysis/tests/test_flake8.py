@@ -9,7 +9,6 @@ from tempfile import mkdtemp
 from os.path import join as path_join
 from os.path import isfile as path_isfile
 
-
 class TestFlake8(TestCase):
     def setUp(self):
         self.options = {
