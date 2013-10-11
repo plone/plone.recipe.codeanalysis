@@ -8,6 +8,7 @@ import subprocess
 import sys
 from tempfile import TemporaryFile
 
+
 def csslint_errors(output, jenkins=False):
     """Search for error markers as CSS Lint always return an exit code of 0
     either if a file has errors or just warnings.
@@ -37,13 +38,14 @@ def code_analysis_csslint(options):
     # first argument is child program
     paths = options['directory'].split('\n')
     cmd = [options['csslint-bin']] + paths
+
     try:
         if jenkins:
             cmd.insert(1, '--format=lint-xml')
             output_file_name = os.path.join(options['location'], 'csslint.xml')
-            outputfile = open(output_file_name, 'w')
+            outputfile = open(output_file_name, 'w+')
         else:
-            outputfile = TemporaryFile()
+            outputfile = TemporaryFile('w+')
 
         try:
             process = subprocess.Popen(
@@ -54,7 +56,14 @@ def code_analysis_csslint(options):
         except OSError:
             print('               [\033[00;31m SKIP \033[0m]')
             return False
-        output, err = process.communicate()
+
+        while process.poll() is None:
+            sys.stdout.write('.')
+            sys.stdout.flush()
+            time.sleep(1)
+        outputfile.flush()
+        outputfile.seek(0)
+        output = outputfile.read()
     finally:
         outputfile.close()
 
