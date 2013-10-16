@@ -1,6 +1,24 @@
 # -*- coding: utf-8 -*-
 import subprocess
 import re
+import sys
+
+MAX_LINE_LENGTH = 19
+
+
+def log(log_type, string=None):
+    if log_type == 'title':
+        sys.stdout.write(string)
+        for i in range(1, MAX_LINE_LENGTH - len(string)):
+            sys.stdout.write(' ')
+        sys.stdout.flush()
+    elif log_type == 'ok':
+        print('     [\033[00;32m OK \033[0m]')
+    elif log_type == 'skip':
+        print('   [\033[00;31m SKIP \033[0m]')
+    elif log_type == 'failure':
+        print('[\033[00;31m FAILURE \033[0m]')
+        print(string)
 
 
 def _normalize_boolean(value):

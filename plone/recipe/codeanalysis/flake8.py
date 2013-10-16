@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _normalize_boolean
+from utils import log
 
 import os
 import subprocess
-import sys
 
 
 def code_analysis_flake8(options):
-    sys.stdout.write('Flake8')
-    sys.stdout.flush()
+    log('title', 'Flake8')
     jenkins = _normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
@@ -31,7 +30,7 @@ def code_analysis_flake8(options):
             stdout=subprocess.PIPE
         )
     except OSError:
-        print('              [\033[00;31m SKIP \033[0m]')
+        log('skip')
         return False
     output, err = process.communicate()
     if jenkins:
@@ -39,9 +38,8 @@ def code_analysis_flake8(options):
         with open(log_filename, 'w') as flake8_log:
             flake8_log.write(output)
     if process.returncode:
-        print('            [\033[00;31m FAILURE \033[0m]')
-        print(output)
+        log('failure', output)
         return False
     else:
-        print('                 [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
