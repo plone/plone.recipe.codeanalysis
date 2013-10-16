@@ -1,7 +1,7 @@
 Change history
 **************
 
-1.0b6 ()
+1.0b6 (2013-10-16)
 ------------------
 
 - Remove progress bullets from flake8 check.
