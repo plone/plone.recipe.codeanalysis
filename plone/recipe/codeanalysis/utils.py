@@ -34,4 +34,3 @@ def _process_output(output, old, new):
     error = re.compile(old)
     output = map(lambda x: error.sub(new, x), output.splitlines())
     return u'\n'.join(output)
-

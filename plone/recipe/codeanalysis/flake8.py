@@ -4,7 +4,6 @@ from plone.recipe.codeanalysis.utils import _normalize_boolean
 import os
 import subprocess
 import sys
-import time
 
 
 def code_analysis_flake8(options):
