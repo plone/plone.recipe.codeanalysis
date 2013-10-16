@@ -4,7 +4,10 @@ Change history
 1.0b6 ()
 ------------------
 
-- Improve the way to handle an exception if the command used in popen does 
+- Remove progress bullets from flake8 check.
+  [timo]
+
+- Improve the way to handle an exception if the command used in popen does
   not exist.
   [flohcim]
 

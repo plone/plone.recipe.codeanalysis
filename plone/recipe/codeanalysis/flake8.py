@@ -32,21 +32,17 @@ def code_analysis_flake8(options):
             stdout=subprocess.PIPE
         )
     except OSError:
-        print('          [\033[00;31m SKIP \033[0m]')
+        print('              [\033[00;31m SKIP \033[0m]')
         return False
-    while process.poll() is None:
-        sys.stdout.write('.')
-        sys.stdout.flush()
-        time.sleep(1)
     output, err = process.communicate()
     if jenkins:
         log_filename = os.path.join(options['location'], 'flake8.log')
         with open(log_filename, 'w') as flake8_log:
             flake8_log.write(output)
     if process.returncode:
-        print('          [\033[00;31m FAILURE \033[0m]')
+        print('            [\033[00;31m FAILURE \033[0m]')
         print(output)
         return False
     else:
-        print('                [\033[00;32m OK \033[0m]')
+        print('                 [\033[00;32m OK \033[0m]')
         return True
