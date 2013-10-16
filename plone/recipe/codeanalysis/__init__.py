@@ -14,6 +14,7 @@ from plone.recipe.codeanalysis.quoting import \
     code_analysis_prefer_single_quotes
 from plone.recipe.codeanalysis.utils import _find_files
 from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
+from plone.recipe.codeanalysis.utils import log
 
 import os
 import re
@@ -273,8 +274,7 @@ def code_analysis(options):
 
 
 def code_analysis_deprecated_aliases(options):
-    sys.stdout.write('Deprecated aliases')
-    sys.stdout.flush()
+    log('title', 'Deprecated aliases')
 
     # XXX: advice on usage of the right option
     if options.get('deprecated-methods', 'False') != 'False':
@@ -286,7 +286,7 @@ def code_analysis_deprecated_aliases(options):
 
     files = _find_files(options, '.*\.py')
     if not files:
-        print('     [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     total_errors = []
@@ -300,12 +300,12 @@ def code_analysis_deprecated_aliases(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('      [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('     [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
 
@@ -349,8 +349,7 @@ def _code_analysis_deprecated_aliases_lines_parser(lines, file_path):
 
 
 def code_analysis_clean_lines(options):
-    sys.stdout.write('Check clean lines ')
-    sys.stdout.flush()
+    log('title', 'Check clean lines')
 
     files = ''
     for suffix in ('py', 'pt', 'zcml', 'xml',  # standard plone extensions
@@ -362,7 +361,7 @@ def code_analysis_clean_lines(options):
             files += found_files
 
     if len(files) == 0:
-        print('     [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     total_errors = []
@@ -376,12 +375,12 @@ def code_analysis_clean_lines(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('     [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('     [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
 

@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
-
-import sys
+from plone.recipe.codeanalysis.utils import log
 
 
 def code_analysis_imports(options):
-    sys.stdout.write('Check imports ')
-    sys.stdout.flush()
+    log('title', 'Check imports')
     files = _find_files(options, '.*\.py')
     if not files:
-        print('         [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     total_errors = []
@@ -23,12 +21,12 @@ def code_analysis_imports(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('         [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('         [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
 

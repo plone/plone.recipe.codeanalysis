@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import log
 import subprocess
-import sys
 
 
 def code_analysis_zptlint(options):
-    sys.stdout.write('ZPT Lint')
-    sys.stdout.flush()
+    log('title', 'ZPT Lint')
 
     files = ''
     for suffix in ('pt', 'cpt', 'zpt', ):
@@ -15,7 +14,7 @@ def code_analysis_zptlint(options):
             files += found_files
 
     if len(files) == 0:
-        print('               [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     # cmd is a sequence of program arguments
@@ -28,13 +27,12 @@ def code_analysis_zptlint(options):
             stdout=subprocess.PIPE
         )
     except OSError:
-        print('                 [\033[00;31m SKIP \033[0m]')
+        log('skip')
         return False
     output, err = process.communicate()
     if output != '':
-        print('          [\033[00;31m FAILURE \033[0m]')
-        print(output)
+        log('failure', output)
         return False
     else:
-        print('               [\033[00;32m OK \033[0m]')
+        log('ok')
         return True

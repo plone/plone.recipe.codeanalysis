@@ -3,13 +3,13 @@ import subprocess
 import re
 import sys
 
-MAX_LINE_LENGTH = 19
+MAX_LINE_LENGTH = 20
 
 
 def log(log_type, string=None):
     if log_type == 'title':
         sys.stdout.write(string)
-        for i in range(1, MAX_LINE_LENGTH - len(string)):
+        for i in range(0, MAX_LINE_LENGTH - len(string)):
             sys.stdout.write(' ')
         sys.stdout.flush()
     elif log_type == 'ok':

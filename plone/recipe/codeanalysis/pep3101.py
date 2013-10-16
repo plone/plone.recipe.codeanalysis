@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import log
 
 import sys
 
 
 def code_analysis_pep3101(options):
-    sys.stdout.write('PEP 3101')
-    sys.stdout.flush()
+    log('title', 'PEP 3101')
 
     # XXX: advice on usage of the right option
     if options.get('string-formatting', 'False') != 'False':
@@ -15,7 +15,7 @@ def code_analysis_pep3101(options):
 
     files = _find_files(options, '.*\.py')
     if not files:
-        print('     [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     total_errors = []
@@ -29,12 +29,12 @@ def code_analysis_pep3101(options):
             total_errors += errors
 
     if len(total_errors) > 0:
-        print('               [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         for err in total_errors:
             print(err)
         return False
     else:
-        print('[\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
 

@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
-
-import sys
+from plone.recipe.codeanalysis.utils import log
 
 
 def code_analysis_utf8_header(options):
-    sys.stdout.write('Check utf-8 headers ')
-    sys.stdout.flush()
+    log('title', 'Check utf-8 headers')
 
     files = _find_files(options, '.*\.py')
     if not files:
-        print('   [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     errors = []
@@ -25,10 +23,10 @@ def code_analysis_utf8_header(options):
                 errors.append('{0}: missing utf-8 header'.format(file_path))
 
     if len(errors) > 0:
-        print('   [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         for err in errors:
             print(err)
         return False
     else:
-        print('   [\033[00;32m OK \033[0m]')
+        log('ok')
         return True

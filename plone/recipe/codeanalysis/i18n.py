@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import log
 
 import subprocess
-import sys
 
 
 def code_analysis_find_untranslated(options):
-    sys.stdout.write('Translations ')
-    sys.stdout.flush()
+    log('title', 'Translations')
     files = _find_files(options, '.*\.pt')
     if not files:
-        print('          [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
 
     # put all files in a single line
@@ -27,13 +26,12 @@ def code_analysis_find_untranslated(options):
             stdout=subprocess.PIPE
         )
     except OSError:
-        print('          [\033[00;31m SKIP \033[0m]')
+        log('skip')
         return False
     output, err = process.communicate()
     if '-ERROR-' in output:
-        print('          [\033[00;31m FAILURE \033[0m]')
-        print(output)
+        log('failure', output)
         return False
     else:
-        print('          [\033[00;32m OK \033[0m]')
+        log('ok')
         return True

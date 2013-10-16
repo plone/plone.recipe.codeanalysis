@@ -2,11 +2,11 @@
 
 from plone.recipe.codeanalysis.utils import _normalize_boolean
 from plone.recipe.codeanalysis.utils import _process_output
+from plone.recipe.codeanalysis.utils import log
 
 import os
 import re
 import subprocess
-import sys
 
 
 def jshint_errors(output, jenkins=False):
@@ -20,8 +20,7 @@ def jshint_errors(output, jenkins=False):
 
 
 def code_analysis_jshint(options):
-    sys.stdout.write('JSHint')
-    sys.stdout.flush()
+    log('title', 'JSHint')
     jenkins = _normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
@@ -41,7 +40,7 @@ def code_analysis_jshint(options):
             stdout=subprocess.PIPE
         )
     except OSError:
-        print('                 [\033[00;31m SKIP \033[0m]')
+        log('skip')
         return False
     output, err = process.communicate()
     if jenkins:
@@ -50,13 +49,13 @@ def code_analysis_jshint(options):
             jshint_log.write(output)
     # HACK: workaround for JSHint limitations
     if jshint_errors(output, jenkins):
-        print('           [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         # Name the pattern to use it in the substitution.
         old, new = '\((?P<name>E\d\d\d)\)', u'(\033[00;31m\g<name>\033[0m)'
         print _process_output(output, old, new)
         return False
     else:
-        print('                [\033[00;32m OK \033[0m]')
+        log('ok')
         if output != '':
             print(output)  # XXX: there should be warnings on the output
         return True
