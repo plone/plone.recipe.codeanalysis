@@ -4,10 +4,12 @@ from utils import log
 
 import os
 import subprocess
+from tempfile import TemporaryFile
 
 
 def code_analysis_flake8(options):
     log('title', 'Flake8')
+
     jenkins = _normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
@@ -24,19 +26,28 @@ def code_analysis_flake8(options):
     cmd.extend(paths_to_check)
 
     try:
-        process = subprocess.Popen(
-            cmd,
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
-        )
-    except OSError:
-        log('skip')
-        return False
-    output, err = process.communicate()
-    if jenkins:
-        log_filename = os.path.join(options['location'], 'flake8.log')
-        with open(log_filename, 'w') as flake8_log:
-            flake8_log.write(output)
+        if jenkins:
+            output_file_name = os.path.join(options['location'], 'flake8.log')
+            output_file = open(output_file_name, 'w+')
+        else:
+            output_file = TemporaryFile('w+')
+
+        try:
+            process = subprocess.Popen(
+                cmd,
+                stderr=subprocess.STDOUT,
+                stdout=output_file
+            )
+        except OSError:
+            log('skip')
+            return False
+
+        output_file.flush()
+        output_file.seek(0)
+        output = output_file.read()
+    finally:
+        output_file.close()
+
     if process.returncode:
         log('failure', output)
         return False

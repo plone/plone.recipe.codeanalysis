@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _normalize_boolean
 from utils import _process_output
+from plone.recipe.codeanalysis.utils import log
 
 import os
 import re
 import subprocess
 import sys
+from tempfile import TemporaryFile
 
 
 def csslint_errors(output, jenkins=False):
@@ -29,32 +31,40 @@ def csslint_quiet_workaround(output):
 
 
 def code_analysis_csslint(options):
-    sys.stdout.write('CSS Lint')
-    sys.stdout.flush()
+    log('title', 'CSS Lint')
     jenkins = _normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
     # first argument is child program
     paths = options['directory'].split('\n')
     cmd = [options['csslint-bin']] + paths
-    if jenkins:
-        cmd.insert(1, '--format=lint-xml')
+
     try:
-        process = subprocess.Popen(
-            cmd,
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
-        )
-    except OSError:
-        print('               [\033[00;31m SKIP \033[0m]')
-        return False
-    output, err = process.communicate()
-    if jenkins:
-        log_filename = os.path.join(options['location'], 'csslint.xml')
-        with open(log_filename, 'w') as csslint_log:
-            csslint_log.write(output)
+        if jenkins:
+            cmd.insert(1, '--format=lint-xml')
+            output_file_name = os.path.join(options['location'], 'csslint.xml')
+            output_file = open(output_file_name, 'w+')
+        else:
+            output_file = TemporaryFile('w+')
+
+        try:
+            subprocess.Popen(
+                cmd,
+                stderr=subprocess.STDOUT,
+                stdout=output_file
+            )
+        except OSError:
+            log('skip')
+            return False
+
+        output_file.flush()
+        output_file.seek(0)
+        output = output_file.read()
+    finally:
+        output_file.close()
+
     if csslint_errors(output, jenkins):
-        print('          [\033[00;31m FAILURE \033[0m]')
+        log('failure')
         # XXX: if we are generating an XML file for Jenkins consumption
         #      then we will have no output here because our workaround
         #      is going to filter the whole stuff; we need to think on
@@ -66,5 +76,5 @@ def code_analysis_csslint(options):
         print _process_output(output, old, new)
         return False
     else:
-        print('               [\033[00;32m OK \033[0m]')
+        log('ok')
         return True
