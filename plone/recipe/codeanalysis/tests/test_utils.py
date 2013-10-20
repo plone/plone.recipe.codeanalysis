@@ -36,6 +36,7 @@ class TestUtils(unittest.TestCase):
     def test_read_subprocess_output(self):
         output_file = TemporaryFile('w+')
         cmd = ['ls', '/']
-        output = _read_subprocess_output(cmd, output_file)
+        output, return_code = _read_subprocess_output(cmd, output_file)
         output_file.close()
         self.assertTrue('tmp' in output, '{} not in {}'.format('tmp', output))
+        self.assertEqual(0, return_code)

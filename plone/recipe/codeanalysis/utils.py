@@ -48,16 +48,16 @@ def _read_subprocess_output(cmd, output_file):
     :param output_file: file that will store the command output.
     :return: command output read from output_file.
     """
-    proc = subprocess.Popen(
+    process = subprocess.Popen(
         cmd,
         stderr=subprocess.STDOUT,
         stdout=output_file
     )
-    proc.wait()
+    process.wait()
     output_file.flush()
     output_file.seek(0)
     output = output_file.read()
-    return output
+    return output, process.returncode
 
 
 def _process_output(output, old, new):

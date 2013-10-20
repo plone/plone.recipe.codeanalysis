@@ -41,7 +41,8 @@ def code_analysis_jshint(options):
 
         # Wrapper to subprocess.Popen
         try:
-            output = _read_subprocess_output(cmd, output_file)
+            # Return code is not used for jshint.
+            output = _read_subprocess_output(cmd, output_file)[0]
         except OSError:
             log('skip')
             return False

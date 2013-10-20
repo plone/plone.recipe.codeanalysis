@@ -6,7 +6,6 @@ from plone.recipe.codeanalysis.utils import log
 import os
 import re
 import subprocess
-import sys
 from tempfile import TemporaryFile
 
 

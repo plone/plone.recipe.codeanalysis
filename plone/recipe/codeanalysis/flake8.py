@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _normalize_boolean
+from plone.recipe.codeanalysis.utils import _read_subprocess_output
 from utils import log
 
 import os
-import subprocess
 from tempfile import TemporaryFile
 
 
@@ -32,23 +32,16 @@ def code_analysis_flake8(options):
         else:
             output_file = TemporaryFile('w+')
 
+        # Wrapper to subprocess.Popen
         try:
-            process = subprocess.Popen(
-                cmd,
-                stderr=subprocess.STDOUT,
-                stdout=output_file
-            )
+            output, return_code = _read_subprocess_output(cmd, output_file)
         except OSError:
             log('skip')
             return False
-
-        output_file.flush()
-        output_file.seek(0)
-        output = output_file.read()
     finally:
         output_file.close()
 
-    if process.returncode:
+    if return_code:
         log('failure', output)
         return False
     else:
