@@ -41,8 +41,27 @@ def _find_files(options, regex):
     return files
 
 
+def _read_subprocess_output(cmd, output_file):
+    """Run cmd and read the output from output_file.
+
+    :param cmd: list containing command and options.
+    :param output_file: file that will store the command output.
+    :return: command output read from output_file.
+    """
+    proc = subprocess.Popen(
+        cmd,
+        stderr=subprocess.STDOUT,
+        stdout=output_file
+    )
+    proc.wait()
+    output_file.flush()
+    output_file.seek(0)
+    output = output_file.read()
+    return output
+
+
 def _process_output(output, old, new):
-    """Replace all ocurrences of substring 'old' with 'new' in 'output'.
+    """Replace all occurrences of substring 'old' with 'new' in 'output'.
 
     :param output: string containing command output
     :param old: substring to be found
