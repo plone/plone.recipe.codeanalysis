@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _normalize_boolean
+from plone.recipe.codeanalysis.utils import _read_subprocess_output
 from utils import _process_output
 from plone.recipe.codeanalysis.utils import log
 
 import os
 import re
-import subprocess
 from tempfile import TemporaryFile
 
 
@@ -46,19 +46,13 @@ def code_analysis_csslint(options):
         else:
             output_file = TemporaryFile('w+')
 
+        # Wrapper to subprocess.Popen
         try:
-            subprocess.Popen(
-                cmd,
-                stderr=subprocess.STDOUT,
-                stdout=output_file
-            )
+            # Return code is not used for csslint.
+            output = _read_subprocess_output(cmd, output_file)[0]
         except OSError:
             log('skip')
             return False
-
-        output_file.flush()
-        output_file.seek(0)
-        output = output_file.read()
     finally:
         output_file.close()
 
