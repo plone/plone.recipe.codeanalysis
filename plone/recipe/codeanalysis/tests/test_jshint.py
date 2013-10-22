@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
+from plone.recipe.codeanalysis.jshint import jshint_errors
 from shutil import rmtree
 from tempfile import mkdtemp
 from os.path import join as path_join
@@ -62,3 +63,40 @@ class TestJSHint(unittest.TestCase):
         file_exist = path_isfile(path_join(location_tmp_dir, 'jshint.xml'))
         rmtree(location_tmp_dir)
         self.assertTrue(file_exist)
+
+    def test_jshint_errors_should_return_false_xml_output(self):
+        output = '<?xml version="1.0" encoding="utf-8"?>\n' \
+                 '<jslint>\n' \
+                 '</jslint>'
+        self.assertFalse(jshint_errors(output, True))
+
+    def test_jshint_errors_should_return_true_xml_output(self):
+        output = '<?xml version="1.0" encoding="utf-8"?>\n' \
+            '<jslint>\n' \
+            '    <file name="incorrect.js">\n' \
+            '        <issue line="1" char="17" reason="Expected an ' \
+            'identifier and instead saw &apos;=&apos;." evidence="var ' \
+            'number_ten= =10;var word_ten=&apos;ten&apos;;var ' \
+            'sum_2_plus_2 = 2+2;" severity="E" />\n' \
+            '        <issue line="1" char="18" reason="Missing semicolon." ' \
+            'evidence="var number_ten= =10;var word_ten=&apos;ten&apos;;var' \
+            ' sum_2_plus_2 = 2+2;" severity="W" />\n' \
+            '        <issue line="1" char="18" reason="Expected an ' \
+            'assignment or function call and instead saw an expression." '\
+            'evidence="var number_ten= =10;var word_ten=&apos;ten&apos;;var' \
+            ' sum_2_plus_2 = 2+2;" severity="W" />\n' \
+            '    </file>\n' \
+            '</jslint>'
+        self.assertTrue(jshint_errors(output, True))
+
+    def test_jshint_errors_should_return_true_normal_output(self):
+        output = 'incorrect.js: line 1, col 17, Expected an identifier and ' \
+            'instead saw \'=\'. (E030)\nincorrect.js: line 1, col 18, ' \
+            'Missing semicolon. (W033)\nincorrect.js: line 1, col 18, ' \
+            'Expected an assignment or function call and instead saw an ' \
+            'expression. (W030)\n\n3 errors\n'
+        self.assertTrue(jshint_errors(output, False))
+
+    def test_jshint_errors_should_return_false_normal_output(self):
+        output = ''
+        self.assertFalse(jshint_errors(output, False))

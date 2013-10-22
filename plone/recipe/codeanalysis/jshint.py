@@ -33,7 +33,7 @@ def code_analysis_jshint(options):
         '--exclude={0}'.format(options['jshint-exclude'] or ' ')] + paths
     try:
         if jenkins:
-            cmd.append('--reporter=jshint')
+            cmd.append('--reporter=jslint')
             output_file_name = os.path.join(options['location'], 'jshint.xml')
             output_file = open(output_file_name, 'w+')
         else:
