@@ -2,7 +2,10 @@
 import unittest
 from plone.recipe.codeanalysis.utils import _process_output
 from plone.recipe.codeanalysis.utils import _read_subprocess_output
+from plone.recipe.codeanalysis.utils import _find_files
 from tempfile import TemporaryFile
+from tempfile import mkdtemp
+from tempfile import NamedTemporaryFile
 
 
 class TestUtils(unittest.TestCase):
@@ -40,3 +43,18 @@ class TestUtils(unittest.TestCase):
         output_file.close()
         self.assertTrue('tmp' in output, '{} not in {}'.format('tmp', output))
         self.assertEqual(0, return_code)
+
+    def test_find_files(self):
+        test_dir = mkdtemp()
+        temp_files = []
+        for n in range(1, 5):
+            temp_file = NamedTemporaryFile(
+                'w+',
+                suffix='.py',
+                prefix='tmp' + str(n),
+                dir=test_dir)
+            temp_files.append(temp_file)
+        output = _find_files({'directory': test_dir}, '.*py')
+        sorted_output = '\n'.join(sorted(output.splitlines()))
+        expect = '\n'.join([x.name for x in temp_files])
+        self.assertEqual(expect, sorted_output)
