@@ -44,6 +44,17 @@ class TestUtils(unittest.TestCase):
         self.assertTrue('tmp' in output, '{} not in {}'.format('tmp', output))
         self.assertEqual(0, return_code)
 
+    def test_read_subprocess_should_raise_oserror(self):
+        try:
+            output_file = TemporaryFile('w+')
+            cmd = ['fake_program', '/']
+            self.assertRaises(
+                OSError,
+                _read_subprocess_output,
+                cmd, output_file)
+        finally:
+            output_file.close()
+
     def test_find_files(self):
         test_dir = mkdtemp()
         temp_files = []
