@@ -25,13 +25,13 @@ long_description = (
 
 entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {
-  "zc.buildout": [
-    "default = %s" % entry_point
-  ]
+    "zc.buildout": [
+        "default = %s" % entry_point
+    ]
 }
 
 tests_require = [
-  'zope.testing', 'zc.buildout[test]', 'mock',
+    'zope.testing', 'zc.buildout[test]', 'mock',
 ]
 
 setup(name='plone.recipe.codeanalysis',
@@ -41,10 +41,10 @@ setup(name='plone.recipe.codeanalysis',
       # Get more strings from
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
-        'Framework :: Buildout',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
-        ],
+          'Framework :: Buildout',
+          'Intended Audience :: Developers',
+          'Topic :: Software Development :: Build Tools',
+      ],
       keywords='',
       author='Timo Stollenwerk',
       author_email='contact@timostollenwerk.net',
@@ -55,12 +55,12 @@ setup(name='plone.recipe.codeanalysis',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-        'setuptools',
-        'zc.buildout',
-        'zc.recipe.egg',
-        'flake8',
-        'zptlint',
-        'i18ndude',
+          'setuptools',
+          'zc.buildout',
+          'zc.recipe.egg',
+          'flake8',
+          'zptlint',
+          'i18ndude',
       ],
       tests_require=tests_require,
       extras_require=dict(tests=tests_require),
