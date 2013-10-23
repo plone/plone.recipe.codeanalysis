@@ -3,7 +3,7 @@ python: 2.7
 install:
   - mkdir -p buildout-cache/eggs
   - mkdir -p buildout-cache/downloads
-  - pip install -U setuptools==1.1.6
+  - pip install -U setuptools==0.6c11
   - pip uninstall -y distribute
   - python bootstrap.py -c travis.cfg
   - bin/buildout -N -t 3 -c travis.cfg
