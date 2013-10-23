@@ -30,12 +30,14 @@ def code_analysis_csslint(options):
     try:
         if jenkins:
             cmd.insert(1, '--format=lint-xml')
-            cmd.insert(2, '--errors=important')  # Get only errors, no warnings.
+            # Get only errors, no warnings.
+            cmd.insert(2, '--errors=important')
             output_file_name = os.path.join(options['location'], 'csslint.xml')
             output_file = open(output_file_name, 'w+')
         else:
             cmd.insert(1, '--format=compact')
-            cmd.insert(2, '--errors=important')  # Get only errors, no warnings.
+            # Get only errors, no warnings.
+            cmd.insert(2, '--errors=important')
             cmd.insert(3, '--quiet')  # Only output when error found.
             output_file = TemporaryFile('w+')
 
