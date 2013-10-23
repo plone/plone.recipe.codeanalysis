@@ -84,5 +84,5 @@ class TestCssLint(TestCase):
         self.assertTrue(csslint_errors(output, False))
 
     def test_jshint_errors_should_return_false_normal_output(self):
-        output = 'correct.css: Lint Free!\n'
+        output = ''
         self.assertFalse(csslint_errors(output, False))

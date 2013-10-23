@@ -18,17 +18,6 @@ def csslint_errors(output, jenkins=False):
     return error.search(output)
 
 
-def csslint_quiet_workaround(output):
-    """Filter output to show only errors as CSS Lint '--quiet' option is just
-    not working.
-
-    :param output: string containing command output
-    :return: string containing the filtered output
-    """
-    output = filter(csslint_errors, output.splitlines())
-    return u''.join(output)
-
-
 def code_analysis_csslint(options):
     log('title', 'CSS Lint')
     jenkins = _normalize_boolean(options['jenkins'])
@@ -41,10 +30,13 @@ def code_analysis_csslint(options):
     try:
         if jenkins:
             cmd.insert(1, '--format=lint-xml')
+            cmd.insert(2, '--errors=important')  # Get only errors, no warnings.
             output_file_name = os.path.join(options['location'], 'csslint.xml')
             output_file = open(output_file_name, 'w+')
         else:
             cmd.insert(1, '--format=compact')
+            cmd.insert(2, '--errors=important')  # Get only errors, no warnings.
+            cmd.insert(3, '--quiet')  # Only output when error found.
             output_file = TemporaryFile('w+')
 
         # Wrapper to subprocess.Popen
@@ -59,11 +51,6 @@ def code_analysis_csslint(options):
 
     if csslint_errors(output, jenkins):
         log('failure')
-        # XXX: if we are generating an XML file for Jenkins consumption
-        #      then we will have no output here because our workaround
-        #      is going to filter the whole stuff; we need to think on
-        #      what's the best way to solve this later
-        output = csslint_quiet_workaround(output)
         # TODO: pass color to _process_output
         # Name the pattern to use it in the substitution.
         old, new = '(?P<name>Error[^ -]*)', '\033[00;31m\g<name>\033[0m'
