@@ -47,11 +47,13 @@ def code_analysis_csslint(options):
         output_file.close()
 
     if csslint_errors(output, jenkins):
-        log('failure')
-        # TODO: pass color to _process_output
-        # Name the pattern to use it in the substitution.
-        old, new = '(?P<name>Error[^ -]*)', '\033[00;31m\g<name>\033[0m'
-        print _process_output(output, old, new)
+        if jenkins:
+            log('failure', 'Output file written to %s.' % output_file_name)
+        else:
+            # TODO: pass color to _process_output
+            # Name the pattern to use it in the substitution.
+            old, new = '(?P<name>Error[^ -]*)', '\033[00;31m\g<name>\033[0m'
+            log('failure', _process_output(output, old, new))
         return False
     else:
         log('ok')

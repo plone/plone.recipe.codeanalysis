@@ -4,7 +4,9 @@ Change history
 1.0b7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Do not print out jshint and csslint output for Jenkins. Those files can
+  become quite large.
+  [timo]
 
 
 1.0b6 (2013-10-16)
