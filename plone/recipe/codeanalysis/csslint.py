@@ -13,7 +13,7 @@ def csslint_errors(output, jenkins=False):
     """Search for error markers as CSS Lint always return an exit code of 0
     either if a file has errors or just warnings.
     """
-    pattern = r'severity="error"' if jenkins else r'Error -'
+    pattern = r'severity="error"' if jenkins else r'Error -|error at'
     error = re.compile(pattern)
     return error.search(output)
 
