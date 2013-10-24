@@ -31,14 +31,10 @@ def code_analysis_csslint(options):
         if jenkins:
             cmd.insert(1, '--format=lint-xml')
             # Get only errors, no warnings.
-            cmd.insert(2, '--errors=important')
             output_file_name = os.path.join(options['location'], 'csslint.xml')
             output_file = open(output_file_name, 'w+')
         else:
             cmd.insert(1, '--format=compact')
-            # Get only errors, no warnings.
-            cmd.insert(2, '--errors=important')
-            cmd.insert(3, '--quiet')  # Only output when error found.
             output_file = TemporaryFile('w+')
 
         # Wrapper to subprocess.Popen
