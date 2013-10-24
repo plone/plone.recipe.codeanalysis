@@ -34,7 +34,6 @@ def code_analysis_csslint(options):
             output_file_name = os.path.join(options['location'], 'csslint.xml')
             output_file = open(output_file_name, 'w+')
         else:
-            cmd.insert(1, '--format=compact')
             output_file = TemporaryFile('w+')
 
         # Wrapper to subprocess.Popen
