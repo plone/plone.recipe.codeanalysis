@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
+from plone.recipe.codeanalysis.jshint import run_cmd
 from plone.recipe.codeanalysis.jshint import jshint_errors
 from shutil import rmtree
 from tempfile import mkdtemp
@@ -29,6 +30,47 @@ class TestJSHint(unittest.TestCase):
         incorrect_code.close()
         self.options['directory'] = self.test_dir
         self.assertFalse(code_analysis_jshint(self.options))
+
+    def test_analysis_should_output_warnings(self):
+        warnings_code = file(path_join(self.test_dir, 'warnings.js'), 'w')
+        warnings_code.write(
+        'function slideJump() {'
+        '    if (window.location.hash == null || window.location.hash == \'\') {'
+        '        return;'
+        '    }'
+        '    if (window.location.hash == null) return;'
+        '    if (dest == null) {'
+        '        dest = 0;'
+        '    }'
+        '}')
+        warnings_code.close()
+        self.options['directory'] = self.test_dir
+        expected_output = \
+            '{0[directory]}/warnings.js: line 1, col 52, Use \'===\' to' \
+            ' compare with \'null\'. (W041)\n{0[directory]}/warnings.js:' \
+            ' line 1, col 84, Use \'===\' to compare with \'\'. (W041)\n' \
+            '{0[directory]}/warnings.js: line 1, col 141, Use \'===\' to' \
+            ' compare with \'null\'. (W041)\n{0[directory]}/warnings.js:' \
+            ' line 1, col 170, Use \'===\' to compare with \'null\'. (W041)' \
+            '\n\n4 errors\n'.format(self.options)
+        output = run_cmd(self.options, False)
+        self.assertEquals(output, expected_output)
+
+    def test_analysis_should_return_true_for_warnings(self):
+        warnings_code = file(path_join(self.test_dir, 'warnings.js'), 'w')
+        warnings_code.write(
+        'function slideJump() {'
+        '    if (window.location.hash == null || window.location.hash == \'\') {'
+        '        return;'
+        '    }'
+        '    if (window.location.hash == null) return;'
+        '    if (dest == null) {'
+        '        dest = 0;'
+        '    }'
+        '}')
+        warnings_code.close()
+        self.options['directory'] = self.test_dir
+        self.assertTrue(code_analysis_jshint(self.options))
 
     def test_analysis_should_return_false_when_oserror(self):
         # The options are fake, so the function should raise an OSError
