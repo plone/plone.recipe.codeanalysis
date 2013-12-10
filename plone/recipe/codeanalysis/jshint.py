@@ -13,6 +13,7 @@ from tempfile import TemporaryFile
 class CmdError(Exception):
     pass
 
+
 def jshint_errors(output, jenkins=False):
     """Search for error on the output.
 
@@ -65,7 +66,6 @@ def run_cmd(options, jenkins):
         output_file.close()
 
 
-
 def code_analysis_jshint(options):
     log('title', 'JSHint')
     jenkins = _normalize_boolean(options['jenkins'])
@@ -88,5 +88,6 @@ def code_analysis_jshint(options):
     else:
         log('ok')
         if output != '' and not jenkins:
-            log('warning', output)  # XXX: there should be warnings on the output
+            # XXX: there should be warnings on the output
+            log('warning', output)
         return True

@@ -35,7 +35,8 @@ class TestJSHint(unittest.TestCase):
         warnings_code = file(path_join(self.test_dir, 'warnings.js'), 'w')
         warnings_code.write(
         'function slideJump() {'
-        '    if (window.location.hash == null || window.location.hash == \'\') {'
+        '    if (window.location.hash == null || '
+        'window.location.hash == \'\') {'
         '        return;'
         '    }'
         '    if (window.location.hash == null) return;'
@@ -60,7 +61,8 @@ class TestJSHint(unittest.TestCase):
         warnings_code = file(path_join(self.test_dir, 'warnings.js'), 'w')
         warnings_code.write(
         'function slideJump() {'
-        '    if (window.location.hash == null || window.location.hash == \'\') {'
+        '    if (window.location.hash == null || '
+        'window.location.hash == \'\') {'
         '        return;'
         '    }'
         '    if (window.location.hash == null) return;'
