@@ -10,7 +10,11 @@ class CmdError(Exception):
 
 
 class Analyser():
-    def __init__(self, jenkins_filename='analysis.xml', options=None, cmd_args=None):
+    def __init__(
+            self,
+            jenkins_filename='analysis.xml',
+            options=None,
+            cmd_args=None):
         """Instance initializer.
 
         :param jenkins_filename: When running on jenkins, the output is
