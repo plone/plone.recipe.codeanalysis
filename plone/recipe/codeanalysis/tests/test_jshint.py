@@ -52,7 +52,7 @@ class TestJSHint(unittest.TestCase):
     #         ' line 1, col 84, Use \'===\' to compare with \'\'. (W041)\n' \
     #         '{0[directory]}/warnings.js: line 1, col 141, Use \'===\' to' \
     #         ' compare with \'null\'. (W041)\n{0[directory]}/warnings.js:' \
-    #         ' line 1, col 170, Use \'===\' to compare with \'null\'. (W041)' \
+  #         ' line 1, col 170, Use \'===\' to compare with \'null\'. (W041)' \
     #         '\n\n4 errors\n'.format(self.options)
     #     output = run_cmd(self.options, False)
     #     self.assertEqual(output, expected_output)
