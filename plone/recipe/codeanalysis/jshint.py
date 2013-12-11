@@ -79,6 +79,7 @@ def code_analysis_jshint(options):
     # HACK: workaround for JSHint limitations
     if jshint_errors(output, jenkins):
         if jenkins:
+            output_file_name = os.path.join(options['location'], 'jshint.xml')
             log('failure', 'Output file written to %s.' % output_file_name)
         else:
             # Name the pattern to use it in the substitution.
