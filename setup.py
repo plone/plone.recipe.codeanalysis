@@ -13,13 +13,13 @@ version = '1.0b7dev'
 
 long_description = (
     read('README.rst')
-    + '\n' +
+    + '\n\n' +
     read('plone', 'recipe', 'codeanalysis', 'README.rst')
-    + '\n' +
+    + '\n\n' +
     read('CONTRIBUTORS.rst')
-    + '\n' +
+    + '\n\n' +
     read('CHANGES.rst')
-    + '\n' +
+    + '\n\n' +
     'Download\n'
     '********\n')
 
