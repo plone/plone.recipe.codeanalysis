@@ -2,6 +2,7 @@ language: python
 python: 2.7
 install:
   - python bootstrap.py -v 1.7.1
+  - bin/buildout -c travis.cfg annotate
   - bin/buildout -N -t 3 -c travis.cfg
 script:
   - bin/code-analysis
@@ -11,6 +12,5 @@ after_success:
   - pip install -q coveralls
   - coveralls
 after_failure:
-  - bin/buildout annotate -c travis.cfg
   - bin/csslint --version
   - bin/jshint --version
