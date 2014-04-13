@@ -11,14 +11,14 @@ VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tal="http://xml
     <p tal:content="string:Hello World!" />
   <body>
 </html>
-"""
+"""  # noqa
 
 INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tal="http://xml.zope.org/namespaces/tal">
   <body>
     <p tal:content="python:Hello World!" />
   <body>
 </html>
-"""
+"""  # noqa
 
 
 class ZPTLintTestCase(unittest.TestCase):
@@ -60,6 +60,7 @@ class ZPTLintTestCase(unittest.TestCase):
         self.options['location'] = location_tmp_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         code_analysis_zptlint(self.options)
-        file_exist = os.path.isfile(os.path.join(location_tmp_dir, 'zptlint.log'))
+        file_exists = os.path.isfile(
+            os.path.join(location_tmp_dir, 'zptlint.log'))
         rmtree(location_tmp_dir)
-        self.assertTrue(file_exist)
+        self.assertTrue(file_exists)
