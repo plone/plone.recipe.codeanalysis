@@ -61,8 +61,8 @@ def run_cmd(options, jenkins):
             return output
         except OSError:
             log('skip')
-            raise CmdError(
-                'Command: {0}. Output file: {1}'.format(cmd, output_file))
+            message = 'Command: {0}. Outputfile: {1}'.format(cmd, output_file)
+            raise CmdError(message)
     finally:
         output_file.close()
 

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
-#Tests for run_cmd are failing on Travis.
 from plone.recipe.codeanalysis.jshint import run_cmd
 from plone.recipe.codeanalysis.jshint import jshint_errors
 from shutil import rmtree
