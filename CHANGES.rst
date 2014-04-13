@@ -4,6 +4,10 @@ Change history
 1.0b7 (unreleased)
 ------------------
 
+- Remove hard dependency on i18ndude and zptlint; this will reduce the number
+  of Zope/Plone direct dependencies to make life happier to people using
+  Pyramid and other web Python-based development frameworks (closes `#53`_).
+
 - Do not print out jshint and csslint output for Jenkins. Those files can
   become quite large.
   [timo]
@@ -97,3 +101,5 @@ Change history
 
 - Initial release.
   [timo]
+
+.. _`#53`: https://github.com/plone/plone.recipe.codeanalysis/issues/53

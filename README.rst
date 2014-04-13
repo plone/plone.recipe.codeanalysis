@@ -17,7 +17,7 @@ Introduction
 ============
 
 plone.recipe.codeanalysis provides static code analysis for Buildout-based
-Python projects, including `flake8`_, `JSHint`_, `CSS Lint`_, `zptlint`_, and
+Python projects, including `flake8`_, `JSHint`_, `CSS Lint`_, and
 other code checks.
 
 This buildout recipe creates a script to run the code analysis::
@@ -193,15 +193,6 @@ The recipe supports the following options:
         npms = csslint
         scripts = csslint
 
-**zptlint**
-    If set to True, zptlint code analysis is run. Default is ``False``.
-
-    Note that the buildout itself already depends on zptlint, so no extra
-    configuration is needed.
-
-**zptlint-bin**
-    Set the path to a custom version of zptlint. Default is ``bin/zptlint``.
-
 **deprecated-aliases**
     For historical reasons, some of the unittest.TestCase methods had one or
     more aliases that are deprecated on Python 2.7. If this option is set to
@@ -242,12 +233,29 @@ The recipe supports the following options:
     Violations plugin). Note that this option does not have any effect on the
     other code analysis scripts. Default is ``False``.
 
+i18ndude and zptlint support
+----------------------------
+
+To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `zptlint`_;
+in order to use the following options you have to install them on your system::
+
 **find-untranslated**
-    If set to True, scan Zope templates to find untranslated strings. Default
-    is ``False``.
+    If set to True, scan Zope templates to find untranslated strings.
+    Default is ``False``.
+    To use this you will need to set the ``i18ndude-bin`` option.
 
 **i18ndude-bin**
-    Set the path to a custom version of i18ndude. Default is ``bin/i18ndude``.
+    Set the path to a custom version of `i18ndude`_.
+    Default is none.
+
+**zptlint**
+    If set to True, zptlint code analysis is run.
+    Default is ``False``.
+    To use this you will need to set the ``zptlint-bin`` option.
+
+**zptlint-bin**
+    Set the path to a custom version of `zptlint`_.
+    Default is none.
 
 
 Known Issues
@@ -281,4 +289,5 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
 .. _`zptlint`: https://pypi.python.org/pypi/zptlint
+.. _`i18ndude`: https://pypi.python.org/pypi/i18ndude
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
