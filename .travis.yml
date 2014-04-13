@@ -12,5 +12,6 @@ after_success:
   - pip install -q coveralls
   - coveralls
 after_failure:
+  - cat /tmp/jshinterror.txt
   - bin/csslint --version
   - bin/jshint --version

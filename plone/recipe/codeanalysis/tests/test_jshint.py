@@ -34,16 +34,16 @@ class TestJSHint(unittest.TestCase):
     def test_analysis_should_output_warnings(self):
         warnings_code = file(path_join(self.test_dir, 'warnings.js'), 'w')
         warnings_code.write(
-        'function slideJump() {'
-        '    if (window.location.hash == null || '
-        'window.location.hash == \'\') {'
-        '        return;'
-        '    }'
-        '    if (window.location.hash == null) return;'
-        '    if (dest == null) {'
-        '        dest = 0;'
-        '    }'
-        '}')
+            'function slideJump() {'
+            '    if (window.location.hash == null || '
+            'window.location.hash == \'\') {'
+            '        return;'
+            '    }'
+            '    if (window.location.hash == null) return;'
+            '    if (dest == null) {'
+            '        dest = 0;'
+            '    }'
+            '}')
         warnings_code.close()
         self.options['directory'] = self.test_dir
         expected_output = \
@@ -60,16 +60,16 @@ class TestJSHint(unittest.TestCase):
     def test_analysis_should_return_true_for_warnings(self):
         warnings_code = file(path_join(self.test_dir, 'warnings.js'), 'w')
         warnings_code.write(
-        'function slideJump() {'
-        '    if (window.location.hash == null || '
-        'window.location.hash == \'\') {'
-        '        return;'
-        '    }'
-        '    if (window.location.hash == null) return;'
-        '    if (dest == null) {'
-        '        dest = 0;'
-        '    }'
-        '}')
+            'function slideJump() {'
+            '    if (window.location.hash == null || '
+            'window.location.hash == \'\') {'
+            '        return;'
+            '    }'
+            '    if (window.location.hash == null) return;'
+            '    if (dest == null) {'
+            '        dest = 0;'
+            '    }'
+            '}')
         warnings_code.close()
         self.options['directory'] = self.test_dir
         self.assertTrue(code_analysis_jshint(self.options))

@@ -59,9 +59,10 @@ def run_cmd(options, jenkins):
             # Return code is not used for jshint.
             output = _read_subprocess_output(cmd, output_file)[0]
             return output
-        except OSError:
+        except OSError as e:
             log('skip')
             message = 'Command: {0}. Outputfile: {1}'.format(cmd, output_file)
+            file('/tmp/jshinterror.txt').write(e.strerror)
             raise CmdError(message)
     finally:
         output_file.close()
