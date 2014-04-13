@@ -60,14 +60,9 @@ def run_cmd(options, jenkins):
             output = _read_subprocess_output(cmd, output_file)[0]
             return output
         except OSError as e:
+            import pdb; pdb.set_trace()
             log('skip')
             message = 'Command: {0}. Outputfile: {1}'.format(cmd, output_file)
-            f = file('/tmp/jshinterror.txt', 'w')
-            f.write('{}\n'.format(e.strerror))
-            f.write('{}\n'.format(e.message))
-            f.write('{}\n'.format(e.errno))
-            f.write('{}\n'.format('OSError'))
-            f.close()
             raise CmdError(message)
     finally:
         output_file.close()

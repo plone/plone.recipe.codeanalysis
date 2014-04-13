@@ -12,7 +12,7 @@ from os.path import isfile as path_isfile
 class TestJSHint(unittest.TestCase):
     def setUp(self):
         self.options = {
-            'jshint-bin': 'jshint',
+            'jshint-bin': 'bin/jshint',
             'jshint-exclude': '',
             'jenkins': 'False'
         }
