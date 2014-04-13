@@ -11,19 +11,21 @@ import unittest
 # installed; we used it as a flag to skip some tests here
 ZPTLINT_INSTALLED = os.environ.get('EXTRAS_INSTALLED', False)
 
-VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tal="http://xml.zope.org/namespaces/tal">
+VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal">
   <body>
     <p tal:content="string:Hello World!" />
-  <body>
+  </body>
 </html>
-"""  # noqa
+"""
 
-INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tal="http://xml.zope.org/namespaces/tal">
+INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal">
   <body>
     <p tal:content="python:Hello World!" />
-  <body>
+  </body>
 </html>
-"""  # noqa
+"""
 
 
 class ZPTLintTestCase(unittest.TestCase):
