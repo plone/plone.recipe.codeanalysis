@@ -31,7 +31,10 @@ entry_points = {
 }
 
 tests_require = [
-    'zope.testing', 'zc.buildout[test]', 'mock',
+    'mock',
+    'transaction',
+    'zc.buildout [test]',
+    'zope.testing',
 ]
 
 setup(name='plone.recipe.codeanalysis',
