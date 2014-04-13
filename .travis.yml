@@ -3,7 +3,7 @@ python: 2.7
 env:
   matrix:
     - CONF=travis.cfg
-    - CONF=extras.cfg
+    - CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
   - python bootstrap.py -v 1.7.1
   - bin/buildout -c $CONF annotate
