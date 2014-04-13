@@ -2,13 +2,12 @@ language: python
 python: 2.7
 env:
   matrix:
-    - EXTRAS=true
-    - EXTRAS=false
+    - CONF=travis.cfg
+    - CONF=extras.cfg
 install:
-  - test "$EXTRAS" = "true" && pip install i18ndude zptlint -q || true
   - python bootstrap.py -v 1.7.1
-  - bin/buildout -c travis.cfg annotate
-  - bin/buildout -N -t 3 -c travis.cfg
+  - bin/buildout -c $CONF annotate
+  - bin/buildout -N -t 3 -c $CONF
 script:
   - bin/code-analysis
   - bin/test
