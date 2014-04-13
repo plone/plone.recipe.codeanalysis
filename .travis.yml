@@ -7,6 +7,9 @@ install:
 script:
   - bin/code-analysis
   - bin/test
+  - pip install i18ndude
+  - pip install zptlint
+  - bin/test
 after_success:
   - bin/createcoverage run bin/test
   - pip install -q coveralls

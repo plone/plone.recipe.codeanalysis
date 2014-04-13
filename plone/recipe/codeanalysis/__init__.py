@@ -150,9 +150,6 @@ class Recipe(object):
             # flake8
             {'bin': 'flake8',
              'arguments': False, },
-            # zptlint
-            {'bin': 'zptlint',
-             'arguments': False, },
             # bin/code-analysis-flake8
             {'suffix': 'flake8', },
             # bin/code-analysis-jshint

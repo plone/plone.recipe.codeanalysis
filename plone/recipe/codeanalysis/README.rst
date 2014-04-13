@@ -32,15 +32,11 @@ It is also possible to run single code analysis scripts::
     >>> '/sample-buildout/bin/code-analysis-jshint' in buildout_output_lower
     True
 
-Flake 8 and ZPTLint are installed by the buildout script, there is no need to
-install them on the system::
+Flake 8 is installed by the buildout script, there is no need to install it on
+the system::
 
     >>> '/sample-buildout/bin/flake8' in buildout_output_lower
     True
-
-    >>> '/sample-buildout/bin/zptlint' in buildout_output_lower
-    True
-
 
 Deprecated aliases analysis script is installed::
 
