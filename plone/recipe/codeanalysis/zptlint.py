@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import _find_files
 from plone.recipe.codeanalysis.utils import log
+
 import subprocess
 
 

@@ -57,11 +57,6 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
-        # ZPT Lint
-        self.options.setdefault('zptlint', 'False')
-        self.options.setdefault('zptlint-bin', os.path.join(
-            self.buildout['buildout']['bin-directory'], 'zptlint'
-        ))
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
         # XXX: keep compatibility with previous versions
@@ -102,7 +97,9 @@ class Recipe(object):
             self.buildout['buildout']['bin-directory'], 'i18ndude'
         )
         self.options.setdefault('i18ndude-bin', i18ndude_path)
-
+        # zptlint
+        self.options.setdefault('zptlint', 'False')
+        self.options.setdefault('zptlint-bin', '')
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis'
