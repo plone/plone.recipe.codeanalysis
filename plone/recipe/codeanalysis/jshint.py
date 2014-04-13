@@ -62,7 +62,12 @@ def run_cmd(options, jenkins):
         except OSError as e:
             log('skip')
             message = 'Command: {0}. Outputfile: {1}'.format(cmd, output_file)
-            file('/tmp/jshinterror.txt', 'w').write(e.strerror)
+            f = file('/tmp/jshinterror.txt', 'w')
+            f.write('{}\n'.format(e.strerror))
+            f.write('{}\n'.format(e.message))
+            f.write('{}\n'.format(e.errno))
+            f.write('{}\n'.format('OSError'))
+            f.close()
             raise CmdError(message)
     finally:
         output_file.close()
