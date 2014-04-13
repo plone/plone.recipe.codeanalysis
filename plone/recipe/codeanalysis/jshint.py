@@ -59,8 +59,7 @@ def run_cmd(options, jenkins):
             # Return code is not used for jshint.
             output = _read_subprocess_output(cmd, output_file)[0]
             return output
-        except OSError as e:
-            import pdb; pdb.set_trace()
+        except OSError:
             log('skip')
             message = 'Command: {0}. Outputfile: {1}'.format(cmd, output_file)
             raise CmdError(message)
