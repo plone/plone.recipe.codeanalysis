@@ -13,13 +13,13 @@ version = '1.0b7dev'
 
 long_description = (
     read('README.rst')
-    + '\n' +
+    + '\n\n' +
     read('plone', 'recipe', 'codeanalysis', 'README.rst')
-    + '\n' +
+    + '\n\n' +
     read('CONTRIBUTORS.rst')
-    + '\n' +
+    + '\n\n' +
     read('CHANGES.rst')
-    + '\n' +
+    + '\n\n' +
     'Download\n'
     '********\n')
 
@@ -63,7 +63,7 @@ setup(name='plone.recipe.codeanalysis',
           'i18ndude',
       ],
       tests_require=tests_require,
-      extras_require=dict(tests=tests_require),
+      extras_require=dict(test=tests_require),
       test_suite='plone.recipe.codeanalysis.tests.test_docs.test_suite',
       entry_points=entry_points,
       )
