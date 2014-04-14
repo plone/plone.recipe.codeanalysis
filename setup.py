@@ -2,8 +2,10 @@
 """
 This module contains the tool of plone.recipe.codeanalysis
 """
+from setuptools import find_packages
+from setuptools import setup
+
 import os
-from setuptools import setup, find_packages
 
 
 def read(*rnames):
@@ -30,10 +32,6 @@ entry_points = {
     ]
 }
 
-tests_require = [
-    'zope.testing', 'zc.buildout[test]', 'mock',
-]
-
 setup(name='plone.recipe.codeanalysis',
       version=version,
       description="Static code analysis for buildout-based Python projects.",
@@ -55,15 +53,18 @@ setup(name='plone.recipe.codeanalysis',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+          'flake8',
           'setuptools',
           'zc.buildout',
           'zc.recipe.egg',
-          'flake8',
-          'zptlint',
-          'i18ndude',
       ],
-      tests_require=tests_require,
-      extras_require=dict(test=tests_require),
+      extras_require={
+          'test': [
+              'mock',
+              'zc.buildout [test]',
+              'zope.testing',
+          ],
+      },
       test_suite='plone.recipe.codeanalysis.tests.test_docs.test_suite',
       entry_points=entry_points,
       )

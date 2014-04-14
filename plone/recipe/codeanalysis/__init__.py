@@ -4,7 +4,7 @@ from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.debug_statements import \
     code_analysis_debug_statements
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
-from plone.recipe.codeanalysis.i18n import code_analysis_find_untranslated
+from plone.recipe.codeanalysis.i18ndude import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.imports import code_analysis_imports
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
@@ -57,11 +57,6 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
-        # ZPT Lint
-        self.options.setdefault('zptlint', 'False')
-        self.options.setdefault('zptlint-bin', os.path.join(
-            self.buildout['buildout']['bin-directory'], 'zptlint'
-        ))
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
         # XXX: keep compatibility with previous versions
@@ -98,11 +93,10 @@ class Recipe(object):
         self.options.setdefault('return-status-codes', 'False')
         # Find untranslated strings
         self.options.setdefault('find-untranslated', 'False')
-        i18ndude_path = os.path.join(
-            self.buildout['buildout']['bin-directory'], 'i18ndude'
-        )
-        self.options.setdefault('i18ndude-bin', i18ndude_path)
-
+        self.options.setdefault('i18ndude-bin', '')
+        # zptlint
+        self.options.setdefault('zptlint', 'False')
+        self.options.setdefault('zptlint-bin', '')
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis'
@@ -149,9 +143,6 @@ class Recipe(object):
                      'code_analysis'), },
             # flake8
             {'bin': 'flake8',
-             'arguments': False, },
-            # zptlint
-            {'bin': 'zptlint',
              'arguments': False, },
             # bin/code-analysis-flake8
             {'suffix': 'flake8', },
