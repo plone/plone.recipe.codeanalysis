@@ -162,6 +162,37 @@ The recipe supports the following options:
     in a file named ``.jshintignore``. See `JSHint documentation`_ for more
     details.
 
+**jscs**
+    If set to True, jscs code analysis is run. Default is ``False``.
+
+    JavaScript Code Style options should be configured using a ``.jscs.json``
+    file. You should align your javascript code to the next generation of
+    Plone's javascript framework Mockup_ and take it's ``.jscs.json`` file
+    which is available here:
+    https://github.com/plone/mockup/blob/master/.jscs.json
+
+    All configuration options are documented on the `jscs website`_.
+
+**jscs-bin**
+    Set the path to a custom version of JSCS, e.g.
+    "/usr/local/bin/jscs".
+
+    If you have Javascript Code Style Checker installed in your system and
+    path, you have nothing to do. To install with Buildout, add the following
+    section to your buildout and set jscs-bin to
+    ``{buildout:bin-directory}/jscs``::
+
+        [jscs]
+        recipe = gp.recipe.node
+        npms = jscs
+        scripts = jscs
+
+**jscs-exclude**
+    Allows you to specify directories which you don't want to be checked.
+    Default is none. Note that these directories have to be given in absolute
+    paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party`` for
+    example.
+
 **csslint**
     If set to True, CSS Lint code analysis is run. Default is ``False``.
 
@@ -291,3 +322,5 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`zptlint`: https://pypi.python.org/pypi/zptlint
 .. _`i18ndude`: https://pypi.python.org/pypi/i18ndude
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
+.. _`Mockup`: https://github.com/plone/mockup
+.. _`jscs website`: https://www.npmjs.org/package/jscs

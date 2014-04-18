@@ -7,6 +7,7 @@ from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.i18ndude import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.imports import code_analysis_imports
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
+from plone.recipe.codeanalysis.jscs import code_analysis_jscs
 from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
 from plone.recipe.codeanalysis.python_utf8_header import \
     code_analysis_utf8_header
@@ -54,6 +55,10 @@ class Recipe(object):
         self.options.setdefault('jshint', 'False')
         self.options.setdefault('jshint-bin', 'jshint')
         self.options.setdefault('jshint-exclude', '')
+        # JSCS
+        self.options.setdefault('jscs', 'False')
+        self.options.setdefault('jscs-bin', 'jscs')
+        self.options.setdefault('jscs-exclude', '')
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
@@ -148,6 +153,8 @@ class Recipe(object):
             {'suffix': 'flake8', },
             # bin/code-analysis-jshint
             {'suffix': 'jshint', },
+            # bin/code-analysis-jshint
+            {'suffix': 'jscs', },
             # bin/code-analysis-csslint
             {'suffix': 'csslint', },
             # bin/code-analysis-zptlint
@@ -237,6 +244,7 @@ def code_analysis(options):
     checks = [
         ['flake8', code_analysis_flake8],
         ['jshint', code_analysis_jshint],
+        ['jscs', code_analysis_jscs],
         ['csslint', code_analysis_csslint],
         ['zptlint', code_analysis_zptlint],
         ['deprecated-aliases', code_analysis_deprecated_aliases],

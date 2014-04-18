@@ -5,3 +5,4 @@ Contributors
 - Gil Forcada
 - Héctor Velarde
 - Ramiro Batista da Luz
+- Daniel Widerin

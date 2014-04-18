@@ -4,6 +4,9 @@ Change history
 1.0b7 (unreleased)
 ------------------
 
+- Add Javascript Code Style Checker ``jscs`` support.
+  [saily]
+
 - Remove hard dependency on i18ndude and zptlint; this will reduce the number
   of Zope/Plone direct dependencies to make life happier to people using
   Pyramid and other web Python-based development frameworks (closes `#53`_).
