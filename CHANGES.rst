@@ -1,7 +1,7 @@
 Change history
 **************
 
-1.0b7 (unreleased)
+1.0b7 (2014-05-04)
 ------------------
 
 - Add Javascript Code Style Checker ``jscs`` support.
