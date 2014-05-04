@@ -1,6 +1,3 @@
-Detailed Documentation
-**********************
-
 Example usage
 =============
 
