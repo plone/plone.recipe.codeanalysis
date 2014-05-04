@@ -268,7 +268,8 @@ i18ndude and zptlint support
 ----------------------------
 
 To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `zptlint`_;
-in order to use the following options you have to install them on your system::
+in order to use the following options you have to install them on your
+system:
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings.
@@ -303,6 +304,9 @@ Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
 
 
 JSHint "ERROR: Unknown option --exclude"::
+
+    JSHint                [ OK ]
+    ERROR: Unknown option --exclude
 
 Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 
