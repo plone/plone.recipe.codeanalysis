@@ -4,8 +4,7 @@ Change history
 1.0b8 (unreleased)
 ------------------
 
-- Use indices for format() to support Python 2.6. This fixes #77.
-  [timo]
+- Nothing changed yet.
 
 
 1.0b7 (2014-05-04)

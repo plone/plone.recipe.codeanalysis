@@ -17,7 +17,7 @@ def log(log_type, string=None):
     elif log_type == 'skip':
         print('   [\033[00;31m SKIP \033[0m]')
     elif log_type in ('failure', 'warning'):
-        print('[\033[00;31m {0} \033[0m]'.format(log_type))
+        print('[\033[00;31m {} \033[0m]'.format(log_type))
         print(string)
 
 
