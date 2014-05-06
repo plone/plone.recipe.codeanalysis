@@ -9,6 +9,7 @@ from tempfile import NamedTemporaryFile
 
 
 class TestUtils(unittest.TestCase):
+
     def test_process_output_csslint_should_be_colored(self):
         original = ' x Error - x '
         expected = u' x \033[00;31mError\033[0m - x '
