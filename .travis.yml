@@ -18,3 +18,4 @@ after_success:
 after_failure:
   - bin/csslint --version
   - bin/jshint --version
+  - bin/jscs --version
