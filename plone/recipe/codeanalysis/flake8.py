@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _normalize_boolean
-from plone.recipe.codeanalysis.utils import _read_subprocess_output
+from plone.recipe.codeanalysis.utils import normalize_boolean
+from plone.recipe.codeanalysis.utils import read_subprocess_output
 from utils import log
 
 import os
@@ -10,7 +10,7 @@ from tempfile import TemporaryFile
 def code_analysis_flake8(options):
     log('title', 'Flake8')
 
-    jenkins = _normalize_boolean(options['jenkins'])
+    jenkins = normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
     # first argument is child program
@@ -34,7 +34,7 @@ def code_analysis_flake8(options):
 
         # Wrapper to subprocess.Popen
         try:
-            output, return_code = _read_subprocess_output(cmd, output_file)
+            output, return_code = read_subprocess_output(cmd, output_file)
         except OSError:
             log('skip')
             return False

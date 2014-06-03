@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 
 import sys
 
@@ -10,7 +10,7 @@ def code_analysis_debug_statements(options):
     sys.stdout.flush()
 
     # Python files
-    files = _find_files(options, '.*\.py')
+    files = find_files(options, '.*\.py')
     if files:
         total_errors = []
         file_paths = files.strip().split('\n')
@@ -23,7 +23,7 @@ def code_analysis_debug_statements(options):
                 total_errors += errors
 
     # JavaScript files
-    files = _find_files(options, '.*\.js')
+    files = find_files(options, '.*\.js')
     if not files:
         print('      [\033[00;32m OK \033[0m]')
         return True

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from plone.recipe.codeanalysis.utils import _normalize_boolean
-from plone.recipe.codeanalysis.utils import _process_output
+from plone.recipe.codeanalysis.utils import normalize_boolean
+from plone.recipe.codeanalysis.utils import process_output
 from plone.recipe.codeanalysis.utils import log
-from plone.recipe.codeanalysis.utils import _read_subprocess_output
+from plone.recipe.codeanalysis.utils import read_subprocess_output
 
 import os
 import re
@@ -57,7 +57,7 @@ def run_cmd(options, jenkins):
         # Wrapper to subprocess.Popen
         try:
             # Return code is not used for jshint.
-            output = _read_subprocess_output(cmd, output_file)[0]
+            output = read_subprocess_output(cmd, output_file)[0]
             return output
         except OSError:
             log('skip')
@@ -69,7 +69,7 @@ def run_cmd(options, jenkins):
 
 def code_analysis_jshint(options):
     log('title', 'JSHint')
-    jenkins = _normalize_boolean(options['jenkins'])
+    jenkins = normalize_boolean(options['jenkins'])
 
     try:
         output = run_cmd(options, jenkins)
@@ -85,7 +85,7 @@ def code_analysis_jshint(options):
         else:
             # Name the pattern to use it in the substitution.
             old, new = '\((?P<name>E\d\d\d)\)', u'(\033[00;31m\g<name>\033[0m)'
-            log('failure', _process_output(output, old, new))
+            log('failure', process_output(output, old, new))
         return False
     else:
         log('ok')

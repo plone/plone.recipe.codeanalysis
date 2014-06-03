@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
 
 
 def code_analysis_utf8_header(options):
     log('title', 'Check utf-8 headers')
 
-    files = _find_files(options, '.*\.py')
+    files = find_files(options, '.*\.py')
     if not files:
         log('ok')
         return True

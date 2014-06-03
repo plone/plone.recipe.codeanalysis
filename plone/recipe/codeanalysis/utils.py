@@ -21,7 +21,7 @@ def log(log_type, string=None):
         print(string)
 
 
-def _normalize_boolean(value):
+def normalize_boolean(value):
     """Convert a string into a Boolean value.
 
     :param value: the string to be converted
@@ -29,7 +29,7 @@ def _normalize_boolean(value):
     return value.lower() == 'true'
 
 
-def _find_files(options, regex):
+def find_files(options, regex):
     paths = options['directory'].split('\n')
     cmd = ['find', '-L'] + paths + ['-regex', regex]
     process_files = subprocess.Popen(
@@ -41,7 +41,7 @@ def _find_files(options, regex):
     return files
 
 
-def _read_subprocess_output(cmd, output_file):
+def read_subprocess_output(cmd, output_file):
     """Run cmd and read the output from output_file.
 
     :param cmd: list containing command and options.
@@ -60,7 +60,7 @@ def _read_subprocess_output(cmd, output_file):
     return output, process.returncode
 
 
-def _process_output(output, old, new):
+def process_output(output, old, new):
     """Replace all occurrences of substring 'old' with 'new' in 'output'.
 
     :param output: string containing command output

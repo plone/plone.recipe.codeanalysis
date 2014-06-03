@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
 
 import sys
@@ -13,7 +13,7 @@ def code_analysis_pep3101(options):
         sys.stdout.write('\nstring-formatting option is deprecated; '
                          'use pep3101 instead.')
 
-    files = _find_files(options, '.*\.py')
+    files = find_files(options, '.*\.py')
     if not files:
         log('ok')
         return True

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
 
 import subprocess
@@ -10,7 +10,7 @@ def code_analysis_zptlint(options):
 
     files = ''
     for suffix in ('pt', 'cpt', 'zpt', ):
-        found_files = _find_files(options, '.*\.{0}'.format(suffix))
+        found_files = find_files(options, '.*\.{0}'.format(suffix))
         if found_files:
             files += found_files
 

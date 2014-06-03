@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
 
 import sys
@@ -16,7 +16,7 @@ def code_analysis_deprecated_aliases(options):
         sys.stdout.write('\ndeprecated-alias option is deprecated; '
                          'use deprecated-aliases instead.')
 
-    files = _find_files(options, '.*\.py')
+    files = find_files(options, '.*\.py')
     if not files:
         log('ok')
         return True

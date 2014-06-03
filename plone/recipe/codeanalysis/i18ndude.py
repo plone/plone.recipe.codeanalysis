@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
 
 import subprocess
@@ -7,7 +7,7 @@ import subprocess
 
 def code_analysis_find_untranslated(options):
     log('title', 'Translations')
-    files = _find_files(options, '.*\.pt')
+    files = find_files(options, '.*\.pt')
     if not files:
         log('ok')
         return True

@@ -16,7 +16,7 @@ from plone.recipe.codeanalysis.python_utf8_header import \
     code_analysis_utf8_header
 from plone.recipe.codeanalysis.quoting import \
     code_analysis_prefer_single_quotes
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
 from plone.recipe.codeanalysis.utils import log
 
