@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
-from plone.recipe.codeanalysis.utils import _normalize_boolean
+from plone.recipe.codeanalysis.utils import find_files
+from plone.recipe.codeanalysis.utils import normalize_boolean
 from plone.recipe.codeanalysis.utils import log
-from plone.recipe.codeanalysis.utils import _read_subprocess_output
+from plone.recipe.codeanalysis.utils import read_subprocess_output
 from tempfile import TemporaryFile
 
 import os
@@ -42,8 +42,8 @@ def run_cmd(options, jenkins):
     # cmd is a sequence of program arguments
     cmd = [options['jscs-bin']]     # , '--reporter=inline', '--no-colors']
 
-    all_files = _find_files(options, '.*\.js').strip().split('\n')
-    exc_files = _find_files({
+    all_files = find_files(options, '.*\.js').strip().split('\n')
+    exc_files = find_files({
         'directory': options['jscs-exclude'],
     }, '.*\.js').strip().split('\n')
 
@@ -68,7 +68,7 @@ def run_cmd(options, jenkins):
         # Wrapper to subprocess.Popen
         try:
             # Return code is not used for jscs.
-            output = _read_subprocess_output(cmd, output_file)[0]
+            output = read_subprocess_output(cmd, output_file)[0]
             return output
         except OSError:
             log('skip')
@@ -80,7 +80,7 @@ def run_cmd(options, jenkins):
 
 def code_analysis_jscs(options):
     log('title', 'JSCS')
-    jenkins = _normalize_boolean(options['jenkins'])
+    jenkins = normalize_boolean(options['jenkins'])
 
     try:
         output = run_cmd(options, jenkins)

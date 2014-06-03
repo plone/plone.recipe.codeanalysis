@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _find_files
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
 
 import re
@@ -13,7 +13,7 @@ def code_analysis_clean_lines(options):
                    'js', 'css', 'html',  # html stuff
                    'rst', 'txt',  # documentation
                    ):
-        found_files = _find_files(options, '.*\.{0}'.format(suffix))
+        found_files = find_files(options, '.*\.{0}'.format(suffix))
         if found_files:
             files += found_files
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import _normalize_boolean
-from plone.recipe.codeanalysis.utils import _read_subprocess_output
-from utils import _process_output
+from plone.recipe.codeanalysis.utils import normalize_boolean
+from plone.recipe.codeanalysis.utils import read_subprocess_output
+from plone.recipe.codeanalysis.utils import process_output
 from plone.recipe.codeanalysis.utils import log
 
 import os
@@ -20,7 +20,7 @@ def csslint_errors(output, jenkins=False):
 
 def code_analysis_csslint(options):
     log('title', 'CSS Lint')
-    jenkins = _normalize_boolean(options['jenkins'])
+    jenkins = normalize_boolean(options['jenkins'])
 
     # cmd is a sequence of program arguments
     # first argument is child program
@@ -39,7 +39,7 @@ def code_analysis_csslint(options):
         # Wrapper to subprocess.Popen
         try:
             # Return code is not used for csslint.
-            output = _read_subprocess_output(cmd, output_file)[0]
+            output = read_subprocess_output(cmd, output_file)[0]
         except OSError:
             log('skip')
             return False
@@ -53,7 +53,7 @@ def code_analysis_csslint(options):
             # TODO: pass color to _process_output
             # Name the pattern to use it in the substitution.
             old, new = '(?P<name>Error[^ -]*)', '\033[00;31m\g<name>\033[0m'
-            log('failure', _process_output(output, old, new))
+            log('failure', process_output(output, old, new))
         return False
     else:
         log('ok')
