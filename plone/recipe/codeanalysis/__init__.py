@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """Recipe codeanalysis"""
+from plone.recipe.codeanalysis.clean_lines import code_analysis_clean_lines
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
 from plone.recipe.codeanalysis.debug_statements import \
     code_analysis_debug_statements
+from plone.recipe.codeanalysis.deprecated_aliases import \
+    code_analysis_deprecated_aliases
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.i18ndude import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.imports import code_analysis_imports
@@ -18,9 +21,7 @@ from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
 from plone.recipe.codeanalysis.utils import log
 
 import os
-import re
 import subprocess
-import sys
 import zc.buildout
 import zc.recipe.egg
 
@@ -270,135 +271,3 @@ def code_analysis(options):
                 exit(1)
         print('The command "bin/code-analysis" exited with 0.')
         exit(0)
-
-
-def code_analysis_deprecated_aliases(options):
-    log('title', 'Deprecated aliases')
-
-    # XXX: advice on usage of the right option
-    if options.get('deprecated-methods', 'False') != 'False':
-        sys.stdout.write('\ndeprecated-methods option is deprecated; '
-                         'use deprecated-aliases instead.')
-    if options.get('deprecated-alias', 'False') != 'False':
-        sys.stdout.write('\ndeprecated-alias option is deprecated; '
-                         'use deprecated-aliases instead.')
-
-    files = _find_files(options, '.*\.py')
-    if not files:
-        log('ok')
-        return True
-
-    total_errors = []
-    file_paths = files.strip().split('\n')
-    for file_path in file_paths:
-        with open(file_path, 'r') as file_handler:
-            errors = _code_analysis_deprecated_aliases_lines_parser(
-                file_handler.readlines(), file_path)
-
-        if len(errors) > 0:
-            total_errors += errors
-
-    if len(total_errors) > 0:
-        log('failure')
-        for err in total_errors:
-            print(err)
-        return False
-    else:
-        log('ok')
-        return True
-
-
-def _code_analysis_deprecated_aliases_lines_parser(lines, file_path):
-    errors = []
-    linenumber = 0
-
-    # Keep adding deprecated aliases and its newer counterparts as:
-    # NEWER_VERSION : (LIST OF OLD METHODS)
-    deprecated_aliases = {
-        'assertEqual': ('failUnlessEqual', 'assertEquals', ),  # noqa
-        'assertNotEqual': ('failIfEqual', ),  # noqa
-        'assertTrue': ('failUnless', 'assert_', ),  # noqa
-        'assertFalse': ('failIf', ),  # noqa
-        'assertRaises': ('failUnlessRaises', ),  # noqa
-        'assertAlmostEqual': ('failUnlessAlmostEqual', ),  # noqa
-        'assertNotAlmostEqual': ('failIfAlmostEqual', ),  # noqa
-    }
-
-    msg = '{0}:{1}: found {2} replace it with {3}'
-
-    for line in lines:
-        linenumber += 1
-
-        # allow to skip some methods if the comment # noqa is found
-        if line.find('# noqa') != -1:
-            continue
-
-        for newer_version, old_alias in deprecated_aliases.iteritems():
-            for alias in old_alias:
-                if line.find(alias) != -1:
-                    errors.append(msg.format(
-                        file_path,
-                        linenumber,
-                        alias,
-                        newer_version)
-                    )
-                    continue
-
-    return errors
-
-
-def code_analysis_clean_lines(options):
-    log('title', 'Check clean lines')
-
-    files = ''
-    for suffix in ('py', 'pt', 'zcml', 'xml',  # standard plone extensions
-                   'js', 'css', 'html',  # html stuff
-                   'rst', 'txt',  # documentation
-                   ):
-        found_files = _find_files(options, '.*\.{0}'.format(suffix))
-        if found_files:
-            files += found_files
-
-    if len(files) == 0:
-        log('ok')
-        return True
-
-    total_errors = []
-    file_paths = files.strip().split('\n')
-    for file_path in file_paths:
-        with open(file_path, 'r') as file_handler:
-            errors = _code_analysis_clean_lines_parser(
-                file_handler.readlines(), file_path)
-
-        if len(errors) > 0:
-            total_errors += errors
-
-    if len(total_errors) > 0:
-        log('failure')
-        for err in total_errors:
-            print(err)
-        return False
-    else:
-        log('ok')
-        return True
-
-
-def _code_analysis_clean_lines_parser(lines, file_path):
-    errors = []
-    linenumber = 0
-
-    trailing_spaces = re.compile(r' $')
-    tabs = re.compile(r'\t')
-
-    for line in lines:
-        linenumber += 1
-
-        if trailing_spaces.search(line):
-            errors.append('{0}:{1}: found trailing spaces'.format(
-                file_path,
-                linenumber, ))
-        if tabs.search(line):
-            errors.append('{0}:{1}: found tabs'.format(
-                file_path,
-                linenumber, ))
-    return errors
