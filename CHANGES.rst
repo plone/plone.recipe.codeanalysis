@@ -1,7 +1,7 @@
 Change history
 **************
 
-1.0b8 (unreleased)
+1.0b8 (2014-06-05)
 ------------------
 
 - Add ``clean-lines-exclude`` support and updated README.
