@@ -1,6 +1,12 @@
 Change history
 **************
 
+1.0b9 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.0b8 (2014-06-05)
 ------------------
 
