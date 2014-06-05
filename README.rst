@@ -188,10 +188,10 @@ The recipe supports the following options:
         scripts = jscs
 
 **jscs-exclude**
-    Allows you to specify directories which you don't want to be checked.
-    Default is none. Note that these directories have to be given in absolute
-    paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party`` for
-    example.
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none. Note that these directories have to be given in
+    absolute paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party``
+    for example.
 
 **csslint**
     If set to True, CSS Lint code analysis is run. Default is ``False``.
