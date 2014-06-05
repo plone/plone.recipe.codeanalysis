@@ -80,6 +80,7 @@ class Recipe(object):
         self.options.setdefault('utf8-header', 'False')
         # clean lines
         self.options.setdefault('clean-lines', 'False')
+        self.options.setdefault('clean-lines-exclude', '')
         # Prefer single quotes over double quotes
         self.options.setdefault('prefer-single-quotes', 'False')
         # PEP 3101 (Advanced String Formatting)
