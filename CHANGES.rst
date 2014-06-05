@@ -4,7 +4,9 @@ Change history
 1.0b9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Refactor ``code_analysis_clean_lines`` to use a new method to retrieve
+  files and avoid too complex violation.
+  [saily]
 
 
 1.0b8 (2014-06-05)

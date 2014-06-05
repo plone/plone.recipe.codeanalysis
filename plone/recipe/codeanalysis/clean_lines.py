@@ -5,9 +5,7 @@ from plone.recipe.codeanalysis.utils import log
 import re
 
 
-def code_analysis_clean_lines(options):
-    log('title', 'Check clean lines')
-
+def _code_analysis_clean_lines_files_finder(options):
     file_paths = set()
     file_paths_excluded = set([''])
     extensions = (
@@ -33,7 +31,13 @@ def code_analysis_clean_lines(options):
 
     # Remove excluded files
     file_paths -= file_paths_excluded
+    return file_paths
 
+
+def code_analysis_clean_lines(options):
+    log('title', 'Check clean lines')
+
+    file_paths = _code_analysis_clean_lines_files_finder(options)
     if len(file_paths) == 0:
         log('ok')
         return True
