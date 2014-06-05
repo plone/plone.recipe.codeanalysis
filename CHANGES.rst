@@ -4,6 +4,12 @@ Change history
 1.0b8 (unreleased)
 ------------------
 
+- Add ``clean-lines-exclude`` support and updated README.
+  [saily]
+
+- Added tests for clean-lines checks.
+  [saily]
+
 - Use indices for format() to support Python 2.6. This fixes #77.
   [timo]
 
