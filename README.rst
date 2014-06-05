@@ -188,10 +188,10 @@ The recipe supports the following options:
         scripts = jscs
 
 **jscs-exclude**
-    Allows you to specify directories which you don't want to be checked.
-    Default is none. Note that these directories have to be given in absolute
-    paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party`` for
-    example.
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none. Note that these directories have to be given in
+    absolute paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party``
+    for example.
 
 **csslint**
     If set to True, CSS Lint code analysis is run. Default is ``False``.
@@ -238,6 +238,12 @@ The recipe supports the following options:
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
+
+**clean-lines-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none. Note that these directories have to be given in
+    absolute paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party``
+    for example.
 
 **prefer-single-quotes**
     If set to True, Python files will be scanned searching for strings quoted

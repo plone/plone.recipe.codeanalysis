@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import unittest
+from os.path import isfile as path_isfile
+from os.path import join as path_join
 from plone.recipe.codeanalysis.jscs import code_analysis_jscs
 from plone.recipe.codeanalysis.jscs import jscs_errors
 from shutil import rmtree
 from tempfile import mkdtemp
-from os.path import join as path_join
-from os.path import isfile as path_isfile
+import unittest
 
 INCORRECT_FILE = """\
 function a_method(){

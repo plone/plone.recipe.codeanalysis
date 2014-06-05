@@ -8,21 +8,37 @@ import re
 def code_analysis_clean_lines(options):
     log('title', 'Check clean lines')
 
-    files = ''
-    for suffix in ('py', 'pt', 'zcml', 'xml',  # standard plone extensions
-                   'js', 'css', 'html',  # html stuff
-                   'rst', 'txt',  # documentation
-                   ):
+    file_paths = set()
+    file_paths_excluded = set([''])
+    extensions = (
+        'py', 'pt', 'zcml', 'xml',  # standard plone extensions
+        'js', 'css', 'html',  # html stuff
+        'rst', 'txt',  # documentation
+    )
+
+    for suffix in extensions:
         found_files = find_files(options, '.*\.{0}'.format(suffix))
         if found_files:
-            files += found_files
+            file_paths = file_paths.union(
+                set(found_files.strip().split('\n')))
 
-    if len(files) == 0:
+    if options['clean-lines-exclude']:
+        for suffix in extensions:
+            found_files = find_files({
+                'directory': options['clean-lines-exclude'],
+            }, '.*\.{0}'.format(suffix))
+            if found_files:
+                file_paths_excluded = file_paths_excluded.union(
+                    set(found_files.strip().split('\n')))
+
+    # Remove excluded files
+    file_paths -= file_paths_excluded
+
+    if len(file_paths) == 0:
         log('ok')
         return True
 
     total_errors = []
-    file_paths = files.strip().split('\n')
     for file_path in file_paths:
         with open(file_path, 'r') as file_handler:
             errors = _code_analysis_clean_lines_parser(
