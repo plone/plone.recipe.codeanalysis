@@ -78,5 +78,3 @@ def _code_analysis_deprecated_aliases_lines_parser(lines, file_path):
                     continue
 
     return errors
-
-
