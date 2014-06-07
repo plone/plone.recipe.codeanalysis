@@ -9,15 +9,14 @@ from plone.recipe.codeanalysis.deprecated_aliases import \
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from plone.recipe.codeanalysis.i18ndude import code_analysis_find_untranslated
 from plone.recipe.codeanalysis.imports import code_analysis_imports
-from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 from plone.recipe.codeanalysis.jscs import code_analysis_jscs
+from plone.recipe.codeanalysis.jshint import code_analysis_jshint
 from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
 from plone.recipe.codeanalysis.python_utf8_header import \
     code_analysis_utf8_header
 from plone.recipe.codeanalysis.quoting import \
     code_analysis_prefer_single_quotes
 from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
-
 import os
 import subprocess
 import zc.buildout

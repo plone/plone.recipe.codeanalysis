@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import unittest
+from os.path import isfile as path_isfile
+from os.path import join as path_join
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
-from plone.recipe.codeanalysis.jshint import run_cmd
 from plone.recipe.codeanalysis.jshint import jshint_errors
+from plone.recipe.codeanalysis.jshint import run_cmd
 from shutil import rmtree
 from tempfile import mkdtemp
-from os.path import join as path_join
-from os.path import isfile as path_isfile
+import unittest
 
 INCORRECT_FILE = """var number_ten= =10;
 var word_ten='ten';

@@ -2,8 +2,8 @@
 from plone.recipe.codeanalysis.clean_lines import code_analysis_clean_lines
 from shutil import rmtree
 from tempfile import mkdtemp
-import unittest
 import os
+import unittest
 
 VALID_CODE = """\
 def foo(bar):

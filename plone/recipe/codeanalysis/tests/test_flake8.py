@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from unittest import TestCase
+from os.path import isfile as path_isfile
+from os.path import join as path_join
 from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
 from shutil import rmtree
 from tempfile import mkdtemp
-from os.path import join as path_join
-from os.path import isfile as path_isfile
+from unittest import TestCase
 
 
 class TestFlake8(TestCase):

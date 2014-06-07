@@ -2,29 +2,29 @@
 from plone.recipe.codeanalysis.imports import code_analysis_imports
 from shutil import rmtree
 from tempfile import mkdtemp
-import unittest
 import os
+import unittest
 
 VALID = """\
-from Foo.bar import baz
-from foo.Bar import baz
-from foo.bar import Baz
-from foo.bar import baz
-import baz
-"""
+from Foo.bar import baz\n\
+from foo.Bar import baz\n\
+from foo.bar import Baz\n\
+from foo.bar import baz\n\
+import baz\n\
+"""  # noqa
 
 INVALID_SORTED = """\
-from Foo.bar import baz
-from foo.bar import Baz
-from foo.Bar import baz
-from foo.bar import baz
-import baz
-"""
+from Foo.bar import baz\n\
+from foo.bar import Baz\n\
+from foo.Bar import baz\n\
+from foo.bar import baz\n\
+import baz\n\
+"""  # noqa
 
 INVALID_GROUPED = """\
-from Foo import (bar, baz)
-from foo import Baz, baz
-"""
+from Foo import (bar, baz)\n\
+from foo import Baz, baz\n\
+"""  # noqa
 
 
 class TestImports(unittest.TestCase):

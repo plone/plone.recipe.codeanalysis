@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import subprocess
 import re
+import subprocess
 import sys
 
 MAX_LINE_LENGTH = 20
