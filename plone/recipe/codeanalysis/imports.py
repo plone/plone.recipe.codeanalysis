@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
+import re
 
 
 def code_analysis_imports(options):
@@ -14,11 +15,9 @@ def code_analysis_imports(options):
     file_paths = files.strip().split('\n')
     for file_path in file_paths:
         with open(file_path, 'r') as file_handler:
-            errors = _code_analysis_imports_parser(
-                file_handler.readlines(), file_path)
-
-        if len(errors) > 0:
-            total_errors += errors
+            lines = file_handler.readlines()
+            total_errors += _code_analysis_imports_parser(lines, file_path)
+            total_errors += _code_analysis_imports_sorting(lines, file_path)
 
     if len(total_errors) > 0:
         log('failure')
@@ -42,4 +41,34 @@ def _code_analysis_imports_parser(lines, relative_path):
                     relative_path,
                     linenumber,
                 ))
+    return errors
+
+
+def _code_analysis_imports_sorting(lines, relative_path):
+    errors = []
+    imports = []
+    linenumber = 0
+
+    is_from_import = lambda l: \
+        re.match(r'^from\s([^\s]+)\simport\s([^\s]+)$', l)
+    is_module_import = lambda l: \
+        re.match(r'^import\s([^\s]+)$', l)
+
+    for line in lines:
+        linenumber += 1
+
+        # allow to skip some methods if the comment # noqa is found
+        if line.find('# noqa') != -1:
+            continue
+
+        if is_from_import(line) or is_module_import(line):
+            imports.append((linenumber, line))
+
+    imports_sorted = imports[:]
+    imports.sort(lambda a, b: cmp(a[1], b[1]))
+
+    if imports_sorted != imports:
+        errors.append('{0}:{1}-{2}: found unsorted imports'.format(
+            relative_path, imports[0][0], imports[-1][0]))
+
     return errors
