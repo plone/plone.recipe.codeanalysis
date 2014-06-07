@@ -6,65 +6,65 @@ import os
 import unittest
 
 VALID = [
-    "from Foo.bar import baz",
-    "from foo.Bar import baz",
-    "from foo.bar import Baz",
-    "from foo.bar import baz",
-    "import baz",
+    'from Foo.bar import baz',
+    'from foo.Bar import baz',
+    'from foo.bar import Baz',
+    'from foo.bar import baz',
+    'import baz',
 ]
 
 VALID_MULTILINE = [
-    "from foo.bar import baz",
-    "from foo.bar import \\",
-    "    this_is_a_very_long_baz",
-    "import baz",
+    'from foo.bar import baz',
+    'from foo.bar import \\',
+    '    this_is_a_very_long_baz',
+    'import baz',
 ]
 
 VALID_MULTIPLE_MULTILINE = [
-    "from foo.bar import baz",
-    "from foo.bar import \\",
-    "    this_is_a_very_long_baz",
-    "from foo.car import \\",
-    "    this_is_a_very_long_baz",
-    "import baz",
+    'from foo.bar import baz',
+    'from foo.bar import \\',
+    '    this_is_a_very_long_baz',
+    'from foo.car import \\',
+    '    this_is_a_very_long_baz',
+    'import baz',
 ]
 
 VALID_IGNORED_SORTED = [
-    "from Foo.bar import Baz",
-    "from Foo.bar import baz  # noqa",
-    "from foo.Bar import baz",
-    "from foo.bar import baz",
-    "import baz",
-    "import Baz  # noqa",
+    'from Foo.bar import Baz',
+    'from Foo.bar import baz  # noqa',
+    'from foo.Bar import baz',
+    'from foo.bar import baz',
+    'import baz',
+    'import Baz  # noqa',
 ]
 
 INVALID_SORTED = [
-    "from Foo.bar import baz",
-    "from foo.bar import Baz",
-    "from foo.Bar import baz",
-    "from foo.bar import baz",
-    "import baz",
+    'from Foo.bar import baz',
+    'from foo.bar import Baz',
+    'from foo.Bar import baz',
+    'from foo.bar import baz',
+    'import baz',
 ]
 
 INVALID_MULTILINE = [
-    "from foo.bar import \\",
-    "    this_is_a_very_long_baz",
-    "from foo.bar import baz",
-    "import baz",
+    'from foo.bar import \\',
+    '    this_is_a_very_long_baz',
+    'from foo.bar import baz',
+    'import baz',
 ]
 
 INVALID_MULTIPLE_MULTILINE = [
-    "from foo.bar import \\",
-    "    this_is_a_very_long_baz",
-    "from foo.bar import z_baz",
-    "from foo.bar import \\",
-    "    this_is_another_very_long_baz",
-    "import baz",
+    'from foo.bar import \\',
+    '    this_is_a_very_long_baz',
+    'from foo.bar import z_baz',
+    'from foo.bar import \\',
+    '    this_is_another_very_long_baz',
+    'import baz',
 ]
 
 INVALID_GROUPED = [
-    "from Foo import (bar, baz)",
-    "from foo import Baz, baz",
+    'from Foo import (bar, baz)',
+    'from foo import Baz, baz',
 ]
 
 
