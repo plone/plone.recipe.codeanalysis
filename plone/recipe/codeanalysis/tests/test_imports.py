@@ -85,6 +85,10 @@ class TestImports(unittest.TestCase):
             f.write('\n'.join(contents))
         self.options['directory'] = self.test_dir
 
+    def test_analysis_should_return_true_for_no_files(self):
+        self.options['directory'] = self.test_dir
+        self.assertTrue(code_analysis_imports(self.options))
+
     def test_analysis_should_return_true_for_valid_imports(self):
         self._create_file_in_test_dir('valid.py', VALID)
         self.assertTrue(code_analysis_imports(self.options))
