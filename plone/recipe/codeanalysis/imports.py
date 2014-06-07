@@ -50,10 +50,11 @@ def _code_analysis_imports_sorting(lines, relative_path):
     linenumber = 0
 
     is_from_import = lambda l: \
-        re.match(r'^from\s([^\s]+)\simport\s([^\s]+)$', l)
+        re.match(r'^from\s+([^\s]+)\s+import\s+([^\s]+)$', l)
     is_module_import = lambda l: \
-        re.match(r'^import\s([^\s]+)$', l)
+        re.match(r'^import\s+([^\s]+)$', l)
 
+    previous_line = ''
     for line in lines:
         linenumber += 1
 
@@ -61,11 +62,21 @@ def _code_analysis_imports_sorting(lines, relative_path):
         if line.find('# noqa') != -1:
             continue
 
+        is_multiline_import = line.strip().endswith('\\')
+        if is_multiline_import:
+            previous_line += line
+            continue
+
+        if not is_multiline_import and previous_line:
+            line = previous_line.strip('\\\n') + line.strip()
+            previous_line = ''
+
         if is_from_import(line) or is_module_import(line):
             imports.append((linenumber, line))
 
+    # duplicate imports list and sort it
     imports_sorted = imports[:]
-    imports.sort(lambda a, b: cmp(a[1], b[1]))
+    imports_sorted.sort(lambda a, b: cmp(a[1], b[1]))
 
     if imports_sorted != imports:
         errors.append('{0}:{1}-{2}: found unsorted imports'.format(
