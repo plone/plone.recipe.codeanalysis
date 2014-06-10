@@ -4,6 +4,10 @@ Change history
 1.0b9 (unreleased)
 ------------------
 
+- Check import sorting in ``code_analysis_imports`` and add tests for
+  clean and sorted imports.
+  [saily]
+
 - Refactor ``code_analysis_clean_lines`` to use a new method to retrieve
   files and avoid too complex violation.
   [saily]

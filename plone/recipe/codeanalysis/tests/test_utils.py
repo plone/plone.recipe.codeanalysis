@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import unittest
+from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import process_output
 from plone.recipe.codeanalysis.utils import read_subprocess_output
-from plone.recipe.codeanalysis.utils import find_files
+from tempfile import NamedTemporaryFile
 from tempfile import TemporaryFile
 from tempfile import mkdtemp
-from tempfile import NamedTemporaryFile
+import unittest
 
 
 class TestUtils(unittest.TestCase):

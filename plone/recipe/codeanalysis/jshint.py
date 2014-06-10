@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-
+from plone.recipe.codeanalysis.utils import log
 from plone.recipe.codeanalysis.utils import normalize_boolean
 from plone.recipe.codeanalysis.utils import process_output
-from plone.recipe.codeanalysis.utils import log
 from plone.recipe.codeanalysis.utils import read_subprocess_output
-
+from tempfile import TemporaryFile
 import os
 import re
-from tempfile import TemporaryFile
 
 
 class CmdError(Exception):
