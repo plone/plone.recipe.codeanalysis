@@ -256,7 +256,8 @@ The recipe supports the following options:
 
 **imports**
     If set to True, checks that imports in Python files follow `plone.api
-    conventions`_. Default is ``False``.
+    conventions`_. This also includes checking for alphabetically sorted
+    import statements. Default is ``False``.
 
 **debug-statements**
     If set to True, scan Python files looking for debug-like statements.
