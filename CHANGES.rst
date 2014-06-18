@@ -1,8 +1,8 @@
 Change history
 ==============
 
-1.0b9 (unreleased)
-------------------
+1.0rc1 (2014-06-18)
+-------------------
 
 - Return a string to avoid TypeError when no file was checked with ``jscs``.
   [saily]
