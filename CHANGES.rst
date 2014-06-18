@@ -4,6 +4,9 @@ Change history
 1.0b9 (unreleased)
 ------------------
 
+- Return a string to avoid TypeError when no file was checked with ``jscs``.
+  [saily]
+
 - Check import sorting in ``code_analysis_imports`` and add tests for
   clean and sorted imports.
   [saily]

@@ -75,6 +75,14 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
         self.options['directory'] = self.test_dir
         self.assertFalse(code_analysis_jscs(self.options))
 
+    def test_analysis_should_return_true_when_invalid_file_is_excluded(self):
+        full_path = path_join(self.test_dir, 'incorrect.js')
+        with file(full_path, 'w') as incorrect_code:
+            incorrect_code.write(INCORRECT_FILE)
+        self.options['directory'] = self.test_dir
+        self.options['jscs-exclude'] = full_path
+        self.assertTrue(code_analysis_jscs(self.options))
+
     def test_analysis_should_return_false_when_oserror(self):
         # The options are fake, so the function should raise an OSError
         # and return false.

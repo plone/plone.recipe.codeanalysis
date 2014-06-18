@@ -51,7 +51,7 @@ def run_cmd(options, jenkins):
 
     if not files:
         log('ok')
-        return True
+        return ''
 
     # put all files in a single line
     cmd += list(files)
