@@ -7,7 +7,6 @@
   "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
   "disallowTrailingWhitespace": true,
   "requireCamelCaseOrUpperCaseIdentifiers": true,
-  "requireLeftStickedOperators": [","],
   "requireLineFeedAtFileEnd": true,
   "requireSpaceAfterBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!=="],
   "requireSpaceAfterKeywords": ["if", "else", "for", "while", "do", "switch", "return", "try", "catch"],
