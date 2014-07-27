@@ -10,6 +10,10 @@ def code_analysis_flake8(options):
     log('title', 'Flake8')
 
     jenkins = normalize_boolean(options['jenkins'])
+    try:
+        filesystem = normalize_boolean(options['filesystem'])
+    except KeyError:
+        filesystem = False
 
     # cmd is a sequence of program arguments
     # first argument is child program
@@ -27,6 +31,9 @@ def code_analysis_flake8(options):
     try:
         if jenkins:
             output_file_name = os.path.join(options['location'], 'flake8.log')
+            output_file = open(output_file_name, 'w+')
+        elif filesystem:
+            output_file_name = os.path.join(options['location'], 'flake8.txt')
             output_file = open(output_file_name, 'w+')
         else:
             output_file = TemporaryFile('w+')
