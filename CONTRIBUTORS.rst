@@ -6,3 +6,4 @@ Contributors
 - Héctor Velarde
 - Ramiro Batista da Luz
 - Daniel Widerin
+- Michael Davis

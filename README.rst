@@ -87,6 +87,16 @@ jslint (to read the jshint output::
 
     **/parts/code-analysis/jshint.xml
 
+Filesystem output
+=================
+
+If jenkins is set to False, you can still store the output on the filesystem by setting flake8-filesystem=True.
+This is ignored if jenkins is set to True.
+
+output::
+
+    **/parts/code-analysis/flake8.txt
+
 Links
 =====
 
@@ -119,6 +129,10 @@ The recipe supports the following options:
     If set to True, the flake8, jshint and csslint code analysis steps will
     write output files that can be processed by the
     `Jenkins Violations plugin`_. Default is ``False``.
+
+**flake8-filesystem**
+    If set to True, the flake8 code analysis step will
+    write an output file. Ignored if jenkins is True. Default is ``False``.
 
 **flake8**
     If set to True, run Flake8 code analysis. Default is ``True``.
