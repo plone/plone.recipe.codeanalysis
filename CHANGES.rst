@@ -4,7 +4,8 @@ Change history
 1.0rc2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add option to store flake8 output if jenkins is False
+  [Michael Davis]
 
 
 1.0rc1 (2014-06-18)
