@@ -93,7 +93,7 @@ class Recipe(object):
         self.options.setdefault('debug-statements', 'False')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
-        self.options.setdefault('filesystem', 'False')
+        self.options.setdefault('flake8-filesystem', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
         # Find untranslated strings

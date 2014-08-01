@@ -11,12 +11,12 @@ Minimal buildout::
     ... [code-analysis]
     ... recipe = plone.recipe.codeanalysis
     ... directory = %(directory)s
-    ... filesystem = %(filesystem)s
+    ... flake8-filesystem = %(flake8-filesystem)s
     ... jshint = %(jshint)s
     ... jshint = %(csslint)s
     ... """ % {
     ...     'directory' : '${buildout:directory}/plone/recipe/codeanalysis',
-    ...     'filesystem': 'True',
+    ...     'flake8-filesystem': 'True',
     ...     'jshint': 'True',
     ...     'csslint': 'True',
     ... })

@@ -90,8 +90,8 @@ jslint (to read the jshint output::
 Filesystem output
 =================
 
-If jenkins is set to False, you can still store the output on the filesystem by setting filesytem=True.
-This is ignore if jenkins is set to True.
+If jenkins is set to False, you can still store the output on the filesystem by setting flake8-filesystem=True.
+This is ignored if jenkins is set to True.
 
 output::
 
@@ -130,7 +130,7 @@ The recipe supports the following options:
     write output files that can be processed by the
     `Jenkins Violations plugin`_. Default is ``False``.
 
-**filesystem**
+**flake8-filesystem**
     If set to True, the flake8 code analysis step will
     write an output file. Ignored if jenkins is True. Default is ``False``.
 
