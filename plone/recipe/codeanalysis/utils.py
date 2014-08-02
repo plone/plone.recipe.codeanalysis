@@ -6,10 +6,11 @@ import sys
 MAX_LINE_LENGTH = 20
 
 
-def log(log_type, string=None):
+def log(log_type, msg=None):
     if log_type == 'title':
-        sys.stdout.write(string)
-        for i in range(0, MAX_LINE_LENGTH - len(string)):
+        if msg:
+            sys.stdout.write(msg)
+        for i in range(0, MAX_LINE_LENGTH - len(msg)):
             sys.stdout.write(' ')
         sys.stdout.flush()
     elif log_type == 'ok':
@@ -18,7 +19,8 @@ def log(log_type, string=None):
         print('   [\033[00;31m SKIP \033[0m]')
     elif log_type in ('failure', 'warning'):
         print('[\033[00;31m {0} \033[0m]'.format(log_type))
-        print(string)
+        if msg:
+            print(msg)
 
 
 def normalize_boolean(value):
