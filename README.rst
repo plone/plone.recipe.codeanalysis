@@ -277,6 +277,12 @@ The recipe supports the following options:
     If set to True, scan Python files looking for debug-like statements.
     Default is ``False``.
 
+**hasattr**
+    If set to True, scan Python files looking for ``hasattr`` calls.
+    This is considered bad practice as it swallows exceptions.
+    Use ``getattr(obj, attribute, None)`` always.
+    Default is ``False``.
+
 **return-status-codes**
     If set to True, the ``bin/code-analysis`` script returns an error code
     that Continuous Integration servers (like Travis CI) can use to fail or
