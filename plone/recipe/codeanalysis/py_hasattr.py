@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.utils import find_files
 from plone.recipe.codeanalysis.utils import log
+import re
+
+RE_HASATTR = re.compile('(^|.*\s)hasattr\(.+\).*')
+RE_NOQA = re.compile('.*\#\s*noqa($|\s.*)')
 
 
 def code_analysis_hasattr(options):
@@ -40,12 +44,11 @@ def _code_analysis_hasattr_lines_parser(lines, file_path):
 
     for line in lines:
         linenumber += 1
-
         # if '# noqa' is on the line, ignore it
-        if '# noqa' in line != -1:
+        if RE_NOQA.match(line):
             continue
 
-        if 'hasattr(' in line:
+        if RE_HASATTR.match(line):
             errors.append(msg.format(
                 file_path,
                 linenumber

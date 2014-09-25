@@ -5,7 +5,7 @@ Change history
 -------------------
 
 - Add a check to look for hasattr() calls, which are considered bad practice.
-  [gforcada]
+  [gforcada, jensens]
 
 - Add option to store flake8 output if jenkins is False
   [Michael Davis]
