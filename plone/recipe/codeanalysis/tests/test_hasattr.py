@@ -70,7 +70,7 @@ class TestHasattr(unittest.TestCase):
         self.assertTrue(py_hasattr.code_analysis_hasattr(self.options))
 
     def test_analysis_should_return_errors_if_there_is_hasattr(self):
-        self.assertEquals(
+        self.assertEqual(
             len(
                 py_hasattr._code_analysis_hasattr_lines_parser(
                     INVALID_NO_IGNORE,
