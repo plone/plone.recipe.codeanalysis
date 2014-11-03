@@ -60,7 +60,6 @@ setup(name='plone.recipe.codeanalysis',
       ],
       extras_require={
           'test': [
-              'mock',
               'zc.buildout [test]',
               'zope.testing',
           ],

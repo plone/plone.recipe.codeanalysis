@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.utils import log
 from plone.recipe.codeanalysis.utils import normalize_boolean
 from plone.recipe.codeanalysis.utils import read_subprocess_output
 from tempfile import TemporaryFile
-from utils import log
+
 import os
 
 
