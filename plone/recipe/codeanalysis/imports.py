@@ -76,7 +76,7 @@ def _code_analysis_imports_sorting(lines, relative_path):
 
     # duplicate imports list and sort it
     imports_sorted = imports[:]
-    imports_sorted.sort(lambda a, b: cmp(a[1], b[1]))
+    imports_sorted.sort(key=lambda x: x[1])
 
     if imports_sorted != imports:
         errors.append('{0}:{1}-{2}: found unsorted imports'.format(

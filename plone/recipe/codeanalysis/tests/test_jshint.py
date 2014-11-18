@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from io import open
 from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.jshint import code_analysis_jshint
@@ -66,6 +68,9 @@ class TestJSHint(unittest.TestCase):
             'jshint-exclude': '',
             'jenkins': 'False'
         }
+        if path_isfile('../../bin/jshint'):  # when cwd is parts/test
+            self.options['jshint-bin'] = '../../bin/jshint'
+
         self.test_dir = mkdtemp()
 
     def tearDown(self):
@@ -73,14 +78,14 @@ class TestJSHint(unittest.TestCase):
 
     def test_analysis_should_return_false_when_error_found(self):
         full_path = path_join(self.test_dir, 'incorrect.js')
-        with file(full_path, 'w') as incorrect_code:
+        with open(full_path, 'w') as incorrect_code:
             incorrect_code.write(INCORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.assertFalse(code_analysis_jshint(self.options))
 
     def test_analysis_should_output_warnings(self):
         full_path = path_join(self.test_dir, 'warnings.js')
-        with file(full_path, 'w') as warnings_code:
+        with open(full_path, 'w') as warnings_code:
             warnings_code.write(WARNINGS_FILE)
         self.options['directory'] = self.test_dir
         expected_output = EXPECTED_WARNINGS_OUTPUT.format(self.options)
@@ -89,7 +94,7 @@ class TestJSHint(unittest.TestCase):
 
     def test_analysis_should_return_true_for_warnings(self):
         full_path = path_join(self.test_dir, 'warnings.js')
-        with file(full_path, 'w') as warnings_code:
+        with open(full_path, 'w') as warnings_code:
             warnings_code.write(WARNINGS_FILE)
         self.options['directory'] = self.test_dir
         self.assertTrue(code_analysis_jshint(self.options))
@@ -103,7 +108,7 @@ class TestJSHint(unittest.TestCase):
 
     def test_analysis_should_return_true(self):
         full_path = path_join(self.test_dir, 'correct.js')
-        with file(full_path, 'w') as correct_code:
+        with open(full_path, 'w') as correct_code:
             correct_code.write(CORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.assertTrue(code_analysis_jshint(self.options))
@@ -111,7 +116,7 @@ class TestJSHint(unittest.TestCase):
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         location_tmp_dir = mkdtemp()
         full_path = path_join(self.test_dir, 'correct.js')
-        with file(full_path, 'w') as correct_code:
+        with open(full_path, 'w') as correct_code:
             correct_code.write(CORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.options['location'] = location_tmp_dir

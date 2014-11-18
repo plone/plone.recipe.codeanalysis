@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from io import open
 from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.jscs import code_analysis_jscs
@@ -63,6 +65,8 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
             'jscs-exclude': '',
             'jenkins': 'False'
         }
+        if path_isfile('../../bin/jscs'):  # when cwd is parts/test
+            self.options['jscs-bin'] = '../../bin/jscs'
         self.test_dir = mkdtemp()
 
     def tearDown(self):
@@ -70,14 +74,14 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
 
     def test_analysis_should_return_false_when_error_found(self):
         full_path = path_join(self.test_dir, 'incorrect.js')
-        with file(full_path, 'w') as incorrect_code:
+        with open(full_path, 'w') as incorrect_code:
             incorrect_code.write(INCORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.assertFalse(code_analysis_jscs(self.options))
 
     def test_analysis_should_return_true_when_invalid_file_is_excluded(self):
         full_path = path_join(self.test_dir, 'incorrect.js')
-        with file(full_path, 'w') as incorrect_code:
+        with open(full_path, 'w') as incorrect_code:
             incorrect_code.write(INCORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.options['jscs-exclude'] = full_path
@@ -92,7 +96,7 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
 
     def test_analysis_should_return_true(self):
         full_path = path_join(self.test_dir, 'correct.js')
-        with file(full_path, 'w') as correct_code:
+        with open(full_path, 'w') as correct_code:
             correct_code.write(CORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.assertTrue(code_analysis_jscs(self.options))
@@ -100,7 +104,7 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         location_tmp_dir = mkdtemp()
         full_path = path_join(self.test_dir, 'correct.js')
-        with file(full_path, 'w') as correct_code:
+        with open(full_path, 'w') as correct_code:
             correct_code.write(CORRECT_FILE)
         self.options['directory'] = self.test_dir
         self.options['location'] = location_tmp_dir

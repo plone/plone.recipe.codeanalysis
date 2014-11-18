@@ -40,7 +40,10 @@ def find_files(options, regex):
         stdout=subprocess.PIPE
     )
     files, err = process_files.communicate()
-    return files
+    if isinstance(files, bytes):
+        return files.decode('utf-8')
+    else:
+        return files
 
 
 def read_subprocess_output(cmd, output_file):
