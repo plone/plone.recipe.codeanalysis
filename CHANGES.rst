@@ -10,6 +10,9 @@ Change history
 - Add option to store flake8 output if jenkins is False
   [Michael Davis]
 
+- Fix find_files from utils to find files, not directories
+  [do3cc]
+
 1.0rc1 (2014-06-18)
 -------------------
 
