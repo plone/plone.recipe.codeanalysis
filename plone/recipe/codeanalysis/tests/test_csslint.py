@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from io import open
 from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.csslint import code_analysis_csslint
@@ -14,13 +16,15 @@ class TestCssLint(TestCase):
             'csslint-bin': 'bin/csslint',
             'jenkins': 'False'
         }
+        if path_isfile('../../bin/csslint'):  # when cwd is parts/test
+            self.options['csslint-bin'] = '../../bin/csslint'
         self.test_dir = mkdtemp()
 
     def tearDown(self):
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):
-        incorrect_code = file(path_join(self.test_dir, 'incorrect.css'), 'w')
+        incorrect_code = open(path_join(self.test_dir, 'incorrect.css'), 'w')
         incorrect_code.write(
             'a:link {color: blue}\n'
             '{}\n'
@@ -38,7 +42,7 @@ class TestCssLint(TestCase):
         self.assertFalse(code_analysis_csslint(self.options))
 
     def test_analysis_should_return_true(self):
-        correct_code = file(path_join(self.test_dir, 'correct.css'), 'w')
+        correct_code = open(path_join(self.test_dir, 'correct.css'), 'w')
         correct_code.write(
             'a:link {color:blue}\n'
             'h3 {color: red}\n'
@@ -49,7 +53,7 @@ class TestCssLint(TestCase):
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         location_tmp_dir = mkdtemp()
-        correct_code = file(path_join(self.test_dir, 'correct.css'), 'w')
+        correct_code = open(path_join(self.test_dir, 'correct.css'), 'w')
         correct_code.write(
             'a:link {color:blue}\n'
             'h3 {color: red}\n'

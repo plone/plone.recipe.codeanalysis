@@ -66,7 +66,11 @@ def _code_analysis_deprecated_aliases_lines_parser(lines, file_path):
         if line.find('# noqa') != -1:
             continue
 
-        for newer_version, old_alias in deprecated_aliases.iteritems():
+        try:
+            deprecated_aliases_iteritems = deprecated_aliases.iteritems()
+        except AttributeError:
+            deprecated_aliases_iteritems = deprecated_aliases.items()  # PY3
+        for newer_version, old_alias in deprecated_aliases_iteritems:
             for alias in old_alias:
                 if line.find(alias) != -1:
                     errors.append(msg.format(

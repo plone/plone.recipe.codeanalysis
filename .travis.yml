@@ -1,11 +1,17 @@
 language: python
-python: 2.7
+python:
+  - 2.7
+  - 3.4
 env:
   matrix:
     - CONF=travis.cfg
     - CONF=extras.cfg EXTRAS_INSTALLED=true
+matrix:
+  allow_failures:
+    - python: 3.4
+      env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
-  - python bootstrap.py -v 1.7.1
+  - python bootstrap.py
   - bin/buildout -c $CONF annotate
   - bin/buildout -N -t 3 -c $CONF
 script:

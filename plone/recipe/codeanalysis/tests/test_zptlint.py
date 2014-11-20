@@ -34,6 +34,8 @@ class ZPTLintTestCase(unittest.TestCase):
             'zptlint': 'True',
             'zptlint-bin': 'bin/zptlint',
         }
+        if os.path.isfile('../../bin/zptlint'):  # when cwd is parts/test
+            self.options['zptlint-bin'] = '../../bin/zptlint'
         self.test_dir = mkdtemp()
 
     def tearDown(self):

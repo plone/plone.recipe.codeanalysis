@@ -34,6 +34,8 @@ class i18ndudeTestCase(unittest.TestCase):
             'find-untranslated': 'True',
             'i18ndude-bin': 'bin/i18ndude',
         }
+        if os.path.isfile('../../bin/i18ndude'):  # when cwd is parts/test
+            self.options['i18ndude-bin'] = '../../bin/i18ndude'
         self.test_dir = mkdtemp()
 
     def tearDown(self):
