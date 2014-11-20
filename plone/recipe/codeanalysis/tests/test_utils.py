@@ -70,3 +70,19 @@ class TestUtils(unittest.TestCase):
         sorted_output = '\n'.join(sorted(output.splitlines()))
         expect = '\n'.join([x.name for x in temp_files])
         self.assertEqual(expect, sorted_output)
+
+    def test_find_files_not_dirs(self):
+        test_dir = mkdtemp()
+        temp_files = []
+        for n in range(1, 5):
+            temp_file = NamedTemporaryFile(
+                'w+',
+                suffix='.py',
+                prefix='tmp' + str(n),
+                dir=test_dir)
+            temp_files.append(temp_file)
+        mkdtemp(suffix='.py', dir=test_dir)
+        output = find_files({'directory': test_dir}, '.*py')
+        sorted_output = '\n'.join(sorted(output.splitlines()))
+        expect = '\n'.join([x.name for x in temp_files])
+        self.assertEqual(expect, sorted_output)
