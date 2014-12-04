@@ -4,7 +4,7 @@ Change history
 1.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Nothing changed since 1.0rc1.
 
 
 1.0rc1 (2014-06-18)
