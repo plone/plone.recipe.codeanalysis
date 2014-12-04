@@ -1,8 +1,8 @@
 Change history
 ==============
 
-1.0rc2 (unreleased)
--------------------
+1.1 (unreleased)
+----------------
 
 - Add a check to look for hasattr() calls, which are considered bad practice.
   [gforcada, jensens]
@@ -12,6 +12,13 @@ Change history
 
 - Fix find_files from utils to find files, not directories
   [do3cc]
+
+
+1.0 (2014-12-04)
+----------------
+
+- Nothing changed since 1.0rc1.
+
 
 1.0rc1 (2014-06-18)
 -------------------
