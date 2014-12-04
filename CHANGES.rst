@@ -1,7 +1,7 @@
 Change history
 ==============
 
-1.1 (unreleased)
+1.1 (2014-12-04)
 ----------------
 
 - Add a check to look for hasattr() calls, which are considered bad practice.
