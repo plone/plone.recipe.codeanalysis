@@ -1,6 +1,12 @@
 Change history
 ==============
 
+1.1.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.1 (2014-12-04)
 ----------------
 
