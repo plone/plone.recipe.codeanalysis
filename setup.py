@@ -21,9 +21,7 @@ long_description = (
     read('CONTRIBUTORS.rst')
     + '\n\n' +
     read('CHANGES.rst')
-    + '\n\n' +
-    'Download\n'
-    '********\n')
+)
 
 entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {
