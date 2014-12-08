@@ -27,14 +27,14 @@ long_description = (
 
 entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {
-    "zc.buildout": [
-        "default = %s" % entry_point
+    'zc.buildout': [
+        'default = %s' % entry_point
     ]
 }
 
 setup(name='plone.recipe.codeanalysis',
       version=version,
-      description="Static code analysis for buildout-based Python projects.",
+      description='Static code analysis for buildout-based Python projects.',
       long_description=long_description,
       classifiers=[
           'Development Status :: 5 - Production/Stable',
