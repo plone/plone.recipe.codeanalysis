@@ -176,7 +176,18 @@ class Recipe(object):
             os.mkdir(git_hooks_directory)
 
         with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
-            output_file.write('#!/bin/bash\nbin/code-analysis')
+            #  The last or true message is necessary, because
+            #  an empty pipe is falsy. Having no issues would prevent
+            #  your commit without it
+            changed_files = 'git diff --cached --name-only --diff-filter=ACM'
+            output_file.write('#!/bin/bash\n' + changed_files +
+                              ' | grep --extended-regexp . > /dev/null'
+                              ' && bin/code-analysis'
+                              ' | grep --extended-regexp --color=never'
+                              '     `' + changed_files +
+                              '       | tr "\\n" "|"'
+                              '       | sed --expression "s/|$/|failure/"`'
+                              ' || true')
         subprocess.call([
             'chmod',
             '775',
