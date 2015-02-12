@@ -14,7 +14,7 @@ class TestFlake8(TestCase):
         self.options = {
             'bin-directory': 'bin/',
             'flake8-ignore': '',
-            'flake8-exclude': 'bootstrap.py,docs,*.egg',
+            'flake8-exclude': 'bootstrap.py,bootstrap-buildout.py,docs,*.egg',
             'flake8-max-complexity': '10',
             'flake8-max-line-length': '79',
             'jenkins': 'False'

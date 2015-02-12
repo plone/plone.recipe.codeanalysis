@@ -146,7 +146,7 @@ The recipe supports the following options:
     exclude bootstrap.py, setup.py and all collective.* and plone.* packages.
     Just set "flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,
     plone.*" in your buildout configuration. Default is
-    ``bootstrap.py,docs,*.egg``.
+    ``bootstrap.py,bootstrap-buildout.py,docs,*.egg``.
 
 **flake8-max-complexity**
     McCabe complexity threshold. Default is ``10``.

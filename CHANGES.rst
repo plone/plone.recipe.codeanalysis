@@ -4,7 +4,9 @@ Change history
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add bootstrap-buildout.py to flake8-exclude default. zc.buildout > 2 uses
+  bootstrap-buildout.py instead of bootstrap.py.
+  [timo]
 
 
 1.1 (2014-12-04)
