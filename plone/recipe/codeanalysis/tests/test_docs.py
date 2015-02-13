@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Doctest runner for 'plone.recipe.codeanalysis'.
-"""
-__docformat__ = 'restructuredtext'
-
 from zope.testing import renormalizing
 
 import doctest
