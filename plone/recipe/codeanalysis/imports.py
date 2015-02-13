@@ -49,11 +49,11 @@ def _code_analysis_imports_sorting(lines, relative_path):
     imports = []
     linenumber = 0
 
-    def is_from_import(l):
-        return re.match(r'^from\s+([^\s]+)\s+import\s+([^\s]+)$', l)
+    def is_from_import(line):
+        return re.match(r'^from\s+([^\s]+)\s+import\s+([^\s]+)$', line)
 
-    def is_module_import(l):
-        return re.match(r'^import\s+([^\s]+)$', l)
+    def is_module_import(line):
+        return re.match(r'^import\s+([^\s]+)$', line)
 
     previous_line = ''
     for line in lines:
