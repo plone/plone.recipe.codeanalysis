@@ -10,6 +10,12 @@ import sys
 MAX_LINE_LENGTH = 20
 
 
+def is_string(unknown):
+    if sys.version_info[0] < 3:
+        return isinstance(unknown, (str, basestring))
+    return isinstance(unknown, str)
+
+
 class Analyser:
 
     __metaclass__ = ABCMeta
@@ -65,7 +71,7 @@ class Analyser:
 
         :param value: the string to be converted
         """
-        if isinstance(value, (str, unicode)) and value.strip():
+        if is_string(value) and value.strip():
             return value.lower() == 'true'
         return False
 
@@ -76,7 +82,7 @@ class Analyser:
         :rtype : list
         :param value: the string to be converted
         """
-        if isinstance(value, (str, unicode)) and value.strip():
+        if is_string(value) and value.strip():
             return value.split('\n')
         return []
 
@@ -164,7 +170,7 @@ class Analyser:
             if self.use_jenkins:
                 Analyser.log(
                     'failure',
-                    'Output file written to {0:s}.'.format(output_file.name)
+                    'Output file written to {0}.'.format(output_file.name)
                 )
             else:
                 Analyser.log(
