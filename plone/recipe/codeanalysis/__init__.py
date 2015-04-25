@@ -15,6 +15,7 @@ from plone.recipe.codeanalysis.pep3101 import PEP3101
 from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.python_utf8_header import UTF8Headers
 from plone.recipe.codeanalysis.quoting import PreferSingleQuotes
+from plone.recipe.codeanalysis.tslint import TSLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 import os
@@ -39,6 +40,7 @@ all_checks = [
     PreferSingleQuotes,
     UTF8Headers,
     ZPTLint,
+    TSLint,
 ]
 
 
@@ -77,6 +79,9 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
+        # TS Lint
+        self.options.setdefault('tslint', 'False')
+        self.options.setdefault('tslint-bin', 'tslint')
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
         # XXX: keep compatibility with previous versions
