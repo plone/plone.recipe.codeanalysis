@@ -80,14 +80,14 @@ class CleanLines(Analyser):
                 if files:
                     all_files |= set(CleanLines.split_lines(files))
 
-            if exclude:
-                files = self.find_files('.*\.{0}'.format(extension), exclude)
-                if files:
-                    exc_files |= set(CleanLines.split_lines(files))
+                if exclude:
+                    files = self.find_files(
+                        '.*\.{0}'.format(extension), exclude)
+                    if files:
+                        exc_files |= set(CleanLines.split_lines(files))
 
             # Remove excluded files
-            files = set(all_files) - set(exc_files)
-
+            files = all_files - exc_files
             for file_path in files:
                 total_errors.extend(self.check(file_path, **check))
 
