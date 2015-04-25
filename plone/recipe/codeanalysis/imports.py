@@ -12,7 +12,7 @@ class Imports(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                r'^\s*(?:from\s+[^\s]+\s+)?import\s*\(?.+,.+\)?$':
+                r'^\s*(?:from\s+[^\s]+\s+)?import(?:\s|\().+,.+\)?$':
                     'grouped import',
                 r'^\s*from\s+[^\s]+\s+import\s+\*$': 'wildcard import',
             },
