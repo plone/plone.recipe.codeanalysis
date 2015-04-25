@@ -24,6 +24,15 @@ class ZPTLint(Analyser):
 
         return cmd
 
+    def parse_output(self, output_file, return_code):
+        output_file.seek(0)
+
+        if output_file.read() != '':
+            # zptlint does not have a correct return_code
+            return_code = 1
+
+        return super(ZPTLint, self).parse_output(output_file, return_code)
+
 
 def console_script(options):
     return ZPTLint(options).run()
