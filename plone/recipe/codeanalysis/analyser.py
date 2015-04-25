@@ -12,7 +12,7 @@ MAX_LINE_LENGTH = 20
 
 def is_string(unknown):
     if sys.version_info[0] < 3:
-        return isinstance(unknown, (str, basestring))
+        return isinstance(unknown, basestring)  # noqa for python3
     return isinstance(unknown, str)
 
 
