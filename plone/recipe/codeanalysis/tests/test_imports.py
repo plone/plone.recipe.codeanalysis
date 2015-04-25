@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.imports import code_analysis_imports
+from plone.recipe.codeanalysis.imports import Imports
 from shutil import rmtree
 from tempfile import mkdtemp
 import os
@@ -87,36 +87,36 @@ class TestImports(unittest.TestCase):
 
     def test_analysis_should_return_true_for_no_files(self):
         self.options['directory'] = self.test_dir
-        self.assertTrue(code_analysis_imports(self.options))
+        self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_valid_imports(self):
         self._create_file_in_test_dir('valid.py', VALID)
-        self.assertTrue(code_analysis_imports(self.options))
+        self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_valid_multi_imports(self):
         self._create_file_in_test_dir('valid.py', VALID_MULTILINE)
-        self.assertTrue(code_analysis_imports(self.options))
+        self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_2_valid_multi_imports(self):
         self._create_file_in_test_dir('valid.py', VALID_MULTIPLE_MULTILINE)
-        self.assertTrue(code_analysis_imports(self.options))
+        self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_unsorted_ignored_imports(self):
         self._create_file_in_test_dir('valid.py', VALID_IGNORED_SORTED)
-        self.assertTrue(code_analysis_imports(self.options))
+        self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_grouped_imports(self):
         self._create_file_in_test_dir('invalid.py', INVALID_GROUPED)
-        self.assertFalse(code_analysis_imports(self.options))
+        self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_unsorted_imports(self):
         self._create_file_in_test_dir('invalid.py', INVALID_SORTED)
-        self.assertFalse(code_analysis_imports(self.options))
+        self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_unsorted_multi_imports(self):
         self._create_file_in_test_dir('invalid.py', INVALID_MULTILINE)
-        self.assertFalse(code_analysis_imports(self.options))
+        self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_2_unsorted_multi_imports(self):
         self._create_file_in_test_dir('invalid.py', INVALID_MULTIPLE_MULTILINE)
-        self.assertFalse(code_analysis_imports(self.options))
+        self.assertFalse(Imports(self.options).run())

@@ -1,23 +1,18 @@
 # -*- coding: utf-8 -*-
-"""Recipe codeanalysis"""
-from plone.recipe.codeanalysis.clean_lines import code_analysis_clean_lines
-from plone.recipe.codeanalysis.csslint import code_analysis_csslint
-from plone.recipe.codeanalysis.debug_statements import \
-    code_analysis_debug_statements
-from plone.recipe.codeanalysis.deprecated_aliases import \
-    code_analysis_deprecated_aliases
-from plone.recipe.codeanalysis.flake8 import code_analysis_flake8
-from plone.recipe.codeanalysis.i18ndude import code_analysis_find_untranslated
-from plone.recipe.codeanalysis.imports import code_analysis_imports
-from plone.recipe.codeanalysis.jscs import code_analysis_jscs
-from plone.recipe.codeanalysis.jshint import code_analysis_jshint
-from plone.recipe.codeanalysis.pep3101 import code_analysis_pep3101
-from plone.recipe.codeanalysis.py_hasattr import code_analysis_hasattr
-from plone.recipe.codeanalysis.python_utf8_header import \
-    code_analysis_utf8_header
-from plone.recipe.codeanalysis.quoting import \
-    code_analysis_prefer_single_quotes
-from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
+from plone.recipe.codeanalysis.clean_lines import CleanLines
+from plone.recipe.codeanalysis.csslint import CSSLint
+from plone.recipe.codeanalysis.debug_statements import DebugStatements
+from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
+from plone.recipe.codeanalysis.flake8 import Flake8
+from plone.recipe.codeanalysis.i18ndude import I18NDude
+from plone.recipe.codeanalysis.imports import Imports
+from plone.recipe.codeanalysis.jscs import JSCS
+from plone.recipe.codeanalysis.jshint import JSHint
+from plone.recipe.codeanalysis.pep3101 import PEP3101
+from plone.recipe.codeanalysis.py_hasattr import HasAttr
+from plone.recipe.codeanalysis.python_utf8_header import UTF8Headers
+from plone.recipe.codeanalysis.quoting import PreferSingleQuotes
+from plone.recipe.codeanalysis.zptlint import ZPTLint
 import os
 import subprocess
 import zc.buildout
@@ -25,6 +20,22 @@ import zc.recipe.egg
 
 
 current_dir = os.path.dirname(__file__)
+all_checks = [
+    Flake8,
+    JSHint,
+    JSCS,
+    CSSLint,
+    ZPTLint,
+    DeprecatedAliases,
+    UTF8Headers,
+    CleanLines,
+    PreferSingleQuotes,
+    PEP3101,
+    Imports,
+    DebugStatements,
+    I18NDude,
+    HasAttr,
+]
 
 
 class Recipe(object):
@@ -143,81 +154,34 @@ class Recipe(object):
         self.install()
 
     def install_scripts(self):
-        # data for all scripts
-        scripts = [
-            # bin/code-analysis
-            {'bin': (self.name,
-                     self.__module__,
-                     'code_analysis'), },
-            # flake8
-            {'bin': 'flake8',
-             'arguments': False, },
-            # bin/code-analysis-flake8
-            {'suffix': 'flake8', },
-            # bin/code-analysis-jshint
-            {'suffix': 'jshint', },
-            # bin/code-analysis-jshint
-            {'suffix': 'jscs', },
-            # bin/code-analysis-csslint
-            {'suffix': 'csslint', },
-            # bin/code-analysis-zptlint
-            {'suffix': 'zptlint', },
-            # bin/code-analysis-deprecated-aliases
-            {'suffix': 'deprecated-aliases', },
-            # bin/code-analysis-utf8-header
-            {'suffix': 'utf8-header', },
-            # bin/code-analysis-clean-lines
-            {'suffix': 'clean-lines', },
-            # bin/code-analysis-prefer-single-quotes
-            {'suffix': 'prefer-single-quotes', },
-            # bin/code-analysis-pep3101
-            {'suffix': 'pep3101', },
-            # bin/code-analysis-imports
-            {'suffix': 'imports', },
-            # bin/code-analysis-debug-statements
-            {'suffix': 'debug-statements', },
-            # bin/code-analysis-find-untranslated
-            {'suffix': 'find-untranslated', },
-            # bin/code-analysis-hasattr
-            {'suffix': 'hasattr', },
-        ]
-
         eggs = self.egg.working_set()[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
         directory = self.buildout['buildout']['bin-directory']
         arguments = self.options.__repr__()
 
-        for script in scripts:
-            cmd = None
-            if 'suffix' in script:
-                suffix = script['suffix']
-                py_method = suffix.replace('-', '_')
+        def add_script(cmd, **kwargs):
+            zc.buildout.easy_install.scripts(
+                [cmd], eggs, python, directory, **kwargs)
 
-                cmd = ('{0}-{1}'.format(self.name, suffix),
-                       self.__module__,
-                       'code_analysis_{0}'.format(py_method), )
-            elif 'bin' in script:
-                cmd = script['bin']
-            else:
-                raise ValueError('Error trying to install a script. Either'
-                                 '"bin" or "suffix" are required.')
+        # flake8
+        add_script('flake8')
+        # bin/code-analysis
+        add_script(
+            (self.name, self.__module__, 'code_analysis'),
+            arguments=arguments
+        )
+        # others
+        for klass in all_checks:
+            instance = klass(self.options)
 
-            if 'arguments' in script and not script['arguments']:
-                zc.buildout.easy_install.scripts(
-                    [cmd],
-                    eggs,
-                    python,
-                    directory,
-                )
-            else:
-                zc.buildout.easy_install.scripts(
-                    [cmd],
-                    eggs,
-                    python,
-                    directory,
-                    arguments=arguments,
-                )
+            if not instance.enabled and 'console_script' in klass.__module__:
+                continue
+
+            cmd = ('{0}-{1}'.format(self.name, instance.name),
+                   klass.__module__, 'console_script')
+
+            add_script(cmd, arguments=arguments)
 
     def install_pre_commit_hook(self):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
@@ -246,33 +210,19 @@ class Recipe(object):
 
 
 def code_analysis(options):
-    checks = [
-        ['flake8', code_analysis_flake8],
-        ['jshint', code_analysis_jshint],
-        ['jscs', code_analysis_jscs],
-        ['csslint', code_analysis_csslint],
-        ['zptlint', code_analysis_zptlint],
-        ['deprecated-aliases', code_analysis_deprecated_aliases],
-        ['utf8-header', code_analysis_utf8_header],
-        ['clean-lines', code_analysis_clean_lines],
-        ['prefer-single-quotes', code_analysis_prefer_single_quotes],
-        ['pep3101', code_analysis_pep3101],
-        ['imports', code_analysis_imports],
-        ['debug-statements', code_analysis_debug_statements],
-        ['find-untranslated', code_analysis_find_untranslated],
-        ['hasattr', code_analysis_hasattr],
-    ]
     status_codes = []
-    for option, check in checks:
-        if option in options and options[option] != 'False':
-            status_codes.append(check(options))
+    for klass in all_checks:
+        check = klass(options)
+
+        if check.enabled and not check.run():
+            status_codes.append(False)
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
     if options['return-status-codes'] != 'False':
-        for status_code in status_codes:
-            if not status_code:
-                print('The command "bin/code-analysis" exited with 1.')
-                exit(1)
+        if not all(status_codes):
+            print('The command "bin/code-analysis" exited with 1.')
+            exit(1)
+
         print('The command "bin/code-analysis" exited with 0.')
         exit(0)

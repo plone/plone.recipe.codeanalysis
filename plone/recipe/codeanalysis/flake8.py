@@ -1,56 +1,40 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import log
-from plone.recipe.codeanalysis.utils import normalize_boolean
-from plone.recipe.codeanalysis.utils import read_subprocess_output
-from tempfile import TemporaryFile
-
+from plone.recipe.codeanalysis.analyser import Analyser
 import os
 
 
-def code_analysis_flake8(options):
-    log('title', 'Flake8')
+class Flake8(Analyser):
 
-    jenkins = normalize_boolean(options['jenkins'])
-    if 'flake8-filesystem' in options:
-        flake8_filesystem = normalize_boolean(options['flake8-filesystem'])
-    else:
-        flake8_filesystem = False
+    name = 'flake8'
+    title = 'Flake8'
+    output_file_extension = 'log'
 
-    # cmd is a sequence of program arguments
-    # first argument is child program
-    cmd = [
-        os.path.join(options['bin-directory']) + '/flake8',
-        '--ignore={0}'.format(options['flake8-ignore']),
-        '--exclude={0}'.format(options['flake8-exclude']),
-        '--max-complexity={0}'.format(options['flake8-max-complexity']),
-        '--max-line-length={0}'.format(options['flake8-max-line-length'])
-    ]
+    @property
+    def filesystem(self):
+        return Flake8.normalize_boolean(self.get_prefixed_option('filesystem'))
 
-    paths_to_check = options['directory'].split('\n')
-    cmd.extend(paths_to_check)
+    @property
+    def cmd(self):
+        cmd = [
+            os.path.join(self.options['bin-directory']) + '/flake8',
+            '--ignore={0}'.format(self.get_prefixed_option('ignore')),
+            '--exclude={0}'.format(self.get_prefixed_option('exclude')),
+            '--max-complexity={0}'.format(
+                self.get_prefixed_option('max-complexity')),
+            '--max-line-length={0}'.format(
+                self.get_prefixed_option('max-line-length'))
+        ]
 
-    try:
-        if jenkins:
-            output_file_name = os.path.join(options['location'], 'flake8.log')
-            output_file = open(output_file_name, 'w+')
-        elif flake8_filesystem:
-            output_file_name = os.path.join(options['location'], 'flake8.txt')
-            output_file = open(output_file_name, 'w+')
-        else:
-            output_file = TemporaryFile('w+')
+        paths_to_check = Flake8.split_lines(self.options['directory'])
+        cmd.extend(paths_to_check)
+        return cmd
 
-        # Wrapper to subprocess.Popen
-        try:
-            output, return_code = read_subprocess_output(cmd, output_file)
-        except OSError:
-            log('skip')
-            return False
-    finally:
-        output_file.close()
+    def open_output_file(self):
+        if not self.filesystem:
+            return super(Flake8, self).open_output_file()
 
-    if return_code:
-        log('failure', output)
-        return False
-    else:
-        log('ok')
-        return True
+        return open(os.path.join(self.options['location'], 'flake8.txt'), 'w+')
+
+
+def console_script(options):
+    return Flake8(options).run()
