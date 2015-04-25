@@ -65,7 +65,7 @@ class Analyser:
 
         :param value: the string to be converted
         """
-        if isinstance(value, basestring) and value.strip():
+        if isinstance(value, (str, unicode)) and value.strip():
             return value.lower() == 'true'
         return False
 
@@ -76,7 +76,7 @@ class Analyser:
         :rtype : list
         :param value: the string to be converted
         """
-        if isinstance(value, basestring) and value.strip():
+        if isinstance(value, (str, unicode)) and value.strip():
             return value.split('\n')
         return []
 
