@@ -103,4 +103,3 @@ class CleanLines(Analyser):
 
 def console_script(options):
     return CleanLines(options).run()
-
