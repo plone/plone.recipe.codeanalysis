@@ -5,6 +5,7 @@ from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.jscs import JSCS
 from shutil import rmtree
+from tempfile import TemporaryFile
 from tempfile import mkdtemp
 import unittest
 
@@ -116,14 +117,38 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
         rmtree(location_tmp_dir)
         self.assertTrue(file_exist)
 
-    # def test_jscs_errors_should_return_false_empty_xml_output(self):
-    #     self.assertFalse(jscs_errors(XML_EMPTY_OUTPUT, True))
+    def test_jscs_parse_output_should_return_true_empty_xml_output(self):
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write(XML_EMPTY_OUTPUT)
+        jscs_file.seek(0)
+        self.options['jenkins'] = 'True'
+        linter = JSCS(self.options)
+        self.assertTrue(linter.use_jenkins)
+        self.assertTrue(linter.parse_output(jscs_file, 1))
 
-    # def test_jscs_errors_should_return_true_with_xml_output(self):
-    #     self.assertTrue(jscs_errors(XML_OUTPUT, True))
+    def test_jscs_parse_output_should_return_false_with_xml_output(self):
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write(XML_OUTPUT)
+        jscs_file.seek(0)
+        self.options['jenkins'] = 'True'
+        linter = JSCS(self.options)
+        self.assertTrue(linter.use_jenkins)
+        self.assertFalse(linter.parse_output(jscs_file, 1))
 
-    # def test_jscs_errors_should_return_true_with_normal_output(self):
-    #     self.assertTrue(jscs_errors(DEFAULT_OUTPUT, False))
+    def test_jscs_parse_output_should_return_false_with_normal_output(self):
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write(DEFAULT_OUTPUT)
+        jscs_file.seek(0)
+        self.options['jenkins'] = 'False'
+        linter = JSCS(self.options)
+        self.assertFalse(linter.use_jenkins)
+        self.assertFalse(linter.parse_output(jscs_file, 1))
 
-    # def test_jscs_errors_should_return_false_empty_normal_output(self):
-    #     self.assertFalse(jscs_errors('', False))
+    def test_jscs_parse_output_should_return_true_empty_normal_output(self):
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write('')
+        jscs_file.seek(0)
+        self.options['jenkins'] = 'False'
+        linter = JSCS(self.options)
+        self.assertFalse(linter.use_jenkins)
+        self.assertTrue(linter.parse_output(jscs_file, 1))
