@@ -183,7 +183,7 @@ The recipe supports the following options:
     file. You should align your javascript code to the next generation of
     Plone's javascript framework Mockup_ and take it's ``.jscs.json`` file
     which is available here:
-    https://github.com/plone/mockup/blob/master/.jscs.json
+    https://github.com/plone/mockup/blob/master/mockup/.jscs.json
 
     All configuration options are documented on the `jscs website`_.
 
