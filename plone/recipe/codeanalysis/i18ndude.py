@@ -13,7 +13,7 @@ class I18NDude(Analyser):
         files = I18NDude.split_lines(self.find_files('.*\.pt'))
 
         if files:
-            cmd.append(self.get_prefixed_option('bin') or '')
+            cmd.append(self.options.get('i18ndude-bin') or '')
             cmd.append('find-untranslated')
             cmd.extend(files)
 
