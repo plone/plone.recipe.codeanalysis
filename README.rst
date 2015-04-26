@@ -27,8 +27,9 @@ This buildout recipe creates a script to run the code analysis::
 By default ``plone.recipe.codeanalysis`` also creates a git pre-commit hook, in
 order to run the code analysis automatically before each commit.
 
-``plone.recipe.codeanalysis`` comes with a Jenkins integration, that allows to use
-the same code analysis settings on your local machine as well as on Jenkins.
+``plone.recipe.codeanalysis`` comes with a Jenkins integration, that allows to
+use the same code analysis settings on your local machine as well as on
+Jenkins.
 
 
 Installation
