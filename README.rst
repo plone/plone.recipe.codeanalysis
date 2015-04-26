@@ -245,9 +245,17 @@ The recipe supports the following options:
     ``False``. See `Unit testing framework documentation`_ for more
     information.
 
+**deprecated-aliases-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
+
 **utf8-header**
     If set to True, Python files without a utf-8 header (like
     ``# -*- coding: utf-8 -*-``) will cause a warning. Default is ``False``.
+
+**utf8-header-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
 
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
@@ -255,33 +263,51 @@ The recipe supports the following options:
 
 **clean-lines-exclude**
     Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none. Note that these directories have to be given in
-    absolute paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party``
-    for example.
+    checked. Default is none.
 
 **prefer-single-quotes**
     If set to True, Python files will be scanned searching for strings quoted
     with double quote signs (``"``). Default is ``False``.
+
+**prefer-single-quotes-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
 
 **pep3101**
     If set to True, Python files will be scanned in search of existing '%'
     string formatting operators. Default is ``False``. See `PEP 3101 (Advanced
     String Formatting)`_ for more information.
 
+**pep3101-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
+
 **imports**
     If set to True, checks that imports in Python files follow `plone.api
     conventions`_. This also includes checking for alphabetically sorted
     import statements. Default is ``False``.
 
+**imports-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
+
 **debug-statements**
     If set to True, scan Python files looking for debug-like statements.
     Default is ``False``.
+
+**debug-statements-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
 
 **hasattr**
     If set to True, scan Python files looking for ``hasattr`` calls.
     This is considered bad practice as it swallows exceptions.
     Use ``getattr(obj, attribute, None)`` always.
     Default is ``False``.
+
+**hasattr-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
 
 **return-status-codes**
     If set to True, the ``bin/code-analysis`` script returns an error code
