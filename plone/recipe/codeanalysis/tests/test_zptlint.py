@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.zptlint import code_analysis_zptlint
+from plone.recipe.codeanalysis.zptlint import ZPTLint
 from shutil import rmtree
 from tempfile import mkdtemp
 
@@ -45,23 +45,22 @@ class ZPTLintTestCase(unittest.TestCase):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
         self.options['directory'] = self.test_dir
-        self.assertFalse(code_analysis_zptlint(self.options))
+        self.assertFalse(ZPTLint(self.options).run())
 
     def test_analysis_should_return_false_when_oserror(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
         self.options['zptlint-bin'] = ''
         self.options['directory'] = self.test_dir
-        self.assertFalse(code_analysis_zptlint(self.options))
+        self.assertFalse(ZPTLint(self.options).run())
 
     @unittest.skipIf(not ZPTLINT_INSTALLED, 'zptlint is not installed')
     def test_analysis_should_return_true(self):
         with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
             f.write(VALID_CODE)
         self.options['directory'] = self.test_dir
-        self.assertTrue(code_analysis_zptlint(self.options))
+        self.assertTrue(ZPTLint(self.options).run())
 
-    @unittest.expectedFailure  # Jenkins support is not yet implemented
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         location_tmp_dir = mkdtemp()
         with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
@@ -69,7 +68,7 @@ class ZPTLintTestCase(unittest.TestCase):
         self.options['directory'] = self.test_dir
         self.options['location'] = location_tmp_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
-        code_analysis_zptlint(self.options)
+        ZPTLint(self.options).run()
         file_exists = os.path.isfile(
             os.path.join(location_tmp_dir, 'zptlint.log'))
         rmtree(location_tmp_dir)

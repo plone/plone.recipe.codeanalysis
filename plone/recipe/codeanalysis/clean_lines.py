@@ -1,82 +1,105 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import find_files
-from plone.recipe.codeanalysis.utils import log
-
+from plone.recipe.codeanalysis.analyser import Analyser
 import re
 
 
-def _code_analysis_clean_lines_files_finder(options):
-    file_paths = set()
-    file_paths_excluded = set([''])
-    extensions = (
-        'py', 'pt', 'zcml', 'xml',  # standard plone extensions
-        'js', 'css', 'html',  # html stuff
-        'rst', 'txt',  # documentation
+class CleanLines(Analyser):
+
+    name = 'clean-lines'
+    title = 'Check clean lines'
+    message = '{0:s}:{1:d}: found {2:s}'
+    checks = [
+        {
+            'extensions': (
+                'py', 'pt', 'zcml', 'xml',  # standard plone extensions
+                'js', 'css', 'html',  # html stuff
+                'rst', 'txt', 'md',  # documentation
+            ),
+            'fail': {
+                r' $': 'trailing spaces',
+                r'\t': 'tabs',
+            },
+        }
+    ]
+    ignore_patterns = (
+        r'#\snoqa',
+        r'//\snoqa',
     )
 
-    for suffix in extensions:
-        found_files = find_files(options, '.*\.{0}'.format(suffix))
-        if found_files:
-            file_paths = file_paths.union(
-                set(found_files.strip().split('\n')))
-
-    if options['clean-lines-exclude']:
-        for suffix in extensions:
-            found_files = find_files({
-                'directory': options['clean-lines-exclude'],
-            }, '.*\.{0}'.format(suffix))
-            if found_files:
-                file_paths_excluded = file_paths_excluded.union(
-                    set(found_files.strip().split('\n')))
-
-    # Remove excluded files
-    file_paths -= file_paths_excluded
-    return file_paths
-
-
-def code_analysis_clean_lines(options):
-    log('title', 'Check clean lines')
-
-    file_paths = _code_analysis_clean_lines_files_finder(options)
-    if len(file_paths) == 0:
-        log('ok')
-        return True
-
-    total_errors = []
-    for file_path in file_paths:
-        with open(file_path, 'r') as file_handler:
-            errors = _code_analysis_clean_lines_parser(
-                file_handler.readlines(), file_path)
-
-        if len(errors) > 0:
-            total_errors += errors
-
-    if len(total_errors) > 0:
-        log('failure')
-        for err in total_errors:
-            print(err)
+    def skip_line(self, line):
+        for pattern in self.ignore_patterns:
+            if re.compile(pattern).search(line):
+                return True
         return False
-    else:
-        log('ok')
-        return True
+
+    @staticmethod
+    def validate_line(pattern, line):
+        return re.compile(pattern).search(line)
+
+    def check(self, file_path, fail={}, succeed={}, **kwargs):
+        errors = []
+        with open(file_path, 'r') as file_handle:
+            for linenumber, line in enumerate(file_handle.readlines()):
+                if self.skip_line(line):
+                    continue
+
+                # Fail if one of the fail items was found
+                for check, message in fail.items():
+                    match = CleanLines.validate_line(check, line)
+
+                    if match:
+                        message = message.format(match.group())
+                        errors.append(self.message.format(
+                            file_path, 1 + linenumber, message
+                        ))
+
+                # Fail if succeed was not found
+                for check, message in succeed.items():
+                    if CleanLines.validate_line(check, line):
+                        continue
+
+                    errors.append(self.message.format(
+                        file_path, 1 + linenumber, message
+                    ))
+
+        return errors
+
+    def run(self):
+        CleanLines.log('title', self.title)
+
+        # Should we exclude some files?
+        exclude = CleanLines.split_lines(self.get_prefixed_option('exclude'))
+        total_errors = []
+
+        for check in self.checks:
+            all_files = set()
+            exc_files = set([''])
+
+            for extension in check['extensions']:
+                files = self.find_files('.*\.{0}'.format(extension))
+                if files:
+                    all_files |= set(CleanLines.split_lines(files))
+
+                if exclude:
+                    files = self.find_files(
+                        '.*\.{0}'.format(extension), exclude)
+                    if files:
+                        exc_files |= set(CleanLines.split_lines(files))
+
+            # Remove excluded files
+            files = all_files - exc_files
+            for file_path in files:
+                total_errors.extend(self.check(file_path, **check))
+
+        if total_errors:
+            CleanLines.log('failure')
+            for err in total_errors:
+                print(err)  # noqa
+            return False
+        else:
+            CleanLines.log('ok')
+            return True
 
 
-def _code_analysis_clean_lines_parser(lines, file_path):
-    errors = []
-    linenumber = 0
-
-    trailing_spaces = re.compile(r' $')
-    tabs = re.compile(r'\t')
-
-    for line in lines:
-        linenumber += 1
-
-        if trailing_spaces.search(line):
-            errors.append('{0}:{1}: found trailing spaces'.format(
-                file_path,
-                linenumber, ))
-        if tabs.search(line):
-            errors.append('{0}:{1}: found tabs'.format(
-                file_path,
-                linenumber, ))
-    return errors
+def console_script(options):
+    return CleanLines(options).run()
