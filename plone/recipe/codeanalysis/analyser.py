@@ -2,12 +2,11 @@
 from abc import ABCMeta
 from abc import abstractproperty
 from tempfile import TemporaryFile
+from time import time
 import os
 import re
 import subprocess
 import sys
-
-MAX_LINE_LENGTH = 20
 
 
 def is_string(unknown):
@@ -41,6 +40,7 @@ class Analyser:
         """
         self.options = options
         self.lock = lock
+        self.start = time()
 
     @abstractproperty
     def title(self):
@@ -55,9 +55,10 @@ class Analyser:
             self.lock.acquire()
 
         out = self.colors.get(log_type, '[\033[00;31m {0:s} \033[0m]')
-        print('{0:<20s}{1:>10s}'.format(
+        print('{0:.<30}{1:.>25} in {2:.03f}s'.format(
             self.title,
             out.format(log_type.upper()),
+            time() - self.start,
         ))
 
         if msg:
@@ -171,7 +172,7 @@ class Analyser:
         output = map(
             lambda x: error.sub(self.output_replace, x), output.splitlines()
         )
-        return u'\n'.join(output)
+        return u'\n'.join(output).strip()
 
     def parse_output(self, output_file, return_code):
         if return_code:
@@ -207,7 +208,6 @@ class Analyser:
 
         try:
             assert len(self.cmd) > 0  # skip if there's no command
-
             process = subprocess.Popen(self.cmd,
                                        stderr=subprocess.STDOUT,
                                        stdout=output_file)
