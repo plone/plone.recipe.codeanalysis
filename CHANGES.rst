@@ -1,8 +1,15 @@
 Change history
 ==============
 
-1.1.1 (unreleased)
+2.0.0 (unreleased)
 ------------------
+
+- Return correct exit codes for console-scripts, fixes #66.
+  [saily]
+
+- Refactor whole linters framework to use OO design patterns, inherit from
+  ``Analyser`` abstract base class. This fixes #62
+  [saily]
 
 - Add bootstrap-buildout.py to flake8-exclude default. zc.buildout > 2 uses
   bootstrap-buildout.py instead of bootstrap.py.

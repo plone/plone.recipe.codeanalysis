@@ -1,39 +1,39 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import find_files
-from plone.recipe.codeanalysis.utils import log
-
-import subprocess
+from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 
 
-def code_analysis_zptlint(options):
-    log('title', 'ZPT Lint')
+class ZPTLint(Analyser):
 
-    files = ''
-    for suffix in ('pt', 'cpt', 'zpt', ):
-        found_files = find_files(options, '.*\.{0}'.format(suffix))
-        if found_files:
-            files += found_files
+    name = 'zptlint'
+    title = 'ZPT Lint'
+    output_file_extension = 'log'
+    extensions = ('pt', 'cpt', 'zpt', )
 
-    if len(files) == 0:
-        log('ok')
-        return True
+    @property
+    def cmd(self):
+        cmd = []
+        files = ''
+        for extension in self.extensions:
+            found_files = self.find_files('.*\.{0}'.format(extension))
+            if found_files:
+                files += found_files
 
-    # cmd is a sequence of program arguments
-    # first argument is child program
-    cmd = [options['zptlint-bin']] + files.split()
-    try:
-        process = subprocess.Popen(
-            cmd,
-            stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
-        )
-    except OSError:
-        log('skip')
-        return False
-    output, err = process.communicate()
-    if output != '':
-        log('failure', output)
-        return False
-    else:
-        log('ok')
-        return True
+        if files:
+            cmd.append(self.get_prefixed_option('bin'))
+            cmd.extend(files.split())
+
+        return cmd
+
+    def parse_output(self, output_file, return_code):
+        output_file.seek(0)
+
+        if output_file.read() != '':
+            # zptlint does not have a correct return_code
+            return_code = 1
+
+        return super(ZPTLint, self).parse_output(output_file, return_code)
+
+
+def console_script(options):
+    console_factory(ZPTLint, options)

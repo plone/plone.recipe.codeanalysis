@@ -11,22 +11,19 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '1.1.1.dev0'
+version = '2.0.0.dev0'
 
-long_description = (
-    read('README.rst')
-    + '\n\n' +
-    read('plone', 'recipe', 'codeanalysis', 'README.rst')
-    + '\n\n' +
-    read('CONTRIBUTORS.rst')
-    + '\n\n' +
-    read('CHANGES.rst')
-)
+long_description = '\n\n'.join([
+    read('README.rst'),
+    read('plone', 'recipe', 'codeanalysis', 'README.rst'),
+    read('CONTRIBUTORS.rst'),
+    read('CHANGES.rst'),
+])
 
 entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {
     'zc.buildout': [
-        'default = %s' % entry_point
+        'default = {0:s}'.format(entry_point)
     ]
 }
 

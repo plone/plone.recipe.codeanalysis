@@ -1,99 +1,56 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.utils import find_files
-from plone.recipe.codeanalysis.utils import log
-from plone.recipe.codeanalysis.utils import normalize_boolean
-from plone.recipe.codeanalysis.utils import read_subprocess_output
-from tempfile import TemporaryFile
-import os
+from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 import re
 
 
-def jscs_errors(output, jenkins=False):
-    """Search for error on the output.
+class JSCS(Analyser):
 
-    JSCS shows errors only, 2 different output types could occurr:
-    - 1 code style error found.
-    - No code style error found.
+    name = 'jscs'
+    title = 'JSCS'
+    output_file_extension = 'xml'
 
-    :param output: Output to be checked.
-    :param jenkins: It is true when the jenkins output is turned on.
+    @property
+    def cmd(self):
+        cmd = []
 
-    """
-    pattern = r'severity="error"' if jenkins else \
-              r'[0-9]+ code style errors? found\.'
-    error = re.compile(pattern)
-    return error.search(output)
+        all_files = JSCS.split_lines(self.find_files('.*\.js'))
+        exc_files = []
 
+        # Should we exclude some files?
+        exclude = JSCS.split_lines(self.get_prefixed_option('exclude'))
+        if exclude:
+            exc_files = JSCS.split_lines(self.find_files('.*\.js',  exclude))
 
-class CmdError(Exception):
-    pass
+        # Remove excluded files
+        files = set(all_files) - set(exc_files)
 
+        if files:
+            cmd.append(self.get_prefixed_option('bin'))
 
-def run_cmd(options, jenkins):
-    """Run the jscs command using options.
+            if self.use_jenkins:
+                cmd.append('--reporter=checkstyle')
 
-    Run the jscs command using options and return the output.
+            cmd.extend(list(files))
 
-    :param options: Options received by the code_analysis_jscs funciton.
-    :param jenkins: It is true when the jenkins output is turned on.
+        return cmd
 
-    """
-    # cmd is a sequence of program arguments
-    cmd = [options['jscs-bin']]     # , '--reporter=inline', '--no-colors']
+    def parse_output(self, output_file, return_code):
+        """JSCS shows errors only, 2 different output types could occurr:
+        - 1 code style error found.
+        - No code style error found."""
 
-    all_files = find_files(options, '.*\.js').strip().split('\n')
-    exc_files = find_files({
-        'directory': options['jscs-exclude'],
-    }, '.*\.js').strip().split('\n')
-
-    # Remove excluded files
-    files = set(all_files) - set(exc_files)
-
-    if not files:
-        log('ok')
-        return ''
-
-    # put all files in a single line
-    cmd += list(files)
-
-    try:
-        if jenkins:
-            cmd.append('--reporter=checkstyle')
-            output_file_name = os.path.join(options['location'], 'jscs.xml')
-            output_file = open(output_file_name, 'w+')
+        if self.use_jenkins:
+            pattern = r'severity="error"'
         else:
-            output_file = TemporaryFile('w+')
+            pattern = r'[0-9]+ code style errors? found\.'
 
-        # Wrapper to subprocess.Popen
-        try:
-            # Return code is not used for jscs.
-            output = read_subprocess_output(cmd, output_file)[0]
-            return output
-        except OSError:
-            log('skip')
-            message = 'Command: {0}. Outputfile: {1}'.format(cmd, output_file)
-            raise CmdError(message)
-    finally:
-        output_file.close()
+        # skip warnings
+        if not re.compile(pattern).search(output_file.read()):
+            return_code = 0
+
+        return super(JSCS, self).parse_output(output_file, return_code)
 
 
-def code_analysis_jscs(options):
-    log('title', 'JSCS')
-    jenkins = normalize_boolean(options['jenkins'])
-
-    try:
-        output = run_cmd(options, jenkins)
-    except CmdError:
-        log('skip')
-        return False
-
-    if jscs_errors(output, jenkins):
-        if jenkins:
-            output_file_name = os.path.join(options['location'], 'jscs.xml')
-            log('failure', 'Output file written to %s.' % output_file_name)
-        else:
-            log('failure', output)
-        return False
-    else:
-        log('ok')
-        return True
+def console_script(options):
+    console_factory(JSCS, options)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.i18ndude import code_analysis_find_untranslated
+from plone.recipe.codeanalysis.i18ndude import I18NDude
 from shutil import rmtree
 from tempfile import mkdtemp
 
@@ -45,14 +45,14 @@ class i18ndudeTestCase(unittest.TestCase):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
         self.options['directory'] = self.test_dir
-        self.assertFalse(code_analysis_find_untranslated(self.options))
+        self.assertFalse(I18NDude(self.options).run())
 
     def test_analysis_should_return_false_when_oserror(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
         self.options['i18ndude-bin'] = ''
         self.options['directory'] = self.test_dir
-        self.assertFalse(code_analysis_find_untranslated(self.options))
+        self.assertFalse(I18NDude(self.options).run())
 
     # this test should run only if i18ndude is installed
     @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')
@@ -60,18 +60,4 @@ class i18ndudeTestCase(unittest.TestCase):
         with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
             f.write(VALID_CODE)
         self.options['directory'] = self.test_dir
-        self.assertTrue(code_analysis_find_untranslated(self.options))
-
-    @unittest.expectedFailure  # Jenkins support is not yet implemented
-    def test_analysis_file_should_exist_when_jenkins_is_true(self):
-        location_tmp_dir = mkdtemp()
-        with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
-            f.write(VALID_CODE)
-        self.options['directory'] = self.test_dir
-        self.options['location'] = location_tmp_dir
-        self.options['jenkins'] = 'True'  # need to activate jenkins.
-        code_analysis_find_untranslated(self.options)
-        file_exists = os.path.isfile(
-            os.path.join(location_tmp_dir, 'i18ndude.log'))
-        rmtree(location_tmp_dir)
-        self.assertTrue(file_exists)
+        self.assertTrue(I18NDude(self.options).run())

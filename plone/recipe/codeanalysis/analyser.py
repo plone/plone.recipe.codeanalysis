@@ -1,0 +1,223 @@
+# -*- coding: utf-8 -*-
+from abc import ABCMeta
+from abc import abstractproperty
+from tempfile import TemporaryFile
+import os
+import re
+import subprocess
+import sys
+
+MAX_LINE_LENGTH = 20
+
+
+def is_string(unknown):
+    if sys.version_info[0] < 3:
+        return isinstance(unknown, basestring)  # noqa for python3
+    return isinstance(unknown, str)
+
+
+def console_factory(klass, options):
+    if not klass(options).run():
+        sys.exit(1)
+    sys.exit(0)
+
+
+class Analyser:
+
+    __metaclass__ = ABCMeta
+
+    output_file_extension = 'log'
+    output_regex = r'(.*)'  # substring to be found
+    output_replace = r'\1'  # replace substring
+
+    def __init__(self, options, cmd_args=[]):
+        """Instance initializer.
+
+        :param options: Arguments can be passed to the analysers.
+        """
+        self.options = options
+        self.cmd_args = cmd_args
+
+    @abstractproperty
+    def title(self):
+        pass
+
+    @abstractproperty
+    def name(self):
+        pass
+
+    @staticmethod
+    def log(log_type, msg=None):
+        if log_type == 'title':
+            if msg:
+                sys.stdout.write(msg)
+            for i in range(0, MAX_LINE_LENGTH - len(msg)):
+                sys.stdout.write(' ')
+            sys.stdout.flush()
+        elif log_type == 'ok':
+            print('     [\033[00;32m OK \033[0m]')
+        elif log_type == 'skip':
+            print('   [\033[00;31m SKIP \033[0m]')
+        elif log_type in ('failure', 'warning'):
+            print('[\033[00;31m {0} \033[0m]'.format(log_type))
+            if msg:
+                print(msg)
+
+    @property
+    def enabled(self):
+        return self.normalize_boolean(self.options.get(self.name))
+
+    @property
+    def output_filename(self):
+        return '{0:s}.{1:s}'.format(self.name, self.output_file_extension)
+
+    @staticmethod
+    def normalize_boolean(value):
+        """Convert a string into a Boolean value.
+
+        :param value: the string to be converted
+        """
+        if is_string(value) and value.strip():
+            return value.lower() == 'true'
+        return False
+
+    @staticmethod
+    def split_lines(value):
+        """Convert a string into a Boolean value.
+
+        :rtype : list
+        :param value: the string to be converted
+        """
+        if is_string(value) and value.strip():
+            return value.split('\n')
+        return []
+
+    def get_prefixed_option(self, option):
+        return self.options.get('{0:s}-{1:s}'.format(self.name, option))
+
+    @property
+    def use_jenkins(self):
+        """Cast the jenkins option from string to boolean.
+
+        :return: Jenkins option casted to boolean.
+        """
+        return Analyser.normalize_boolean(self.options.get('jenkins'))
+
+    @property
+    def cmd(self):
+        """Readonly property that join the analyser command and arguments.
+
+        :return: List containing the command and arguments, to be used by
+        the subprocess.Popen method.
+        """
+        paths = Analyser.split_lines(self.options.get('directory', ''))
+        cmd = [self.options.get('bin')]
+        cmd.extend(self.cmd_args)
+        cmd.extend(paths)
+        return cmd
+
+    def find_files(self, regex, paths=None):
+        if paths is None:
+            paths = Analyser.split_lines(self.options['directory'])
+
+        dirs = []
+        files = []
+        for path in paths:
+            realpath = os.path.realpath(path)
+            if os.path.isdir(realpath) and realpath not in dirs:
+                dirs.append(realpath)
+            if os.path.isfile(realpath) and realpath not in files:
+                files.append(realpath)
+
+        cmd = ['find', '-L'] + dirs + ['-regex', regex, '-type', 'f']
+        process_files = subprocess.Popen(
+            cmd,
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE
+        )
+        exclude, err = process_files.communicate()
+        if isinstance(exclude, bytes):
+            exclude = exclude.decode('utf-8')
+
+        files.insert(0, exclude.strip())
+        return '\n'.join(files)
+
+    def open_output_file(self):
+        """Open output file according to the jenkins option.
+
+        If the analyser is running on jenkins a regular file is open,
+        otherwise it open a temporary file. This file is used to store
+        the analyser command output. The PIPE system, used by the
+        subprocess module have a limitation, so a temporary file is used.
+        """
+        if not self.use_jenkins:
+            return TemporaryFile('w+')
+
+        return open(
+            os.path.join(self.options['location'], self.output_filename), 'w+')
+
+    def process_output(self, output):
+        """Replace all occurrences of substring ``self.output_regex``
+           with ``self.output_replace`` in ``output``.
+
+        :param output: string containing command output
+        :return: string containing processed command output
+        """
+        error = re.compile(self.output_regex)
+        output = map(
+            lambda x: error.sub(self.output_replace, x), output.splitlines()
+        )
+        return u'\n'.join(output)
+
+    def parse_output(self, output_file, return_code):
+        if return_code:
+            output_file.seek(0)
+
+            if self.use_jenkins:
+                Analyser.log(
+                    'failure',
+                    'Output file written to {0}.'.format(output_file.name)
+                )
+            else:
+                Analyser.log(
+                    'failure',
+                    self.process_output(output_file.read())
+                )
+            return False
+        else:
+            Analyser.log('ok')
+            return True
+
+    def run(self):
+        """Run the analyser command using options.
+
+        Run the analyser command using options and return the output. The
+        analyser command is defined by the 'bin' option, it can be any one
+        of the external analyser commands, as csslint, jshint, flake8, for
+        example. The return code is stored on the return_code attribute.
+        The output is returned but is also stored in the output attribute.
+
+        :return: It return the output of the analyser command.
+        """
+        Analyser.log('title', self.title)
+
+        output_file = self.open_output_file()
+
+        try:
+            assert len(self.cmd) > 0  # skip if there's no command
+
+            process = subprocess.Popen(self.cmd,
+                                       stderr=subprocess.STDOUT,
+                                       stdout=output_file)
+            process.wait()
+            output_file.flush()
+            output_file.seek(0)
+            return self.parse_output(output_file, process.returncode)
+        except AssertionError:
+            Analyser.log('ok')
+            return True
+        except OSError:
+            Analyser.log('skip')
+            return False
+        finally:
+            output_file.close()
