@@ -22,7 +22,6 @@ import subprocess
 import zc.buildout
 import zc.recipe.egg
 
-
 current_dir = os.path.dirname(__file__)
 all_checks = [
     CleanLines,
