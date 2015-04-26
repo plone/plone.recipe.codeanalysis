@@ -4,6 +4,10 @@ Change history
 2.0.0 (unreleased)
 ------------------
 
+- Added multiprocessing. This will dramatically increase speed on large
+  packages when using pre-commit hooks.
+  [saily]
+
 - Return correct exit codes for console-scripts, fixes #66.
   [saily]
 
