@@ -66,8 +66,6 @@ class CleanLines(Analyser):
         return errors
 
     def run(self):
-        CleanLines.log('title', self.title)
-
         # Should we exclude some files?
         exclude = CleanLines.split_lines(self.get_prefixed_option('exclude'))
         total_errors = []
@@ -93,13 +91,11 @@ class CleanLines(Analyser):
                 total_errors.extend(self.check(file_path, **check))
 
         if total_errors:
-            CleanLines.log('failure')
-            for err in total_errors:
-                print(err)  # noqa
+            self.log('failure', '\n'.join(total_errors))
             return False
-        else:
-            CleanLines.log('ok')
-            return True
+
+        self.log('ok')
+        return True
 
 
 def console_script(options):

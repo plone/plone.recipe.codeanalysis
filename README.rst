@@ -125,6 +125,12 @@ The recipe supports the following options:
     If set to True, a git pre-commit hook is installed that runs the code
     analysis before each commit. Default is ``True``.
 
+**multiprocessing**
+    If set to ``True``, ``code-analysis`` will fork multiple processes and run
+    all linters in parallel. This will dramatically increase speed on a
+    multi-core system, specially when using ``code-analysis`` as pre-commit
+    hook. Default is ``False``.
+
 **jenkins**
     If set to True, the flake8, jshint and csslint code analysis steps will
     write output files that can be processed by the
