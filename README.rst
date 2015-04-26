@@ -227,8 +227,8 @@ The recipe supports the following options:
     This typical configuration includes a list of CSS rules that will be
     ignored as they are `considered useless`_.
 
-    See `CSS Lint documentation`_ for a detailed list and description of the
-    rules.
+    See `CSS Lint documentation`_ and `CSS Lint command-line interface`_ for a
+    detailed list and description of the rules.
 
 **csslint-bin**
     Set the path to a custom version of CSS Lint, e.g.
@@ -373,7 +373,8 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 
 
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
-.. _`CSS Lint documentation`: https://github.com/stubbornella/csslint/wiki/Rules
+.. _`CSS Lint documentation`: https://github.com/CSSLint/csslint/wiki/Rules
+.. _`CSS Lint command-line interface`: https://github.com/CSSLint/csslint/wiki/Command-line-interface
 .. _`CSS Lint`: http://csslint.net/
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`Jenkins Violations plugin`: https://wiki.jenkins-ci.org/display/JENKINS/Violations
