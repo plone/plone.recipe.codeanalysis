@@ -1,6 +1,7 @@
 [report]
 omit =
-    /home/*/.buildout/eggs/*
+    **/.buildout/eggs/*
+    **/lib/python*
     /usr/*
     bin/test
     buildout-cache/eggs/*
