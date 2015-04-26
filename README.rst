@@ -117,6 +117,10 @@ Issue Tracker:
 Supported options
 =================
 
+If you need to bypass checks for some reasons on a specific line you may use
+``# noqa`` in Python or ``// noqa`` in Javascript files. This works for most
+of our checks.
+
 The recipe supports the following options:
 
 **directory**
