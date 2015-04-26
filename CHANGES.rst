@@ -4,6 +4,9 @@ Change history
 2.0.0 (unreleased)
 ------------------
 
+- Return correct exit codes for console-scripts, fixes #66.
+  [saily]
+
 - Refactor whole linters framework to use OO design patterns, inherit from
   ``Analyser`` abstract base class. This fixes #62
   [saily]

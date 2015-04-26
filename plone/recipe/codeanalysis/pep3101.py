@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.analyser import console_factory
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 
 
@@ -17,4 +18,4 @@ class PEP3101(CleanLines):
 
 
 def console_script(options):
-    return PEP3101(options).run()
+    console_factory(PEP3101, options)
