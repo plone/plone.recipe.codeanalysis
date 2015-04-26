@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 
 
 class I18NDude(Analyser):
@@ -21,4 +22,4 @@ class I18NDude(Analyser):
 
 
 def console_script(options):
-    return I18NDude(options).run()
+    console_factory(I18NDude, options)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.analyser import console_factory
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 
 
@@ -60,4 +61,4 @@ class PreferSingleQuotes(CleanLines):
 
 
 def console_script(options):
-    return PreferSingleQuotes(options).run()
+    console_factory(PreferSingleQuotes, options)

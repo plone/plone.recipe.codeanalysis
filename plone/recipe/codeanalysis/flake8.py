@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 import os
 
 
@@ -37,4 +38,4 @@ class Flake8(Analyser):
 
 
 def console_script(options):
-    return Flake8(options).run()
+    console_factory(Flake8, options)

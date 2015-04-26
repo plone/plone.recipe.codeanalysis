@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 
 
 class ZPTLint(Analyser):
@@ -35,4 +36,4 @@ class ZPTLint(Analyser):
 
 
 def console_script(options):
-    return ZPTLint(options).run()
+    console_factory(ZPTLint, options)
