@@ -118,37 +118,37 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
         self.assertTrue(file_exist)
 
     def test_jscs_parse_output_should_return_true_empty_xml_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(XML_EMPTY_OUTPUT)
-        jshint_file.seek(0)
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write(XML_EMPTY_OUTPUT)
+        jscs_file.seek(0)
         self.options['jenkins'] = 'True'
         linter = JSCS(self.options)
         self.assertTrue(linter.use_jenkins)
-        self.assertTrue(linter.parse_output(jshint_file, 1))
+        self.assertTrue(linter.parse_output(jscs_file, 1))
 
     def test_jscs_parse_output_should_return_false_with_xml_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(XML_OUTPUT)
-        jshint_file.seek(0)
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write(XML_OUTPUT)
+        jscs_file.seek(0)
         self.options['jenkins'] = 'True'
         linter = JSCS(self.options)
         self.assertTrue(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(jshint_file, 1))
+        self.assertFalse(linter.parse_output(jscs_file, 1))
 
     def test_jscs_parse_output_should_return_false_with_normal_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(DEFAULT_OUTPUT)
-        jshint_file.seek(0)
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write(DEFAULT_OUTPUT)
+        jscs_file.seek(0)
         self.options['jenkins'] = 'False'
         linter = JSCS(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(jshint_file, 1))
+        self.assertFalse(linter.parse_output(jscs_file, 1))
 
     def test_jscs_parse_output_should_return_true_empty_normal_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write('')
-        jshint_file.seek(0)
+        jscs_file = TemporaryFile('w+')
+        jscs_file.write('')
+        jscs_file.seek(0)
         self.options['jenkins'] = 'False'
         linter = JSCS(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertTrue(linter.parse_output(jshint_file, 1))
+        self.assertTrue(linter.parse_output(jscs_file, 1))
