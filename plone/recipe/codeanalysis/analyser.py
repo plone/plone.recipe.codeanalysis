@@ -16,6 +16,12 @@ def is_string(unknown):
     return isinstance(unknown, str)
 
 
+def console_factory(klass, options):
+    if not klass(options).run():
+        sys.exit(1)
+    sys.exit(0)
+
+
 class Analyser:
 
     __metaclass__ = ABCMeta

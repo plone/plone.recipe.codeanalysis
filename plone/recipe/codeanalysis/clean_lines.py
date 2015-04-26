@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 import re
 
 
@@ -102,4 +103,4 @@ class CleanLines(Analyser):
 
 
 def console_script(options):
-    return CleanLines(options).run()
+    console_factory(CleanLines, options)

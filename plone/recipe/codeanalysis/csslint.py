@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import Analyser
+from plone.recipe.codeanalysis.analyser import console_factory
 import re
 
 
@@ -39,4 +40,4 @@ class CSSLint(Analyser):
 
 
 def console_script(options):
-    return CSSLint(options).run()
+    console_factory(CSSLint, options)

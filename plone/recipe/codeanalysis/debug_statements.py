@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.analyser import console_factory
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 
 
@@ -24,4 +25,4 @@ class DebugStatements(CleanLines):
 
 
 def console_script(options):
-    return DebugStatements(options).run()
+    console_factory(DebugStatements, options)
