@@ -2,12 +2,11 @@
 from abc import ABCMeta
 from abc import abstractproperty
 from tempfile import TemporaryFile
+from time import time
 import os
 import re
 import subprocess
 import sys
-
-MAX_LINE_LENGTH = 20
 
 
 def is_string(unknown):
@@ -30,13 +29,18 @@ class Analyser:
     output_regex = r'(.*)'  # substring to be found
     output_replace = r'\1'  # replace substring
 
-    def __init__(self, options, cmd_args=[]):
+    colors = {
+        'ok': '[\033[00;32m {0:s} \033[0m]',
+    }
+
+    def __init__(self, options, lock=None):
         """Instance initializer.
 
         :param options: Arguments can be passed to the analysers.
         """
         self.options = options
-        self.cmd_args = cmd_args
+        self.lock = lock
+        self.start = time()
 
     @abstractproperty
     def title(self):
@@ -46,22 +50,22 @@ class Analyser:
     def name(self):
         pass
 
-    @staticmethod
-    def log(log_type, msg=None):
-        if log_type == 'title':
-            if msg:
-                sys.stdout.write(msg)
-            for i in range(0, MAX_LINE_LENGTH - len(msg)):
-                sys.stdout.write(' ')
-            sys.stdout.flush()
-        elif log_type == 'ok':
-            print('     [\033[00;32m OK \033[0m]')
-        elif log_type == 'skip':
-            print('   [\033[00;31m SKIP \033[0m]')
-        elif log_type in ('failure', 'warning'):
-            print('[\033[00;31m {0} \033[0m]'.format(log_type))
-            if msg:
-                print(msg)
+    def log(self, log_type, msg=None):
+        if self.lock:
+            self.lock.acquire()
+
+        out = self.colors.get(log_type, '[\033[00;31m {0:s} \033[0m]')
+        print('{0:.<30}{1:.>25} in {2:.03f}s'.format(
+            self.title,
+            out.format(log_type.upper()),
+            time() - self.start,
+        ))
+
+        if msg:
+            print(msg)
+
+        if self.lock:
+            self.lock.release()
 
     @property
     def enabled(self):
@@ -168,25 +172,25 @@ class Analyser:
         output = map(
             lambda x: error.sub(self.output_replace, x), output.splitlines()
         )
-        return u'\n'.join(output)
+        return u'\n'.join(output).strip()
 
     def parse_output(self, output_file, return_code):
         if return_code:
             output_file.seek(0)
 
             if self.use_jenkins:
-                Analyser.log(
+                self.log(
                     'failure',
                     'Output file written to {0}.'.format(output_file.name)
                 )
             else:
-                Analyser.log(
+                self.log(
                     'failure',
                     self.process_output(output_file.read())
                 )
             return False
         else:
-            Analyser.log('ok')
+            self.log('ok')
             return True
 
     def run(self):
@@ -200,13 +204,10 @@ class Analyser:
 
         :return: It return the output of the analyser command.
         """
-        Analyser.log('title', self.title)
-
         output_file = self.open_output_file()
 
         try:
             assert len(self.cmd) > 0  # skip if there's no command
-
             process = subprocess.Popen(self.cmd,
                                        stderr=subprocess.STDOUT,
                                        stdout=output_file)
@@ -215,10 +216,10 @@ class Analyser:
             output_file.seek(0)
             return self.parse_output(output_file, process.returncode)
         except AssertionError:
-            Analyser.log('ok')
+            self.log('ok')
             return True
         except OSError:
-            Analyser.log('skip')
+            self.log('skip')
             return False
         finally:
             output_file.close()

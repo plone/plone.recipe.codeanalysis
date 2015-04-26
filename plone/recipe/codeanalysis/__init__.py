@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from multiprocessing import Lock
+from multiprocessing import Process
+from multiprocessing import Value
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.debug_statements import DebugStatements
@@ -13,6 +16,7 @@ from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.python_utf8_header import UTF8Headers
 from plone.recipe.codeanalysis.quoting import PreferSingleQuotes
 from plone.recipe.codeanalysis.zptlint import ZPTLint
+from time import time
 import os
 import subprocess
 import zc.buildout
@@ -54,6 +58,7 @@ class Recipe(object):
 
         # Set required default options
         self.options.setdefault('directory', '.')
+        self.options.setdefault('multiprocessing', 'False')
         self.options.setdefault('pre-commit-hook', 'True')
         # Flake 8
         self.options.setdefault('flake8', 'True')
@@ -210,19 +215,35 @@ class Recipe(object):
 
 
 def code_analysis(options):
-    status_codes = []
-    for klass in all_checks:
-        check = klass(options)
+    start = time()
+    multiprocessing = options.get('multiprocessing') == 'True'
+    lock = Lock() if multiprocessing else None
+    status = Value('i', 0)
 
-        if check.enabled and not check.run():
-            status_codes.append(False)
+    def taskrunner(klass, options, lock, status):
+        check = klass(options, lock)
+        if check.enabled:
+            if check.run():
+                status.value += 1
+        else:
+            status.value += 1
+
+    if multiprocessing:
+        procs = [
+            Process(target=taskrunner, args=(klass, options, lock, status))
+            for klass in all_checks
+        ]
+        [p.start() for p in procs]
+        [p.join() for p in procs]
+    else:
+        for klass in all_checks:
+            taskrunner(klass, options, lock, status)
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
     if options['return-status-codes'] != 'False':
-        if not all(status_codes):
-            print('The command "bin/code-analysis" exited with 1.')
-            exit(1)
+        exit_code = int(not status.value == len(all_checks))
 
-        print('The command "bin/code-analysis" exited with 0.')
-        exit(0)
+        print('The command "bin/code-analysis" exited with {0:d} in {1:.03f}s.'
+              .format(exit_code, time() - start))
+        exit(exit_code)
