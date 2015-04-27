@@ -1,6 +1,12 @@
-include *.rst
-
-recursive-include plone *
-recursive-include docs *
-
 global-exclude *.pyc
+global-exclude .DS_Store
+graft docs
+graft plone
+include *.rst
+include .coveragerc
+include .csslintrc
+include .jscs.json
+include bootstrap-buildout.py
+include buildout.cfg
+include extras.cfg
+include travis.cfg
