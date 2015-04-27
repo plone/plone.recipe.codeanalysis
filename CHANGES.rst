@@ -1,8 +1,8 @@
 Change history
 ==============
 
-1.2 (unreleased)
-----------------
+2.0.0 (unreleased)
+------------------
 
 - Added multiprocessing. This will dramatically increase speed on large
   packages when using pre-commit hooks.
