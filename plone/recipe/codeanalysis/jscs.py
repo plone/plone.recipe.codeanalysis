@@ -20,7 +20,7 @@ class JSCS(Analyser):
         # Should we exclude some files?
         exclude = JSCS.split_lines(self.get_prefixed_option('exclude'))
         if exclude:
-            exc_files = JSCS.split_lines(self.find_files('.*\.js',  exclude))
+            exc_files = JSCS.split_lines(self.find_files('.*\.js', exclude))
 
         # Remove excluded files
         files = set(all_files) - set(exc_files)
