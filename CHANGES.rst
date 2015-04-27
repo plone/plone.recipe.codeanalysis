@@ -4,7 +4,9 @@ Change history
 2.0a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add new double quotes parser and add test for it. It now also supports
+  # noqa statments and nested quotes.
+  [saily]
 
 
 2.0a1 (2015-04-27)
