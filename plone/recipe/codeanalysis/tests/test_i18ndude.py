@@ -28,7 +28,7 @@ INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
 """
 
 
-class i18ndudeTestCase(unittest.TestCase):
+class I18NDudeTestCase(unittest.TestCase):
     def setUp(self):
         self.options = {
             'find-untranslated': 'True',
