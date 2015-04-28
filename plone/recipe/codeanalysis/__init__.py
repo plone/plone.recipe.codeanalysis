@@ -58,7 +58,7 @@ class Recipe(object):
         self.options.setdefault('pre-commit-hook', 'True')
         # Flake 8
         self.options.setdefault('flake8', 'True')
-        self.options.setdefault('flake8-ignore', '')
+        self.options.setdefault('flake8-ignore', 'B901,C101,C102,N802,Q000,T002')  # noqa
         self.options.setdefault('flake8-exclude', 'bootstrap.py,boostrap-buildout.py,docs,*.egg')  # noqa
         self.options.setdefault('flake8-max-complexity', '10')
         self.options.setdefault('flake8-max-line-length', '79')
