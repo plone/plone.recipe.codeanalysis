@@ -11,7 +11,6 @@ class DebugStatements(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                r'pdb\.set_trace\(': '{0}',
                 r'print\s*[\("\'\[]': '{0}',
             },
         },

@@ -52,6 +52,12 @@ setup(name='plone.recipe.codeanalysis',
       zip_safe=False,
       install_requires=[
           'flake8',
+          'flake8-blind-except',
+          'flake8-coding',
+          'flake8-debugger',
+          # 'flake8-print',  # flake8-print did not work for now.
+          'flake8-quotes',
+          'pep8-naming',
           'setuptools',
           'zc.buildout',
           'zc.recipe.egg',

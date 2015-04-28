@@ -23,9 +23,14 @@ def setUp(test):
     # Install any other recipes that should be available in the tests
     zc.buildout.testing.install('zc.recipe.egg', test)
     zc.buildout.testing.install('flake8', test)
+    zc.buildout.testing.install('flake8-debugger', test)
+    zc.buildout.testing.install('flake8-quotes', test)
+    zc.buildout.testing.install('flake8-coding', test)
+    zc.buildout.testing.install('flake8-blind-except', test)
 
     # Install second level install_requires dependencies
     zc.buildout.testing.install('pep8', test)
+    zc.buildout.testing.install('pep8-naming', test)
     zc.buildout.testing.install('pyflakes', test)
     zc.buildout.testing.install('mccabe', test)
     zc.buildout.testing.install('zope.exceptions', test)

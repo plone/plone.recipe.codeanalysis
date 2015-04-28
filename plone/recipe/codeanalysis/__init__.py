@@ -13,8 +13,6 @@ from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.pep3101 import PEP3101
 from plone.recipe.codeanalysis.py_hasattr import HasAttr
-from plone.recipe.codeanalysis.python_utf8_header import UTF8Headers
-from plone.recipe.codeanalysis.quoting import PreferSingleQuotes
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 import os
@@ -36,8 +34,6 @@ all_checks = [
     JSCS,
     JSHint,
     PEP3101,
-    PreferSingleQuotes,
-    UTF8Headers,
     ZPTLint,
 ]
 

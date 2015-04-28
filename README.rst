@@ -148,6 +148,20 @@ The recipe supports the following options:
 **flake8**
     If set to True, run Flake8 code analysis. Default is ``True``.
 
+    Flake8 now takes advantage of ``flake8`` plugin system to cover some of
+    previously manually written linters. We've plugged in following extensions:
+
+    - ``flake8-blind-except``: Check for non correct try-except statements
+    - ``flake8-coding``: Check for utf8 headers
+    - ``flake8-debugger``: Check for ``pdb`` and ``ipdb`` statments
+    - ``flake8-quotes``: Check for double quotes
+    - ``pep8-naming``: Check methods and classes being aligned to PEP8 naming
+      conventions.
+
+    If you don't want to take advantage of some of the plugins, you may ignore
+    the messages using the ``flake8-ignore`` section below to ignore their
+    error codes.
+
 **flake8-ignore**
     Skip errors or warnings. See `Flake8 documentation`_ for error codes.
     Default is none.
@@ -260,27 +274,11 @@ The recipe supports the following options:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-**utf8-header**
-    If set to True, Python files without a utf-8 header (like
-    ``# -*- coding: utf-8 -*-``) will cause a warning. Default is ``False``.
-
-**utf8-header-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
 
 **clean-lines-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**prefer-single-quotes**
-    If set to True, Python files will be scanned searching for strings quoted
-    with double quote signs (``"``). Default is ``False``.
-
-**prefer-single-quotes-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
@@ -303,8 +301,8 @@ The recipe supports the following options:
     checked. Default is none.
 
 **debug-statements**
-    If set to True, scan Python files looking for debug-like statements.
-    Default is ``False``.
+    If set to True, scan Python and Javascript files looking for debug-like
+    statements like ``print`` and ``console.log``. Default is ``False``.
 
 **debug-statements-exclude**
     Allows you to specify directories and/or files which you don't want to be

@@ -4,6 +4,10 @@ Change history
 2.0a2 (unreleased)
 ------------------
 
+- Removed some plugins and replaced them with ``flake8`` plugins. Please
+  not the API change in buildout. Fixes #112
+  [saily]
+
 - Add missing tests for deprecated_aliases parser.
   [saily]
 
