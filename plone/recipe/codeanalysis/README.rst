@@ -40,19 +40,9 @@ Deprecated aliases analysis script is installed::
     >>> '/sample-buildout/bin/code-analysis-deprecated-aliases' in buildout_output_lower
     True
 
-The script to check if python files have an utf-8 encoding header is installed::
-
-    >>> '/sample-buildout/bin/code-analysis-utf8-header' in buildout_output_lower
-    True
-
 The script to warn about trailing spaces or tabs on files is installed::
 
     >>> '/sample-buildout/bin/code-analysis-clean-lines' in buildout_output_lower
-    True
-
-Double quotes checker script is installed::
-
-    >>> '/sample-buildout/bin/code-analysis-prefer-single-quotes' in buildout_output_lower
     True
 
 The script to check for old style string formatting is installed::
