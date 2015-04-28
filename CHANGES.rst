@@ -4,6 +4,9 @@ Change history
 2.0a2 (unreleased)
 ------------------
 
+- Add missing tests for deprecated_aliases parser.
+  [saily]
+
 - Add new double quotes parser and add test for it. It now also supports
   # noqa statments and nested quotes.
   [saily]
