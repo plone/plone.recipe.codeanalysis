@@ -61,7 +61,8 @@ incorrect.js: line 1, col 18, Expected an assignment or function call and instea
 
 
 class TestJSHint(unittest.TestCase):
-    def setUp(self):
+
+    def setUp(self):  # noqa
         self.options = {
             'jshint-bin': 'bin/jshint',
             'jshint-exclude': '',
@@ -72,7 +73,7 @@ class TestJSHint(unittest.TestCase):
 
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):

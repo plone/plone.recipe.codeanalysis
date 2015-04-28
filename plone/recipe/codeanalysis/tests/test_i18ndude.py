@@ -29,7 +29,8 @@ INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
 
 
 class I18NDudeTestCase(unittest.TestCase):
-    def setUp(self):
+
+    def setUp(self):  # noqa
         self.options = {
             'find-untranslated': 'True',
             'i18ndude-bin': 'bin/i18ndude',
@@ -38,7 +39,7 @@ class I18NDudeTestCase(unittest.TestCase):
             self.options['i18ndude-bin'] = '../../bin/i18ndude'
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):

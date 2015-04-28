@@ -83,7 +83,7 @@ try:
     assert False
 except:
     assert False
-"""
+"""  # noqa
 
 VALID_EXCEPT = """\
 # -*- coding: utf-8 -*-
@@ -102,7 +102,7 @@ def foo(bar)
 
 class TestFlake8(TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.options = {
             'bin-directory': 'bin/',
             'flake8-ignore': '',
@@ -115,7 +115,7 @@ class TestFlake8(TestCase):
             self.options['bin-directory'] = '../../bin'
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):

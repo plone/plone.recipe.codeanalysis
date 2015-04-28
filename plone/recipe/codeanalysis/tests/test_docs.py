@@ -14,7 +14,7 @@ optionflags = (
 )
 
 
-def setUp(test):
+def setUp(test):  # noqa
     zc.buildout.testing.buildoutSetUp(test)
 
     # Install the recipe in develop mode
