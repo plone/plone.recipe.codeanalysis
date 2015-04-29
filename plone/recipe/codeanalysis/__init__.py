@@ -76,13 +76,13 @@ class Recipe(object):
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
         # XXX: keep compatibility with previous versions
-        if self.options['deprecated-aliases'] == 'False':
+        if not bool_option(self.options['deprecated-aliases']):
             self.options.setdefault('deprecated-alias', 'False')
             deprecated_alias = self.options['deprecated-alias']
-            if deprecated_alias == 'False':
+            if not bool_option(deprecated_alias):
                 self.options.setdefault('deprecated-methods', 'False')
                 deprecated_methods = self.options['deprecated-methods']
-                if deprecated_methods != 'False':
+                if bool_option(deprecated_methods):
                     self.options['deprecated-aliases'] = deprecated_methods
             else:
                 self.options['deprecated-aliases'] = deprecated_alias
@@ -96,9 +96,9 @@ class Recipe(object):
         # PEP 3101 (Advanced String Formatting)
         self.options.setdefault('pep3101', 'False')
         # XXX: keep compatibility with previous versions
-        if self.options['pep3101'] == 'False':
+        if not bool_option(self.options['pep3101']):
             self.options.setdefault('string-formatting', 'False')
-            if self.options['string-formatting'] != 'False':
+            if bool_option(self.options['string-formatting']):
                 self.options['pep3101'] = self.options['string-formatting']
         # imports
         self.options.setdefault('imports', 'False')
@@ -135,8 +135,7 @@ class Recipe(object):
     def install(self):
         self.install_scripts()
 
-        # XXX: this has to be handled on a better way; what about 'false'?
-        if self.options['pre-commit-hook'] != 'False':
+        if bool_option(self.options['pre-commit-hook']):
             self.install_pre_commit_hook()
         else:
             self.uninstall_pre_commit_hook()
@@ -212,7 +211,7 @@ class Recipe(object):
 
 def code_analysis(options):
     start = time()
-    multiprocessing = options.get('multiprocessing') == 'True'
+    multiprocessing = bool_option(options.get('multiprocessing'))
     lock = Lock() if multiprocessing else None
     status = Value('i', 0)
 
@@ -237,9 +236,13 @@ def code_analysis(options):
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
-    if options['return-status-codes'] != 'False':
+    if bool_option(options['return-status-codes']):
         exit_code = int(not status.value == len(all_checks))
 
         print('The command "bin/code-analysis" exited with {0:d} in {1:.03f}s.'
               .format(exit_code, time() - start))
         exit(exit_code)
+
+
+def bool_option(value):
+    return value in ('True', 'true', 'on')

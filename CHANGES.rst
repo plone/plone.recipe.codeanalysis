@@ -4,6 +4,10 @@ Change history
 2.0a2 (unreleased)
 ------------------
 
+- Replace manual comparisons of buildout options to ``False`` with a
+  ``bool_option`` method.
+  [saily]
+
 - Removed some plugins and replaced them with ``flake8`` plugins. Please
   not the API change in buildout. Fixes #112
   [saily]
