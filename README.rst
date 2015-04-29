@@ -148,26 +148,27 @@ The recipe supports the following options:
 **flake8**
     If set to True, run Flake8 code analysis. Default is ``True``.
 
-    Flake8 now takes advantage of ``flake8`` plugin system and is superchared
-    with following extensions:
+**flake8-extensions**
+    Flake8 now takes advantage of ``flake8`` extension system. Default is None.
+    Example to supercharge with some extensions.
+    ::
 
-    - ``flake8-blind-except``: Check for non correct try-except statements.
-      Disabled by default using ``B901``in ``flake8-ignore``.
-    - ``flake8-coding``: Check for utf8 headers.
-      Disabled by default using ``C101,C102`` in ``flake8-ignore``.
-    - ``flake8-debugger``: Check for ``pdb`` and ``ipdb`` statments.
-      Disabled by default using ``T002`` in ``flake8-ignore``.
-    - ``flake8-quotes``: Check for double quotes.
-      Disabled by default using ``Q000`` in ``flake8-ignore``.
-    - ``pep8-naming``: Check methods and classes being aligned to PEP8 naming
-      conventions. Disabled by default using ``N802`` in ``flake8-ignore``.
+        [code-analysis]
+        recipe = plone.recipe.codeanalysis
+        flake8 = True
+        flake8-extension =
+            flake8-blind-except
+            flake8-coding
+            flake8-debugger
+            flake8-quotes
+            pep8-naming
 
-    They are disabled by ``flake8-ignore`` default configuration, but if you
-    want to enable them just define ``flake8-ignore``.
+    All through flake8 extensions raised validation errors may be suppressed
+    using the ``flake8-ignore`` option.
 
 **flake8-ignore**
     Skip errors or warnings. See `Flake8 documentation`_ for error codes.
-    Default is ``B901,C101,C102,N802,Q000,T002``.
+    Default is None.
 
 **flake8-exclude**
     Comma-separated filename and glob patterns default. Say you want to

@@ -58,7 +58,7 @@ class Recipe(object):
         self.options.setdefault('pre-commit-hook', 'True')
         # Flake 8
         self.options.setdefault('flake8', 'True')
-        self.options.setdefault('flake8-ignore', 'B901,C101,C102,N802,Q000,T002')  # noqa
+        self.options.setdefault('flake8-extensions', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,boostrap-buildout.py,docs,*.egg')  # noqa
         self.options.setdefault('flake8-max-complexity', '10')
         self.options.setdefault('flake8-max-line-length', '79')
@@ -134,6 +134,7 @@ class Recipe(object):
 
     def install(self):
         self.install_scripts()
+        self.install_extensions()
 
         if bool_option(self.options['pre-commit-hook']):
             self.install_pre_commit_hook()
@@ -153,8 +154,19 @@ class Recipe(object):
     def update(self):
         self.install()
 
+    @property
+    def extensions(self):
+        extensions = self.options['flake8-extensions'].splitlines()
+        if bool_option(self.options['flake8']):
+            extensions.insert(0, 'flake8>=2.0.0')
+        return extensions
+
+    def install_extensions(self):
+        for extension in self.extensions:
+            zc.recipe.egg.Egg(self.buildout, extension, self.options)
+
     def install_scripts(self):
-        eggs = self.egg.working_set()[1]
+        eggs = self.egg.working_set(extra=self.extensions)[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
         directory = self.buildout['buildout']['bin-directory']
