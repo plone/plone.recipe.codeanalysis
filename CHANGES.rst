@@ -9,7 +9,19 @@ Change history
   [saily]
 
 - Removed some plugins and replaced them with ``flake8`` plugins. Please
-  not the API change in buildout. Fixes #112
+  not the API change in buildout. Following options have been removed:
+
+  - **utf8-headers** has been removed, replace it with ``flake8-coding`` if
+    needed.
+  - **utf8-headers-exclude**
+  - **prefer-single-quotes** has been removed, replace it with
+    ``flake8-quotes``.
+  - **prefer-single-quotes-exclude**
+  - **debug-statements** has some reduced functionality, because python
+    debugger checks should be included using ``flake8-debugger`` extension which
+    also checks for ``ipdb``.
+
+  Fixes #112.
   [saily]
 
 - Add missing tests for deprecated_aliases parser.
