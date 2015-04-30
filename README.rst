@@ -156,7 +156,7 @@ The recipe supports the following options:
         [code-analysis]
         recipe = plone.recipe.codeanalysis
         flake8 = True
-        flake8-extension =
+        flake8-extensions =
             flake8-blind-except
             flake8-coding
             flake8-debugger
