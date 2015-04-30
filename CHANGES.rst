@@ -1,6 +1,12 @@
 Change history
 ==============
 
+2.0a3 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.0a2 (2015-04-30)
 ------------------
 
