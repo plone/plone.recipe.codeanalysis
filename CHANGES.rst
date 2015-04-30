@@ -1,7 +1,7 @@
 Change history
 ==============
 
-2.0a2 (unreleased)
+2.0a2 (2015-04-30)
 ------------------
 
 - Replace manual comparisons of buildout options to ``False`` with a
