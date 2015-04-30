@@ -4,7 +4,8 @@ Change history
 2.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add check for relative imports. Fixes #44
+  [saily]
 
 
 2.0a2 (2015-04-30)

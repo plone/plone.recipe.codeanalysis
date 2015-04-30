@@ -13,8 +13,8 @@ class Imports(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                r'^\s*(?:from\s+[^\s]+\s+)?import(?:\s|\().+,.+\)?$':
-                    'grouped import',
+                r'^\s*(?:from\s+[^\s]+\s+)?import(?:\s|\().+,.+\)?$': 'grouped import',  # noqa
+                r'^\s*from\s+[\.]{1,2}\s+import.+$': 'relative import',
                 r'^\s*from\s+[^\s]+\s+import\s+\*$': 'wildcard import',
             },
         }

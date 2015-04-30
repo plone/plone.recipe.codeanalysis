@@ -67,6 +67,14 @@ INVALID_GROUPED = [
     'from foo import Baz, baz',
 ]
 
+INVALID_RELATIVE = [
+    'from . import Foo'
+]
+
+INVALID_RELATIVE_PARENT = [
+    'from .. import Bar'
+]
+
 
 class TestImports(unittest.TestCase):
 
@@ -119,4 +127,12 @@ class TestImports(unittest.TestCase):
 
     def test_analysis_should_return_false_on_2_unsorted_multi_imports(self):
         self._create_file_in_test_dir('invalid.py', INVALID_MULTIPLE_MULTILINE)
+        self.assertFalse(Imports(self.options).run())
+
+    def test_analysis_should_return_false_on_relative_import(self):
+        self._create_file_in_test_dir('invalid.py', INVALID_RELATIVE)
+        self.assertFalse(Imports(self.options).run())
+
+    def test_analysis_should_return_false_on_relative_parent_import(self):
+        self._create_file_in_test_dir('invalid.py', INVALID_RELATIVE_PARENT)
         self.assertFalse(Imports(self.options).run())
