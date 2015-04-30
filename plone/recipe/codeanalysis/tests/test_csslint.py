@@ -10,7 +10,8 @@ from unittest import TestCase
 
 
 class TestCssLint(TestCase):
-    def setUp(self):
+
+    def setUp(self):  # noqa
         self.options = {
             'csslint-bin': 'bin/csslint',
             'jenkins': 'False'
@@ -19,7 +20,7 @@ class TestCssLint(TestCase):
             self.options['csslint-bin'] = '../../bin/csslint'
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):

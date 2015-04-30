@@ -29,7 +29,8 @@ INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
 
 
 class ZPTLintTestCase(unittest.TestCase):
-    def setUp(self):
+
+    def setUp(self):  # noqa
         self.options = {
             'zptlint': 'True',
             'zptlint-bin': 'bin/zptlint',
@@ -38,7 +39,7 @@ class ZPTLintTestCase(unittest.TestCase):
             self.options['zptlint-bin'] = '../../bin/zptlint'
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):

@@ -13,8 +13,6 @@ from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.pep3101 import PEP3101
 from plone.recipe.codeanalysis.py_hasattr import HasAttr
-from plone.recipe.codeanalysis.python_utf8_header import UTF8Headers
-from plone.recipe.codeanalysis.quoting import PreferSingleQuotes
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 import os
@@ -36,8 +34,6 @@ all_checks = [
     JSCS,
     JSHint,
     PEP3101,
-    PreferSingleQuotes,
-    UTF8Headers,
     ZPTLint,
 ]
 
@@ -62,7 +58,7 @@ class Recipe(object):
         self.options.setdefault('pre-commit-hook', 'True')
         # Flake 8
         self.options.setdefault('flake8', 'True')
-        self.options.setdefault('flake8-ignore', '')
+        self.options.setdefault('flake8-extensions', '')
         self.options.setdefault('flake8-exclude', 'bootstrap.py,boostrap-buildout.py,docs,*.egg')  # noqa
         self.options.setdefault('flake8-max-complexity', '10')
         self.options.setdefault('flake8-max-line-length', '79')
@@ -80,13 +76,13 @@ class Recipe(object):
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
         # XXX: keep compatibility with previous versions
-        if self.options['deprecated-aliases'] == 'False':
+        if not bool_option(self.options['deprecated-aliases']):
             self.options.setdefault('deprecated-alias', 'False')
             deprecated_alias = self.options['deprecated-alias']
-            if deprecated_alias == 'False':
+            if not bool_option(deprecated_alias):
                 self.options.setdefault('deprecated-methods', 'False')
                 deprecated_methods = self.options['deprecated-methods']
-                if deprecated_methods != 'False':
+                if bool_option(deprecated_methods):
                     self.options['deprecated-aliases'] = deprecated_methods
             else:
                 self.options['deprecated-aliases'] = deprecated_alias
@@ -100,9 +96,9 @@ class Recipe(object):
         # PEP 3101 (Advanced String Formatting)
         self.options.setdefault('pep3101', 'False')
         # XXX: keep compatibility with previous versions
-        if self.options['pep3101'] == 'False':
+        if not bool_option(self.options['pep3101']):
             self.options.setdefault('string-formatting', 'False')
-            if self.options['string-formatting'] != 'False':
+            if bool_option(self.options['string-formatting']):
                 self.options['pep3101'] = self.options['string-formatting']
         # imports
         self.options.setdefault('imports', 'False')
@@ -138,9 +134,9 @@ class Recipe(object):
 
     def install(self):
         self.install_scripts()
+        self.install_extensions()
 
-        # XXX: this has to be handled on a better way; what about 'false'?
-        if self.options['pre-commit-hook'] != 'False':
+        if bool_option(self.options['pre-commit-hook']):
             self.install_pre_commit_hook()
         else:
             self.uninstall_pre_commit_hook()
@@ -158,8 +154,19 @@ class Recipe(object):
     def update(self):
         self.install()
 
+    @property
+    def extensions(self):
+        extensions = self.options['flake8-extensions'].splitlines()
+        if bool_option(self.options['flake8']):
+            extensions.insert(0, 'flake8>=2.0.0')
+        return extensions
+
+    def install_extensions(self):
+        for extension in self.extensions:
+            zc.recipe.egg.Egg(self.buildout, extension, self.options)
+
     def install_scripts(self):
-        eggs = self.egg.working_set()[1]
+        eggs = self.egg.working_set(extra=self.extensions)[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
         directory = self.buildout['buildout']['bin-directory']
@@ -216,7 +223,7 @@ class Recipe(object):
 
 def code_analysis(options):
     start = time()
-    multiprocessing = options.get('multiprocessing') == 'True'
+    multiprocessing = bool_option(options.get('multiprocessing'))
     lock = Lock() if multiprocessing else None
     status = Value('i', 0)
 
@@ -241,9 +248,13 @@ def code_analysis(options):
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
-    if options['return-status-codes'] != 'False':
+    if bool_option(options['return-status-codes']):
         exit_code = int(not status.value == len(all_checks))
 
         print('The command "bin/code-analysis" exited with {0:d} in {1:.03f}s.'
               .format(exit_code, time() - start))
         exit(exit_code)
+
+
+def bool_option(value):
+    return value in ('True', 'true', 'on')

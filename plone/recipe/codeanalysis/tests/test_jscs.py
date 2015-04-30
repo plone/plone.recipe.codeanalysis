@@ -59,7 +59,7 @@ Missing space before opening curly brace at /tmp/tmp679DaV/incorrect.js :
 
 class TestJavascriptCodeStyleChecker(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.options = {
             'jscs-bin': 'bin/jscs',
             'jscs-exclude': '',
@@ -69,7 +69,7 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
             self.options['jscs-bin'] = '../../bin/jscs'
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):

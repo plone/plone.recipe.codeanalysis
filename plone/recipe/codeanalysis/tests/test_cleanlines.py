@@ -24,7 +24,7 @@ INVALID_TABS = """\
 
 class TestCleanLines(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.options = {
             'clean-lines': 'True',
             'clean-lines-exclude': '',
@@ -32,7 +32,7 @@ class TestCleanLines(unittest.TestCase):
         }
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def _create_file_in_test_dir(self, filename, contents):

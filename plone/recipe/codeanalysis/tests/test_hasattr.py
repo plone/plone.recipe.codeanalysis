@@ -41,13 +41,13 @@ INVALID_NO_IGNORE = [
 
 class TestHasattr(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.options = {
             'hasattr': 'True',
         }
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def _create_file_in_test_dir(self, filename, contents):

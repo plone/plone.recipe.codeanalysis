@@ -70,14 +70,14 @@ INVALID_GROUPED = [
 
 class TestImports(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self):  # noqa
         self.options = {
             'imports': 'True',
             'jenkins': 'False'
         }
         self.test_dir = mkdtemp()
 
-    def tearDown(self):
+    def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def _create_file_in_test_dir(self, filename, contents):
