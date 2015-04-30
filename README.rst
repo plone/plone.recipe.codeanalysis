@@ -168,7 +168,7 @@ The recipe supports the following options:
 
 **flake8-ignore**
     Skip errors or warnings. See `Flake8 documentation`_ for error codes.
-    Default is None.
+    Default is none.
 
 **flake8-exclude**
     Comma-separated filename and glob patterns default. Say you want to
