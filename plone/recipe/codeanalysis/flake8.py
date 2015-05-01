@@ -17,7 +17,7 @@ class Flake8(Analyser):
     @property
     def cmd(self):
         cmd = [
-            os.path.join(self.options['bin-directory']) + '/flake8',
+            os.path.join(self.options['bin-directory'], 'flake8'),
             '--ignore={0}'.format(self.get_prefixed_option('ignore')),
             '--exclude={0}'.format(self.get_prefixed_option('exclude')),
             '--max-complexity={0}'.format(
