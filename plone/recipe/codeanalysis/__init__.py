@@ -156,9 +156,13 @@ class Recipe(object):
 
     @property
     def extensions(self):
-        extensions = self.options['flake8-extensions'].splitlines()
+        extensions = []
         if bool_option(self.options['flake8']):
-            extensions.insert(0, 'flake8>=2.0.0')
+            extensions.append('flake8>=2.0.0')
+            for item in self.options['flake8-extensions'].splitlines():
+                extension = item.strip()
+                if extension:
+                    extensions.append(extension)
         return extensions
 
     def install_extensions(self):

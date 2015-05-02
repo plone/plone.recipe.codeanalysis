@@ -149,8 +149,9 @@ The recipe supports the following options:
     If set to True, run Flake8 code analysis. Default is ``True``.
 
 **flake8-extensions**
-    Flake8 now takes advantage of ``flake8`` extension system. Default is None.
-    Example to supercharge with some extensions.
+    Flake8 now takes advantage of ``flake8`` extension system. Default is none.
+    If ``flake8`` is set to False, this option will be ignored. Example to
+    supercharge with some extensions:
     ::
 
         [code-analysis]

@@ -4,6 +4,10 @@ Change history
 2.0a3 (unreleased)
 ------------------
 
+- Exclude empty strings in ``self.extensions`` which broke install with
+  ``zc.buildout 1.7.1``. Fixes #115
+  [saily]
+
 - Add check for relative imports. Fixes #44
   [saily]
 
