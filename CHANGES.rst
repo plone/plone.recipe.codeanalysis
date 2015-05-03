@@ -4,6 +4,11 @@ Change history
 2.0a3 (unreleased)
 ------------------
 
+- If an executable could not be found the code-analysis always failed. We've
+  changed this behaviour to return True and succeed the code-analysis, this
+  fixes #71.
+  [saily]
+
 - Exclude paths directly in ``find`` unix command which speeds up again a lot.
   [saily]
 

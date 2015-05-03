@@ -129,11 +129,11 @@ class TestFlake8(TestCase):
                 '        my_sum=1+1')  # No space between operators.
         self.assertFalse(Flake8(self.options).run())
 
-    def test_analysis_should_return_false_when_oserror(self):
-        # The options are fake, so it should raise an OSError
-        # and return false.
+    def test_analysis_should_return_true_when_oserror(self):
+        # The options are fake, so the function should raise an OSError
+        # but return True.
         self.options['bin-directory'] = 'FAKE_DIR'
-        self.assertFalse(Flake8(self.options).run())
+        self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_true(self):
         with open(path_join(self.test_dir, 'incorrect.py'), 'w') as f:

@@ -45,11 +45,11 @@ class TestCssLint(TestCase):
             f.write(INCORRECT_CSS)
         self.assertFalse(CSSLint(self.options).run())
 
-    def test_analysis_should_return_false_when_oserror(self):
-        # The options are fake, so it should raise an OSError
-        # and return false.
+    def test_analysis_should_return_true_when_oserror(self):
+        # The options are fake, so the function should raise an OSError
+        # but return True.
         self.options['csslint-bin'] = 'FAKE_BIN'
-        self.assertFalse(CSSLint(self.options).run())
+        self.assertTrue(CSSLint(self.options).run())
 
     def test_analysis_should_return_true(self):
         self.assertTrue(CSSLint(self.options).run())

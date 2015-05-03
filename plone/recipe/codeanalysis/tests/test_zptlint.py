@@ -48,12 +48,14 @@ class ZPTLintTestCase(unittest.TestCase):
         self.options['directory'] = self.test_dir
         self.assertFalse(ZPTLint(self.options).run())
 
-    def test_analysis_should_return_false_when_oserror(self):
+    def test_analysis_should_return_true_when_oserror(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
+        # The options are fake, so the function should raise an OSError
+        # but return True.
         self.options['zptlint-bin'] = ''
         self.options['directory'] = self.test_dir
-        self.assertFalse(ZPTLint(self.options).run())
+        self.assertTrue(ZPTLint(self.options).run())
 
     @unittest.skipIf(not ZPTLINT_INSTALLED, 'zptlint is not installed')
     def test_analysis_should_return_true(self):

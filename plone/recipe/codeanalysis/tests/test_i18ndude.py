@@ -48,12 +48,14 @@ class I18NDudeTestCase(unittest.TestCase):
         self.options['directory'] = self.test_dir
         self.assertFalse(I18NDude(self.options).run())
 
-    def test_analysis_should_return_false_when_oserror(self):
+    def test_analysis_should_return_true_when_oserror(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
+        # The options are fake, so the function should raise an OSError
+        # but return True.
         self.options['i18ndude-bin'] = ''
         self.options['directory'] = self.test_dir
-        self.assertFalse(I18NDude(self.options).run())
+        self.assertTrue(I18NDude(self.options).run())
 
     # this test should run only if i18ndude is installed
     @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')

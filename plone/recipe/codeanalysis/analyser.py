@@ -231,6 +231,6 @@ class Analyser:
             return True
         except OSError:
             self.log('skip')
-            return False
+            return True
         finally:
             output_file.close()

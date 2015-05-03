@@ -90,11 +90,11 @@ class TestJSHint(unittest.TestCase):
             warnings_code.write(WARNINGS_FILE)
         self.assertTrue(JSHint(self.options).run())
 
-    def test_analysis_should_return_false_when_oserror(self):
+    def test_analysis_should_return_true_when_oserror(self):
         # The options are fake, so the function should raise an OSError
-        # and return false.
+        # but return True.
         self.options['jshint-bin'] = 'FAKE_BIN'
-        self.assertFalse(JSHint(self.options).run())
+        self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_should_return_true(self):
         self.assertTrue(JSHint(self.options).run())
