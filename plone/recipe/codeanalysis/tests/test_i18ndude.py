@@ -62,3 +62,13 @@ class I18NDudeTestCase(unittest.TestCase):
             f.write(VALID_CODE)
         self.options['directory'] = self.test_dir
         self.assertTrue(I18NDude(self.options).run())
+
+    @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')
+    def test_analysis_should_return_true_if_file_invalid_is_excluded(self):
+        filename = 'invalid.pt'
+        with open(os.path.join(self.test_dir, filename), 'w') as f:
+            f.write(INVALID_CODE)
+        self.options['directory'] = self.test_dir
+        self.options['find-untranslated-exclude'] = \
+            '{0:s}/{1:s}'.format(self.test_dir, filename)
+        self.assertTrue(I18NDude(self.options).run())

@@ -14,13 +14,13 @@ class CSSLint(Analyser):
 
     @property
     def cmd(self):
-        paths = CSSLint.split_lines(self.options['directory'])
-        cmd = [self.get_prefixed_option('bin'), ]
-        cmd.extend(paths)
-
-        if self.use_jenkins:
-            cmd.insert(1, '--format=lint-xml')
-
+        cmd = []
+        files = self.find_files('.*\.css')
+        if files:
+            cmd.append(self.get_prefixed_option('bin'))
+            if self.use_jenkins:
+                cmd.append('--format=lint-xml')
+            cmd.extend(files)
         return cmd
 
     def parse_output(self, output_file, return_code):

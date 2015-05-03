@@ -14,16 +14,13 @@ class JSHint(Analyser):
 
     @property
     def cmd(self):
-        cmd = [self.get_prefixed_option('bin'), '--verbose']
-
-        if self.use_jenkins:
-            cmd.append('--reporter=jslint')
-
-        excludes = JSHint.split_lines(self.get_prefixed_option('exclude'))
-        if excludes:
-            cmd.append('--exclude={0}'.format(','.join(excludes)))
-
-        cmd.extend(JSHint.split_lines(self.options['directory']))
+        cmd = []
+        files = self.find_files('.*\.js')
+        if files:
+            cmd.extend([self.get_prefixed_option('bin'), '--verbose'])
+            if self.use_jenkins:
+                cmd.append('--reporter=jslint')
+            cmd.extend(files)
         return cmd
 
     def parse_output(self, output_file, return_code):

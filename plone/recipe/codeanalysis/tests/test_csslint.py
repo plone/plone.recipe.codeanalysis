@@ -8,84 +8,57 @@ from shutil import rmtree
 from tempfile import mkdtemp
 from unittest import TestCase
 
+CORRECT_CSS = """\
+a:link {color:blue}
+h3 {color: red}
+body {color: purple}
+"""
+
+INCORRECT_CSS = """\
+a:link {color: blue}
+{}
+h3 {color: red}
+bodyy {color: purple}
+"""
+
 
 class TestCssLint(TestCase):
 
     def setUp(self):  # noqa
+        self.test_dir = mkdtemp()
         self.options = {
             'csslint-bin': 'bin/csslint',
-            'jenkins': 'False'
+            'jenkins': 'False',
+            'directory': self.test_dir
         }
         if path_isfile('../../bin/csslint'):  # when cwd is parts/test
             self.options['csslint-bin'] = '../../bin/csslint'
-        self.test_dir = mkdtemp()
+        # Create a valid file for each testcase
+        with open(path_join(self.test_dir, 'correct.css'), 'w') as f:
+            f.write(CORRECT_CSS)
 
     def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):
-        incorrect_code = open(path_join(self.test_dir, 'incorrect.css'), 'w')
-        incorrect_code.write(
-            'a:link {color: blue}\n'
-            '{}\n'
-            'h3 {color: red}\n'
-            'bodyy {color: purple}')
-        incorrect_code.close()
-        self.options['directory'] = self.test_dir
+        with open(path_join(self.test_dir, 'incorrect.css'), 'w') as f:
+            f.write(INCORRECT_CSS)
         self.assertFalse(CSSLint(self.options).run())
 
     def test_analysis_should_return_false_when_oserror(self):
         # The options are fake, so it should raise an OSError
         # and return false.
         self.options['csslint-bin'] = 'FAKE_BIN'
-        self.options['directory'] = self.test_dir
         self.assertFalse(CSSLint(self.options).run())
 
     def test_analysis_should_return_true(self):
-        correct_code = open(path_join(self.test_dir, 'correct.css'), 'w')
-        correct_code.write(
-            'a:link {color:blue}\n'
-            'h3 {color: red}\n'
-            'body {color: purple}')
-        correct_code.close()
-        self.options['directory'] = self.test_dir
         self.assertTrue(CSSLint(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         location_tmp_dir = mkdtemp()
-        correct_code = open(path_join(self.test_dir, 'correct.css'), 'w')
-        correct_code.write(
-            'a:link {color:blue}\n'
-            'h3 {color: red}\n'
-            'body {color: purple}')
-        correct_code.close()
-        self.options['directory'] = self.test_dir
         self.options['location'] = location_tmp_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         CSSLint(self.options).run()
         file_exist = path_isfile(path_join(location_tmp_dir, 'csslint.xml'))
         rmtree(location_tmp_dir)
         self.assertTrue(file_exist)
-
-    # def test_jshint_errors_should_return_false_xml_output(self):
-    #     output = '<?xml version="1.0" encoding="utf-8"?><lint>\n</lint>\n'
-    #     self.assertFalse(csslint_errors(output, True))
-
-    # def test_jshint_errors_should_return_true_xml_output(self):
-    #     output = '<?xml version="1.0" encoding="utf-8"?><lint>\n<file name='\
-    #         '"incorrect.css"><issue line="2" char="1" severity="error" '\
-    #         'reason="Unexpected token \'{\' at line 2, col 1." evidence='\
-    #         '"{}"/><issue line="2" char="2" severity="error" '\
-    #         'reason="Unexpected token \'}\' at line 2, col 2." evidence='\
-    #         '"{}"/></file>\n</lint>\n'
-    #     self.assertTrue(csslint_errors(output, True))
-
-    # def test_jshint_errors_should_return_true_normal_output(self):
-    #     output = 'incorrect.css: line 2, col 1, Error - Unexpected token '\
-    #         '\'{\' at line 2, col 1.\nincorrect.css: line 2, col 2, Error'\
-    #         ' - Unexpected token \'}\' at line 2, col 2.\n\n'
-    #     self.assertTrue(csslint_errors(output, False))
-
-    # def test_jshint_errors_should_return_false_normal_output(self):
-    #     output = ''
-    #     self.assertFalse(csslint_errors(output, False))

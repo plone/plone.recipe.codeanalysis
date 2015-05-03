@@ -67,26 +67,12 @@ class CleanLines(Analyser):
 
     def run(self):
         # Should we exclude some files?
-        exclude = CleanLines.split_lines(self.get_prefixed_option('exclude'))
         total_errors = []
 
         for check in self.checks:
-            all_files = set()
-            exc_files = set([''])
-
+            files = []
             for extension in check['extensions']:
-                files = self.find_files('.*\.{0}'.format(extension))
-                if files:
-                    all_files |= set(CleanLines.split_lines(files))
-
-                if exclude:
-                    files = self.find_files(
-                        '.*\.{0}'.format(extension), exclude)
-                    if files:
-                        exc_files |= set(CleanLines.split_lines(files))
-
-            # Remove excluded files
-            files = all_files - exc_files
+                files.extend(self.find_files('.*\.{0}'.format(extension)))
             for file_path in files:
                 total_errors.extend(self.check(file_path, **check))
 

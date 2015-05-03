@@ -13,15 +13,13 @@ class ZPTLint(Analyser):
     @property
     def cmd(self):
         cmd = []
-        files = ''
+        files = []
         for extension in self.extensions:
-            found_files = self.find_files('.*\.{0}'.format(extension))
-            if found_files:
-                files += found_files
+            files.extend(self.find_files('.*\.{0}'.format(extension)))
 
         if files:
             cmd.append(self.get_prefixed_option('bin'))
-            cmd.extend(files.split())
+            cmd.extend(files)
 
         return cmd
 

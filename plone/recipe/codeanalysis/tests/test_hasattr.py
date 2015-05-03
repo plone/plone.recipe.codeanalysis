@@ -67,17 +67,6 @@ class TestHasattr(unittest.TestCase):
         self._create_file_in_test_dir('valid.py', VALID_IGNORE)
         self.assertTrue(HasAttr(self.options).run())
 
-    # def test_analysis_should_return_errors_if_there_is_hasattr(self):
-    #     self.assertEqual(
-    #         len(
-    #             py_hasattr._code_analysis_hasattr_lines_parser(
-    #                 INVALID_NO_IGNORE,
-    #                 'invalid.py'
-    #             )
-    #         ),
-    #         5
-    #     )
-
     def test_analysis_should_return_false_if_there_is_hasattr(self):
         self._create_file_in_test_dir('invalid.py', INVALID_NO_IGNORE)
         self.assertFalse(HasAttr(self.options).run())

@@ -11,7 +11,7 @@ class I18NDude(Analyser):
     @property
     def cmd(self):
         cmd = []
-        files = I18NDude.split_lines(self.find_files('.*\.pt'))
+        files = self.find_files('.*\.pt')
 
         if files:
             cmd.append(self.options.get('i18ndude-bin') or '')

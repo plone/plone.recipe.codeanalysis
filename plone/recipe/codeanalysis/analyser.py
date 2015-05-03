@@ -115,26 +115,36 @@ class Analyser:
         :return: List containing the command and arguments, to be used by
         the subprocess.Popen method.
         """
-        paths = Analyser.split_lines(self.options.get('directory', ''))
-        cmd = [self.options.get('bin')]
-        cmd.extend(self.cmd_args)
-        cmd.extend(paths)
-        return cmd
+        return [self.options.get('bin'), self.find_files()]
 
-    def find_files(self, regex, paths=None):
-        if paths is None:
-            paths = Analyser.split_lines(self.options['directory'])
-
-        dirs = []
-        files = []
-        for path in paths:
+    def find_real_files_and_directories(self, mixed_paths):
+        files = set()
+        dirs = set()
+        for path in mixed_paths or []:
             realpath = os.path.realpath(path)
             if os.path.isdir(realpath) and realpath not in dirs:
-                dirs.append(realpath)
+                dirs.add(realpath)
             if os.path.isfile(realpath) and realpath not in files:
-                files.append(realpath)
+                files.add(realpath)
+        return files, dirs
 
-        cmd = ['find', '-L'] + dirs + ['-regex', regex, '-type', 'f']
+    def find_files(self, regex='.*', paths=None, exclude=None):
+        if paths is None:
+            paths = Analyser.split_lines(self.options['directory'])
+        if exclude is None:
+            exclude = Analyser.split_lines(self.get_prefixed_option('exclude'))
+
+        files, dirs = self.find_real_files_and_directories(paths)
+        cmd = ['find', '-L']
+        cmd.extend(list(dirs))
+
+        # Exclude directly from find command, speeds this up
+        for category in self.find_real_files_and_directories(exclude):
+            for item in category:
+                cmd.extend(['!', '-path', item])
+
+        cmd.extend(['-regex', regex, '-type', 'f'])
+
         process_files = subprocess.Popen(
             cmd,
             stderr=subprocess.STDOUT,
@@ -144,8 +154,9 @@ class Analyser:
         if isinstance(exclude, bytes):
             exclude = exclude.decode('utf-8')
 
-        files.insert(0, exclude.strip())
-        return '\n'.join(files)
+        files = list(files)
+        files.extend(filter(None, exclude.splitlines()))
+        return files
 
     def open_output_file(self):
         """Open output file according to the jenkins option.
