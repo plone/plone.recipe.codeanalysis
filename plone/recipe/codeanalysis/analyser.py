@@ -216,10 +216,10 @@ class Analyser:
         :return: It return the output of the analyser command.
         """
         output_file = self.open_output_file()
-
+        command = self.cmd
         try:
-            assert len(self.cmd) > 0  # skip if there's no command
-            process = subprocess.Popen(self.cmd,
+            assert len(command) > 0  # skip if there's no command
+            process = subprocess.Popen(command,
                                        stderr=subprocess.STDOUT,
                                        stdout=output_file)
             process.wait()
