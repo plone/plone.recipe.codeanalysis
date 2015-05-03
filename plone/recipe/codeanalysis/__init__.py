@@ -66,6 +66,7 @@ class Recipe(object):
         self.options.setdefault('jshint', 'False')
         self.options.setdefault('jshint-bin', 'jshint')
         self.options.setdefault('jshint-exclude', '')
+        self.options.setdefault('jshint-suppress-warnings', 'True')
         # JSCS
         self.options.setdefault('jscs', 'False')
         self.options.setdefault('jscs-bin', 'jscs')

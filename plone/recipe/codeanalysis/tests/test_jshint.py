@@ -67,6 +67,7 @@ class TestJSHint(unittest.TestCase):
         self.options = {
             'jshint-bin': 'bin/jshint',
             'jshint-exclude': '',
+            'jshint-suppress-warnings': 'True',
             'jenkins': 'False',
             'directory': self.test_dir,
         }
@@ -143,3 +144,13 @@ class TestJSHint(unittest.TestCase):
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
         self.assertTrue(linter.parse_output(jshint_file, 1))
+
+    def test_jshint_parse_output_should_return_false_if_warnings_not_suppressed(self):  # noqa
+        jshint_file = TemporaryFile('w+')
+        jshint_file.write(EXPECTED_WARNINGS_OUTPUT)
+        jshint_file.seek(0)
+        self.options['jenkins'] = 'False'
+        self.options['jshint-suppress-warnings'] = 'False'
+        linter = JSHint(self.options)
+        self.assertFalse(linter.use_jenkins)
+        self.assertFalse(linter.parse_output(jshint_file, 1))

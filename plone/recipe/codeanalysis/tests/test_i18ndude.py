@@ -31,13 +31,17 @@ INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
 class I18NDudeTestCase(unittest.TestCase):
 
     def setUp(self):  # noqa
+        self.test_dir = mkdtemp()
         self.options = {
             'find-untranslated': 'True',
             'i18ndude-bin': 'bin/i18ndude',
+            'directory': self.test_dir
         }
         if os.path.isfile('../../bin/i18ndude'):  # when cwd is parts/test
             self.options['i18ndude-bin'] = '../../bin/i18ndude'
-        self.test_dir = mkdtemp()
+        # Create a valid file for each testcase
+        with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
+            f.write(VALID_CODE)
 
     def tearDown(self):  # noqa
         rmtree(self.test_dir)
@@ -45,24 +49,17 @@ class I18NDudeTestCase(unittest.TestCase):
     def test_analysis_should_return_false_when_error_found(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
-        self.options['directory'] = self.test_dir
         self.assertFalse(I18NDude(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
-        with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
-            f.write(INVALID_CODE)
         # The options are fake, so the function should raise an OSError
         # but return True.
         self.options['i18ndude-bin'] = ''
-        self.options['directory'] = self.test_dir
         self.assertTrue(I18NDude(self.options).run())
 
     # this test should run only if i18ndude is installed
     @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')
     def test_analysis_should_return_true(self):
-        with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
-            f.write(VALID_CODE)
-        self.options['directory'] = self.test_dir
         self.assertTrue(I18NDude(self.options).run())
 
     @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')
@@ -70,7 +67,6 @@ class I18NDudeTestCase(unittest.TestCase):
         filename = 'invalid.pt'
         with open(os.path.join(self.test_dir, filename), 'w') as f:
             f.write(INVALID_CODE)
-        self.options['directory'] = self.test_dir
         self.options['find-untranslated-exclude'] = \
             '{0:s}/{1:s}'.format(self.test_dir, filename)
         self.assertTrue(I18NDude(self.options).run())

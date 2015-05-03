@@ -4,6 +4,9 @@ Change history
 2.0a3 (unreleased)
 ------------------
 
+- Add a new option to disable ``jshint`` warning suppression, fixes #94.
+  [saily]
+
 - If an executable could not be found the code-analysis always failed. We've
   changed this behaviour to return True and succeed the code-analysis, this
   fixes #71.

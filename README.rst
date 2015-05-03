@@ -206,6 +206,11 @@ The recipe supports the following options:
     in a file named ``.jshintignore``. See `JSHint documentation`_ for more
     details.
 
+**jshint-suppress-warnings**
+    By default warnings of jshint are suppressed and not shown. You may disable
+    this by setting to False, default is True for backward compatibility
+    reasons.
+
 **jscs**
     If set to True, jscs code analysis is run. Default is ``False``.
 
