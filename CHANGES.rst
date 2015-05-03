@@ -1,6 +1,12 @@
 Change history
 ==============
 
+2.0b2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.0b1 (2015-05-03)
 ------------------
 
