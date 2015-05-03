@@ -2,6 +2,7 @@
 from multiprocessing import Lock
 from multiprocessing import Process
 from multiprocessing import Value
+from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.debug_statements import DebugStatements
@@ -23,8 +24,9 @@ import zc.recipe.egg
 
 current_dir = os.path.dirname(__file__)
 all_checks = [
-    CleanLines,
     CSSLint,
+    CheckManifest,
+    CleanLines,
     DebugStatements,
     DeprecatedAliases,
     Flake8,
@@ -74,6 +76,9 @@ class Recipe(object):
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
+        # check-manifest
+        self.options.setdefault('check-manifest', 'False')
+        self.options.setdefault('check-manifest-directory', '.')
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
         # XXX: keep compatibility with previous versions
@@ -183,6 +188,8 @@ class Recipe(object):
 
         # flake8
         add_script('flake8')
+        # check-manifest
+        add_script('check-manifest')
         # bin/code-analysis
         add_script(
             (self.name, self.__module__, 'code_analysis'),

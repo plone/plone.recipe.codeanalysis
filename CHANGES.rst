@@ -4,6 +4,9 @@ Change history
 2.0a3 (unreleased)
 ------------------
 
+- Add ``check-manifest`` as new dependency and a basic check. Fixes #69
+  [saily]
+
 - Add a new option to disable ``jshint`` warning suppression, fixes #94.
   [saily]
 

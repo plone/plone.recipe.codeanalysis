@@ -184,6 +184,18 @@ The recipe supports the following options:
 **flake8-max-line-length**
     Set maximum allowed line length. Default is ``79``.
 
+**check-manifest**
+    If set to True, ``check-manifest`` will be run to check you MANIFEST.in
+    file. Default is False
+
+**check-manifest-directory**
+    Default is ``.`` which means check the current package where you included
+    code-analysis in buildout.
+
+    EXPERIMENTAL: For project buildouts where you use several source
+    packages you may want to enter multiple directories or use
+    ``${buildout:develop}`` to include all your development packages.
+
 **jshint**
     If set to True, jshint code analysis is run. Default is ``False``. Note
     that plone.recipe.codeanalysis requires jshint >= 1.0.
