@@ -141,9 +141,12 @@ class Analyser:
         cmd.extend(list(dirs))
 
         # Exclude directly from find command, speeds this up
-        for category in self.find_real_files_and_directories(exclude):
-            for item in category:
-                cmd.extend(['!', '-path', item])
+        excluded_files, excluded_dirs = \
+            self.find_real_files_and_directories(exclude)
+        for excluded_file in excluded_files:
+            cmd.extend(['!', '-path', excluded_file])
+        for excluded_dir in excluded_dirs:
+            cmd.extend(['!', '-path', os.path.join(excluded_dir, '*')])
 
         cmd.extend(['-regex', regex, '-type', 'f'])
 

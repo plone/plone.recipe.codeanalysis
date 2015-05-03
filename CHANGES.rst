@@ -4,6 +4,9 @@ Change history
 2.0a3 (unreleased)
 ------------------
 
+- Allow usage of wildcards in exclude statements.
+  [saily]
+
 - Add ``check-manifest`` as new dependency and a basic check. Fixes #69
   [saily]
 
