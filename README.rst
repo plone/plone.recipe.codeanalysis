@@ -268,6 +268,10 @@ The recipe supports the following options:
         npms = csslint
         scripts = csslint
 
+**csslint-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
+
 **deprecated-aliases**
     For historical reasons, some of the unittest.TestCase methods had one or
     more aliases that are deprecated on Python 2.7. If this option is set to
@@ -343,6 +347,10 @@ system:
     Default is ``False``.
     To use this you will need to set the ``i18ndude-bin`` option.
 
+**find-untranslated-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
+
 **i18ndude-bin**
     Set the path to a custom version of `i18ndude`_.
     Default is none.
@@ -355,6 +363,10 @@ system:
 **zptlint-bin**
     Set the path to a custom version of `zptlint`_.
     Default is none.
+
+**zptlint-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
 
 
 Known Issues
