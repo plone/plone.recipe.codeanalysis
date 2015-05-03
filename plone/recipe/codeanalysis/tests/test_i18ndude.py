@@ -10,6 +10,7 @@ import unittest
 # Travis CI to indicate all external dependencies are, in fact,
 # installed; we used it as a flag to skip some tests here
 I18NDUDE_INSTALLED = os.environ.get('EXTRAS_INSTALLED', False)
+I18NDUDE_NOT_INSTALLED_MSG = 'i18ndude is not installed'
 
 VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:i18n="http://xml.zope.org/namespaces/i18n">
@@ -46,6 +47,7 @@ class I18NDudeTestCase(unittest.TestCase):
     def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
+    @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
@@ -58,11 +60,11 @@ class I18NDudeTestCase(unittest.TestCase):
         self.assertTrue(I18NDude(self.options).run())
 
     # this test should run only if i18ndude is installed
-    @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')
+    @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true(self):
         self.assertTrue(I18NDude(self.options).run())
 
-    @unittest.skipIf(not I18NDUDE_INSTALLED, 'i18ndude is not installed')
+    @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true_if_file_invalid_is_excluded(self):
         filename = 'invalid.pt'
         with open(os.path.join(self.test_dir, filename), 'w') as f:
