@@ -1,7 +1,7 @@
 Change history
 ==============
 
-2.0a3 (unreleased)
+2.0b1 (2015-05-03)
 ------------------
 
 - Allow usage of wildcards in exclude statements.
