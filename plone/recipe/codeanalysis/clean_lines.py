@@ -65,6 +65,9 @@ class CleanLines(Analyser):
 
         return errors
 
+    def cmd(self):
+        pass
+
     def run(self):
         # Should we exclude some files?
         total_errors = []

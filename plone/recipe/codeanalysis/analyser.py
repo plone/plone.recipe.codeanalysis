@@ -107,7 +107,7 @@ class Analyser:
         """
         return Analyser.normalize_boolean(self.options.get('jenkins'))
 
-    @property
+    @abstractproperty
     def cmd(self):
         """Readonly property that join the analyser command and arguments.
 
