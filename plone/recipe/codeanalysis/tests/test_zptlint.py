@@ -47,6 +47,7 @@ class ZPTLintTestCase(unittest.TestCase):
     def tearDown(self):  # noqa
         rmtree(self.test_dir)
 
+    @unittest.skipIf(not ZPTLINT_INSTALLED, ZPTLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
         with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
             f.write(INVALID_CODE)
