@@ -59,7 +59,6 @@ class I18NDudeTestCase(unittest.TestCase):
         self.options['i18ndude-bin'] = ''
         self.assertTrue(I18NDude(self.options).run())
 
-    # this test should run only if i18ndude is installed
     @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true(self):
         self.assertTrue(I18NDude(self.options).run())
