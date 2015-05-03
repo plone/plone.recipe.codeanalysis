@@ -183,7 +183,7 @@ class Analyser:
         output = map(
             lambda x: error.sub(self.output_replace, x), output.splitlines()
         )
-        return u'\n'.join(output).strip()
+        return '\n'.join(output).strip()
 
     def parse_output(self, output_file, return_code):
         if return_code:
