@@ -122,10 +122,12 @@ class Analyser:
         dirs = set()
         for path in mixed_paths or []:
             realpath = os.path.realpath(path)
-            if os.path.isdir(realpath) and realpath not in dirs:
+            if os.path.isdir(realpath):
                 dirs.add(realpath)
-            if os.path.isfile(realpath) and realpath not in files:
+            elif os.path.isfile(realpath):
                 files.add(realpath)
+            else:
+                files.add(path)  # this supports wildcards.
         return files, dirs
 
     def find_files(self, regex='.*', paths=None, exclude=None):
