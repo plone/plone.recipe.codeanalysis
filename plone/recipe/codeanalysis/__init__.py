@@ -81,17 +81,6 @@ class Recipe(object):
         self.options.setdefault('check-manifest-directory', '.')
         # Warn about usage of deprecated aliases
         self.options.setdefault('deprecated-aliases', 'False')
-        # XXX: keep compatibility with previous versions
-        if not bool_option(self.options['deprecated-aliases']):
-            self.options.setdefault('deprecated-alias', 'False')
-            deprecated_alias = self.options['deprecated-alias']
-            if not bool_option(deprecated_alias):
-                self.options.setdefault('deprecated-methods', 'False')
-                deprecated_methods = self.options['deprecated-methods']
-                if bool_option(deprecated_methods):
-                    self.options['deprecated-aliases'] = deprecated_methods
-            else:
-                self.options['deprecated-aliases'] = deprecated_alias
         # utf-8 header
         self.options.setdefault('utf8-header', 'False')
         # clean lines
@@ -101,11 +90,6 @@ class Recipe(object):
         self.options.setdefault('prefer-single-quotes', 'False')
         # PEP 3101 (Advanced String Formatting)
         self.options.setdefault('pep3101', 'False')
-        # XXX: keep compatibility with previous versions
-        if not bool_option(self.options['pep3101']):
-            self.options.setdefault('string-formatting', 'False')
-            if bool_option(self.options['string-formatting']):
-                self.options['pep3101'] = self.options['string-formatting']
         # imports
         self.options.setdefault('imports', 'False')
         # Debug statements
