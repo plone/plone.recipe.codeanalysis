@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from io import open
-from os.path import isfile as path_isfile
-from os.path import join as path_join
 from plone.recipe.codeanalysis.flake8 import Flake8
+from plone.recipe.codeanalysis.flake8 import console_script
+from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp
-from unittest import TestCase
+import os
 
 VALID_CODE = '''\
 # -*- coding: utf-8 -*-
@@ -100,33 +99,28 @@ def foo(bar)
 """
 
 
-class TestFlake8(TestCase):
+class TestFlake8(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
-        self.test_dir = mkdtemp()
-        self.options = {
-            'bin-directory': 'bin/',
+        super(TestFlake8, self).setUp()
+        self.options.update({
             'flake8-ignore': '',
             'flake8-exclude': 'bootstrap.py,bootstrap-buildout.py,docs,*.egg',
             'flake8-max-complexity': '10',
             'flake8-max-line-length': '79',
-            'jenkins': 'False',
-            'directory': self.test_dir,
-        }
-        if path_isfile('../../bin/flake8'):  # when cwd is parts/test
+        })
+        if os.path.isfile('../../bin/flake8'):  # when cwd is parts/test
             self.options['bin-directory'] = '../../bin'
 
-    def tearDown(self):  # noqa
-        rmtree(self.test_dir)
-
     def test_analysis_should_return_false_when_error_found(self):
-        with open(path_join(self.test_dir, 'incorrect.py'), 'w') as f:
-            f.write(
-                '# -*- coding: utf-8 -*-\n'
-                'import sys\n'
-                'class MyClass():\n'
-                '    def __init__(self):\n'
-                '        my_sum=1+1')  # No space between operators.
+        self.given_a_file_in_test_dir('incorrect.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            'import sys',
+            'class MyClass():',
+            '    def __init__(self):',
+            '        my_sum=1+1'  # No space between operators.
+            '',
+        ]))
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
@@ -136,84 +130,85 @@ class TestFlake8(TestCase):
         self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_true(self):
-        with open(path_join(self.test_dir, 'incorrect.py'), 'w') as f:
-            f.write(
-                '# -*- coding: utf-8 -*-\n'
-                'class MyClass():\n'
-                '    def __init__(self):\n'
-                '        my_sum = 1 + 1\n'
-                '        self.my_sum = my_sum\n')
+        self.given_a_file_in_test_dir('correct.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            'class MyClass():',
+            '    def __init__(self):',
+            '        my_sum = 1 + 1',
+            '        self.my_sum = my_sum',
+            '',
+        ]))
         self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
-        location_tmp_dir = mkdtemp()
-        with open(path_join(self.test_dir, 'correct.py'), 'w') as f:
-            f.write(
-                'class MyClass():\n'
-                '    def __init__(self):\n'
-                '        my_sum = 1 + 1\n'
-                '        self.my_sum = my_sum\n')
-        self.options['location'] = location_tmp_dir
+        parts_dir = mkdtemp()
+        self.given_a_file_in_test_dir('correct.py', '\n'.join([
+            'class MyClass():',
+            '    def __init__(self):',
+            '        my_sum = 1 + 1',
+            '        self.my_sum = my_sum',
+            '',
+        ]))
+        self.options['location'] = parts_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         Flake8(self.options).run()
-        file_exist = path_isfile(path_join(location_tmp_dir, 'flake8.log'))
-        rmtree(location_tmp_dir)
+        file_exist = os.path.isfile(os.path.join(parts_dir, 'flake8.log'))
+        rmtree(parts_dir)
         self.assertTrue(file_exist)
 
     def test_analysis_should_return_false_if_double_quotes_found(self):
-        with open(path_join(self.test_dir, 'invalid.py'), 'w') as f:
-            f.write(INVALID_CODE)
+        self.given_a_file_in_test_dir('invalid.py', INVALID_CODE)
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_true_if_invalid_file_is_excluded(self):
         filename = 'invalid.py'
-        with open(path_join(self.test_dir, filename), 'w') as f:
-            f.write(INVALID_CODE)
-        self.options['flake8-exclude'] = \
-            '{0:s}/{1:s}'.format(self.test_dir, filename)
+        self.given_a_file_in_test_dir(filename, INVALID_CODE)
+        self.options['flake8-exclude'] = '{0:s}/{1:s}'.format(
+            self.test_dir, filename
+        )
         self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_true_for_valid_files(self):
-        with open(path_join(self.test_dir, 'valid.py'), 'w') as f:
-            f.write(VALID_CODE)
+        self.given_a_file_in_test_dir('valid.py', VALID_CODE)
         self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_true_if_double_in_single_quotes(self):
-        with open(path_join(self.test_dir, 'double_in_single.py'), 'w') as f:
-            f.write(DOUBLE_IN_SINGLE)
+        self.given_a_file_in_test_dir('double_in_single.py', DOUBLE_IN_SINGLE)
         self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_false_if_single_in_double_quotes(self):
-        with open(path_join(self.test_dir, 'single_in_double.py'), 'w') as f:
-            f.write(SINGLE_IN_DOUBLE)
+        self.given_a_file_in_test_dir('single_in_double.py', SINGLE_IN_DOUBLE)
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_false_if_pdb_found(self):
-        with open(path_join(self.test_dir, 'pdb.py'), 'w') as f:
-            f.write(PDB_STATEMENT)
+        self.given_a_file_in_test_dir('pdb.py', PDB_STATEMENT)
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_false_if_ipdb_found(self):
-        with open(path_join(self.test_dir, 'ipdb.py'), 'w') as f:
-            f.write(IPDB_STATEMENT)
+        self.given_a_file_in_test_dir('ipdb.py', IPDB_STATEMENT)
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_false_on_invalid_method_naming(self):
-        with open(path_join(self.test_dir, 'naming.py'), 'w') as f:
-            f.write(INVALID_NAMING_STATEMENT)
+        self.given_a_file_in_test_dir('naming.py', INVALID_NAMING_STATEMENT)
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_false_on_invalid_except_statement(self):
-        with open(path_join(self.test_dir, 'invalid_except.py'), 'w') as f:
-            f.write(INVALID_EXCEPT)
+        self.given_a_file_in_test_dir('invalid_except.py', INVALID_EXCEPT)
         self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_true_on_valid_except_statement(self):
-        with open(path_join(self.test_dir, 'valid_except.py'), 'w') as f:
-            f.write(VALID_EXCEPT)
+        self.given_a_file_in_test_dir('valid_except.py', VALID_EXCEPT)
         self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_false_if_coding_missing(self):
-        with open(path_join(self.test_dir, 'missing_coding.py'), 'w') as f:
-            f.write(MISSING_CODING)
+        self.given_a_file_in_test_dir('missing_coding.py', MISSING_CODING)
         self.assertFalse(Flake8(self.options).run())
+
+    def test_analysis_should_raise_systemexit_0_in_console_script(self):
+        with self.assertRaisesRegexp(SystemExit, '0'):
+            console_script(self.options)
+
+    def test_analysis_should_raise_systemexit_1_in_console_script(self):
+        self.given_a_file_in_test_dir('invalid.py', INVALID_CODE)
+        with self.assertRaisesRegexp(SystemExit, '1'):
+            console_script(self.options)

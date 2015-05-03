@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from io import open
-from os.path import isfile as path_isfile
-from os.path import join as path_join
 from plone.recipe.codeanalysis.jscs import JSCS
+from plone.recipe.codeanalysis.jscs import console_script
+from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import TemporaryFile
 from tempfile import mkdtemp
-import unittest
+import os
 
 INCORRECT_FILE = """\
 function a_method(){
@@ -57,64 +56,48 @@ Missing space before opening curly brace at /tmp/tmp679DaV/incorrect.js :
 """  # noqa
 
 
-class TestJavascriptCodeStyleChecker(unittest.TestCase):
+class TestJavascriptCodeStyleChecker(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
-        self.options = {
+        super(TestJavascriptCodeStyleChecker, self).setUp()
+        self.options.update({
             'jscs-bin': 'bin/jscs',
             'jscs-exclude': '',
-            'jenkins': 'False'
-        }
-        if path_isfile('../../bin/jscs'):  # when cwd is parts/test
+        })
+        if os.path.isfile('../../bin/jscs'):  # when cwd is parts/test
             self.options['jscs-bin'] = '../../bin/jscs'
-        self.test_dir = mkdtemp()
-
-    def tearDown(self):  # noqa
-        rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):
-        full_path = path_join(self.test_dir, 'incorrect.js')
-        with open(full_path, 'w') as incorrect_code:
-            incorrect_code.write(INCORRECT_FILE)
-        self.options['directory'] = self.test_dir
+        self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
         self.assertFalse(JSCS(self.options).run())
 
     def test_analysis_should_return_true_when_invalid_file_is_excluded(self):
-        full_path = path_join(self.test_dir, 'incorrect.js')
-        with open(full_path, 'w') as incorrect_code:
-            incorrect_code.write(INCORRECT_FILE)
-        self.options['directory'] = self.test_dir
-        self.options['jscs-exclude'] = full_path
+        filename = 'incorrect.js'
+        self.given_a_file_in_test_dir(filename, INCORRECT_FILE)
+        self.options['jscs-exclude'] = '{0:s}/{1:s}'.format(
+            self.test_dir, filename
+        )
         self.assertTrue(JSCS(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
-        full_path = path_join(self.test_dir, 'incorrect.js')
-        with open(full_path, 'w') as incorrect_code:
-            incorrect_code.write(INCORRECT_FILE)
-        self.options['directory'] = self.test_dir
+        self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
         # The options are fake, so the function should raise an OSError
         # but return True.
         self.options['jscs-bin'] = 'FAKE_BIN'
         self.assertTrue(JSCS(self.options).run())
 
     def test_analysis_should_return_true(self):
-        full_path = path_join(self.test_dir, 'correct.js')
-        with open(full_path, 'w') as correct_code:
-            correct_code.write(CORRECT_FILE)
-        self.options['directory'] = self.test_dir
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
         self.assertTrue(JSCS(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
-        location_tmp_dir = mkdtemp()
-        full_path = path_join(self.test_dir, 'correct.js')
-        with open(full_path, 'w') as correct_code:
-            correct_code.write(CORRECT_FILE)
-        self.options['directory'] = self.test_dir
-        self.options['location'] = location_tmp_dir
+        parts_dir = mkdtemp()
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
+        self.options['location'] = parts_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         JSCS(self.options).run()
-        file_exist = path_isfile(path_join(location_tmp_dir, 'jscs.xml'))
-        rmtree(location_tmp_dir)
+        file_exist = os.path.isfile(os.path.join(parts_dir, 'jscs.xml'))
+        rmtree(parts_dir)
         self.assertTrue(file_exist)
 
     def test_jscs_parse_output_should_return_true_empty_xml_output(self):
@@ -152,3 +135,12 @@ class TestJavascriptCodeStyleChecker(unittest.TestCase):
         linter = JSCS(self.options)
         self.assertFalse(linter.use_jenkins)
         self.assertTrue(linter.parse_output(jscs_file, 1))
+
+    def test_analysis_should_raise_systemexit_0_in_console_script(self):
+        with self.assertRaisesRegexp(SystemExit, '0'):
+            console_script(self.options)
+
+    def test_analysis_should_raise_systemexit_1_in_console_script(self):
+        self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
+        with self.assertRaisesRegexp(SystemExit, '1'):
+            console_script(self.options)

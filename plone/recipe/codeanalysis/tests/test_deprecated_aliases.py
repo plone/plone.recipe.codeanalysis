@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
-from shutil import rmtree
-from tempfile import mkdtemp
-import os
-import unittest
+from plone.recipe.codeanalysis.deprecated_aliases import console_script
+from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 
 INVALID_CODE = """\
 # -*- coding: utf-8 -*-
@@ -40,35 +38,36 @@ class Test2(unittest.TestCase):
 """
 
 
-class TestDeprecatedAliases(unittest.TestCase):
+class TestDeprecatedAliases(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
-        self.options = {
+        super(TestDeprecatedAliases, self).setUp()
+        self.options.update({
             'deprecated-aliases': 'True',
             'deprecated-aliases-exclude': '',
-            'jenkins': 'False'
-        }
-        self.test_dir = mkdtemp()
-
-    def tearDown(self):  # noqa
-        rmtree(self.test_dir)
-
-    def _create_file_in_test_dir(self, filename, contents):
-        with open(os.path.join(self.test_dir, filename), 'w') as f:
-            f.write(contents)
-        self.options['directory'] = self.test_dir
+        })
 
     def test_analysis_should_return_false_if_deprecated_alias_found(self):
-        self._create_file_in_test_dir('invalid.py', INVALID_CODE)
+        self.given_a_file_in_test_dir('invalid.py', INVALID_CODE)
         self.assertFalse(DeprecatedAliases(self.options).run())
 
     def test_analysis_should_return_true_if_invalid_file_is_excluded(self):
         filename = 'invalid.py'
-        self._create_file_in_test_dir(filename, INVALID_CODE)
-        self.options['deprecated-aliases-exclude'] = \
-            '{0:s}/{1:s}'.format(self.test_dir, filename)
+        self.given_a_file_in_test_dir(filename, INVALID_CODE)
+        self.options['deprecated-aliases-exclude'] = '{0:s}/{1:s}'.format(
+            self.test_dir, filename
+        )
         self.assertTrue(DeprecatedAliases(self.options).run())
 
     def test_analysis_should_return_true_for_valid_files(self):
-        self._create_file_in_test_dir('valid.py', VALID_CODE)
+        self.given_a_file_in_test_dir('valid.py', VALID_CODE)
         self.assertTrue(DeprecatedAliases(self.options).run())
+
+    def test_analysis_should_raise_systemexit_0_in_console_script(self):
+        with self.assertRaisesRegexp(SystemExit, '0'):
+            console_script(self.options)
+
+    def test_analysis_should_raise_systemexit_1_in_console_script(self):
+        self.given_a_file_in_test_dir('invalid.py', INVALID_CODE)
+        with self.assertRaisesRegexp(SystemExit, '1'):
+            console_script(self.options)

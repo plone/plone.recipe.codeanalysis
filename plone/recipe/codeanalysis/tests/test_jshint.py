@@ -4,6 +4,7 @@ from io import open
 from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.jshint import JSHint
+from plone.recipe.codeanalysis.jshint import console_script
 from shutil import rmtree
 from tempfile import TemporaryFile
 from tempfile import mkdtemp
@@ -154,3 +155,13 @@ class TestJSHint(unittest.TestCase):
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
         self.assertFalse(linter.parse_output(jshint_file, 1))
+
+    def test_analysis_should_raise_systemexit_0_in_console_script(self):
+        with self.assertRaisesRegexp(SystemExit, '0'):
+            console_script(self.options)
+
+    def test_analysis_should_raise_systemexit_1_in_console_script(self):
+        with open(path_join(self.test_dir, 'incorrect.js'), 'w') as f:
+            f.write(INCORRECT_FILE)
+        with self.assertRaisesRegexp(SystemExit, '1'):
+            console_script(self.options)

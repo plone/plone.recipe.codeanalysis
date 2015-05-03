@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from plone.recipe.codeanalysis.zptlint import ZPTLint
+from plone.recipe.codeanalysis.zptlint import console_script
 from shutil import rmtree
 from tempfile import mkdtemp
-
 import os
 import unittest
 
@@ -29,31 +30,24 @@ INVALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
 """
 
 
-class ZPTLintTestCase(unittest.TestCase):
+class TestZPTLint(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
-        self.test_dir = mkdtemp()
-        self.options = {
+        super(TestZPTLint, self).setUp()
+        self.options.update({
             'zptlint': 'True',
             'zptlint-bin': 'bin/zptlint',
-            'directory': self.test_dir,
-        }
+        })
         if os.path.isfile('../../bin/zptlint'):  # when cwd is parts/test
             self.options['zptlint-bin'] = '../../bin/zptlint'
-        # Create a valid file for each testcase
-        with open(os.path.join(self.test_dir, 'valid.pt'), 'w') as f:
-            f.write(VALID_CODE)
-
-    def tearDown(self):  # noqa
-        rmtree(self.test_dir)
 
     @unittest.skipIf(not ZPTLINT_INSTALLED, ZPTLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
-        with open(os.path.join(self.test_dir, 'invalid.pt'), 'w') as f:
-            f.write(INVALID_CODE)
+        self.given_a_file_in_test_dir('invalid.pt', INVALID_CODE)
         self.assertFalse(ZPTLint(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
+        self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
         # The options are fake, so the function should raise an OSError
         # but return True.
         self.options['zptlint-bin'] = ''
@@ -61,14 +55,26 @@ class ZPTLintTestCase(unittest.TestCase):
 
     @unittest.skipIf(not ZPTLINT_INSTALLED, ZPTLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true(self):
+        self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
         self.assertTrue(ZPTLint(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
-        location_tmp_dir = mkdtemp()
-        self.options['location'] = location_tmp_dir
+        self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
+        parts_dir = mkdtemp()
+        self.options['location'] = parts_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         ZPTLint(self.options).run()
-        file_exists = os.path.isfile(
-            os.path.join(location_tmp_dir, 'zptlint.log'))
-        rmtree(location_tmp_dir)
+        file_exists = os.path.isfile(os.path.join(parts_dir, 'zptlint.log'))
+        rmtree(parts_dir)
         self.assertTrue(file_exists)
+
+    def test_analysis_should_raise_systemexit_0_in_console_script(self):
+        self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
+        with self.assertRaisesRegexp(SystemExit, '0'):
+            console_script(self.options)
+
+    @unittest.skipIf(not ZPTLINT_INSTALLED, ZPTLINT_NOT_INSTALLED_MSG)
+    def test_analysis_should_raise_systemexit_1_in_console_script(self):
+        self.given_a_file_in_test_dir('invalid.pt', INVALID_CODE)
+        with self.assertRaisesRegexp(SystemExit, '1'):
+            console_script(self.options)

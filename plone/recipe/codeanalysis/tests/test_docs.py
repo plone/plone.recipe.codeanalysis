@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zope.testing import renormalizing
-
 import doctest
 import os
 import unittest
