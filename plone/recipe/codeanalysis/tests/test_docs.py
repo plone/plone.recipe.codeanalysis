@@ -23,6 +23,7 @@ def setUp(test):  # noqa
     # Install any other recipes that should be available in the tests
     zc.buildout.testing.install('zc.recipe.egg', test)
     zc.buildout.testing.install('flake8', test)
+    zc.buildout.testing.install('check-manifest', test)
 
     # Install second level install_requires dependencies
     zc.buildout.testing.install('pep8', test)
