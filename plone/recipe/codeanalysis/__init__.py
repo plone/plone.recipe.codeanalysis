@@ -192,12 +192,16 @@ class Recipe(object):
             add_script(cmd, arguments=arguments)
 
     def install_pre_commit_hook(self):
-        git_hooks_directory = self.buildout['buildout']['directory'] + \
-            '/.git/hooks'
-        if not os.path.exists(git_hooks_directory):
+        git_directory = self.buildout['buildout']['directory'] + '/.git'
+        if not os.path.exists(git_directory):
             print('Unable to create git pre-commit hook, '
                   'this does not seem to be a git repository.')
             return
+
+        git_hooks_directory = git_directory + '/hooks'
+        if not os.path.exists(git_hooks_directory):
+            os.mkdir(git_hooks_directory)
+
         with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
             output_file.write('#!/bin/bash\nbin/code-analysis')
         subprocess.call([

@@ -85,3 +85,16 @@ Then the git pre-commit hook has been installed::
 
     >>> 'install git pre-commit hook.' in buildout_output_lower
     True
+
+If the ``hooks`` directory does not exist is created as well::
+
+    >>> subprocess.call(['rm', '-rf', '.git'])
+    0
+    >>> subprocess.call(['mkdir', '-p', '.git'])
+    0
+    >>> buildout_output_lower = system(buildout).lower()
+    >>> import os
+    >>> os.path.isdir('.git/hooks')
+    True
+    >>> 'install git pre-commit hook.' in buildout_output_lower
+    True
