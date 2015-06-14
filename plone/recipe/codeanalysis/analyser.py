@@ -93,7 +93,7 @@ class Analyser:
         :param value: the string to be converted
         """
         if is_string(value) and value.strip():
-            return value.split('\n')
+            return value.strip().splitlines()
         return []
 
     def get_prefixed_option(self, option):
