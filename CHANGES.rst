@@ -4,7 +4,9 @@ Change history
 2.0b2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improve split_lines from analyser which makes exclude statements with more
+  than one directory to be ignored with ``zc.buildout 1.7.1``. Fixes #129.
+  [gil-cano]
 
 
 2.0b1 (2015-05-03)
