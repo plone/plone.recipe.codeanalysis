@@ -184,6 +184,16 @@ The recipe supports the following options:
 **flake8-max-line-length**
     Set maximum allowed line length. Default is ``79``.
 
+.. note::
+   You can add additional flake8 options as long as they are valid for flake8
+   itself or any of its plugins. Just prefix them with ``flake8-``.
+
+   For example, if you are using ``pep8-naming`` and want to change the list
+   of ignored names, add the following line on your buildout.cfg:
+   ``flake8-ignore-names = setUp,tearDown,setUpClass,tearDownClass``
+
+   Look at flake8 documentation and its plugins to see which options are available.
+
 **check-manifest**
     If set to True, ``check-manifest`` will be run to check you MANIFEST.in
     file. Default is False
