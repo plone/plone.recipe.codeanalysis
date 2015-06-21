@@ -14,17 +14,35 @@ class Flake8(Analyser):
     def filesystem(self):
         return Flake8.normalize_boolean(self.get_prefixed_option('filesystem'))
 
+    def get_flake8_options(self):
+        # plone.recipe.codeanalysis options that are not meant to be used
+        # by flake8 itself or any of its plugins
+        no_options = (
+            'flake8-extensions',
+            'flake8-filesystem'
+        )
+        # get the options
+        options = [
+            o for o in self.options
+            if o.startswith('flake8-') and
+            o not in no_options
+        ]
+        # format them
+        options = [
+            '{0}={1}'.format(
+                o.replace('flake8', '-'),
+                self.options.get(o)
+            )
+            for o in options
+        ]
+        return options
+
     @property
     def cmd(self):
         cmd = [
             os.path.join(self.options['bin-directory'], 'flake8'),
-            '--ignore={0}'.format(self.get_prefixed_option('ignore')),
-            '--exclude={0}'.format(self.get_prefixed_option('exclude')),
-            '--max-complexity={0}'.format(
-                self.get_prefixed_option('max-complexity')),
-            '--max-line-length={0}'.format(
-                self.get_prefixed_option('max-line-length'))
         ]
+        cmd.extend(self.get_flake8_options())
 
         paths_to_check = Flake8.split_lines(self.options['directory'])
         cmd.extend(paths_to_check)

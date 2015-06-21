@@ -212,3 +212,26 @@ class TestFlake8(CodeAnalysisTestCase):
         self.given_a_file_in_test_dir('invalid.py', INVALID_CODE)
         with self.assertRaisesRegexp(SystemExit, '1'):
             console_script(self.options)
+
+    def test_get_flake8_options(self):
+        self.options = {
+            'flake8-one': 'something',
+            'flake8-two': 'else',
+        }
+        options = Flake8(self.options).get_flake8_options()
+        self.assertEqual(
+            len(options),
+            2
+        )
+
+    def test_get_flake8_options_ignored(self):
+        self.options = {
+            'flake8-one': 'something',
+            'flake8-filesystem': 'ignored',
+            'flake8-extensions': 'ignored',
+        }
+        options = Flake8(self.options).get_flake8_options()
+        self.assertEqual(
+            len(options),
+            1
+        )
