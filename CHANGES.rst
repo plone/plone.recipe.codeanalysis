@@ -5,7 +5,8 @@ Change history
 ------------------
 
 - Improve split_lines from analyser which makes exclude statements with more
-  than one directory to be ignored with ``zc.buildout 1.7.1``. Fixes #129.
+  than one directory to be ignored with ``zc.buildout 1.7.1``.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/129
   [gil-cano]
 
 
@@ -15,25 +16,29 @@ Change history
 - Allow usage of wildcards in exclude statements.
   [saily]
 
-- Add ``check-manifest`` as new dependency and a basic check. Fixes #69
+- Add ``check-manifest`` as new dependency and a basic check.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/69
   [saily]
 
-- Add a new option to disable ``jshint`` warning suppression, fixes #94.
+- Add a new option to disable ``jshint`` warning suppression.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/94
   [saily]
 
 - If an executable could not be found the code-analysis always failed. We've
-  changed this behaviour to return True and succeed the code-analysis, this
-  fixes #71.
+  changed this behaviour to return True and succeed the code-analysis.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/71
   [saily]
 
 - Exclude paths directly in ``find`` unix command which speeds up again a lot.
   [saily]
 
 - Exclude empty strings in ``self.extensions`` which broke install with
-  ``zc.buildout 1.7.1``. Fixes #115
+  ``zc.buildout 1.7.1``.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/115
   [saily]
 
-- Add check for relative imports. Fixes #44
+- Add check for relative imports.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/44
   [saily]
 
 
@@ -57,7 +62,7 @@ Change history
     debugger checks should be included using ``flake8-debugger`` extension which
     also checks for ``ipdb``.
 
-  Fixes #112.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/112
   [saily]
 
 - Add missing tests for deprecated_aliases parser.
@@ -75,11 +80,13 @@ Change history
   packages when using pre-commit hooks.
   [saily]
 
-- Return correct exit codes for console-scripts, fixes #66.
+- Return correct exit codes for console-scripts.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/66
   [saily]
 
 - Refactor whole linters framework to use OO design patterns, inherit from
-  ``Analyser`` abstract base class. This fixes #62
+  ``Analyser`` abstract base class.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/62
   [saily]
 
 - Add bootstrap-buildout.py to flake8-exclude default. zc.buildout > 2 uses
@@ -130,7 +137,8 @@ Change history
 - Added tests for clean-lines checks.
   [saily]
 
-- Use indices for format() to support Python 2.6. This fixes #77.
+- Use indices for format() to support Python 2.6.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/77
   [timo]
 
 
@@ -142,7 +150,8 @@ Change history
 
 - Remove hard dependency on i18ndude and zptlint; this will reduce the number
   of Zope/Plone direct dependencies to make life happier to people using
-  Pyramid and other web Python-based development frameworks (closes `#53`_).
+  Pyramid and other web Python-based development frameworks.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/53
   [hvelarde]
 
 - Do not print out jshint and csslint output for Jenkins. Those files can
@@ -215,7 +224,8 @@ Change history
   updated (closes #20).
   [hvelarde]
 
-- Implement removal of pre-commit hook (fixes #21).
+- Implement removal of pre-commit hook.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/21
   [hvelarde]
 
 
@@ -223,7 +233,8 @@ Change history
 ------------------
 
 - Workaround over JSHint limitations to avoid displaying warning messages as
-  errors (closes #13).
+  errors.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/13
   [hvelarde]
 
 - Fix CSS Lint validation and implement new 'csslint-quiet' option.
@@ -238,5 +249,3 @@ Change history
 
 - Initial release.
   [timo]
-
-.. _`#53`: https://github.com/plone/plone.recipe.codeanalysis/issues/53
