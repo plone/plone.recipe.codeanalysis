@@ -9,7 +9,7 @@ Change history
   Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/129
   [gil-cano]
 
-- Allow pasing any option to flake8 or its plugins.
+- Allow passing any option to flake8 or its plugins.
   Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/131
   [gforcada]
 
