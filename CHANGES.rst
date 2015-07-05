@@ -13,6 +13,9 @@ Change history
   Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/131
   [gforcada]
 
+- Create .git/hooks folder if it doesn't exist.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/124
+  [gforcada]
 
 2.0b1 (2015-05-03)
 ------------------
