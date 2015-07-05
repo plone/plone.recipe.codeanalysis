@@ -66,7 +66,7 @@ overrides the default buildout file (that includes the other settings)::
     recipe = plone.recipe.codeanalysis
     jenkins = True
 
-The Jenkins job itself should run "bin/code-analysis"::
+The Jenkins job itself should run ``bin/code-analysis``::
 
     python bootstrap.py -c jenkins.cfg
     bin/buildout -c jenkins.cfg
@@ -84,14 +84,14 @@ csslint::
 
     **/parts/code-analysis/csslint.xml
 
-jslint (to read the jshint output::
+jslint (to read the jshint output)::
 
     **/parts/code-analysis/jshint.xml
 
 Filesystem output
 =================
 
-If jenkins is set to False, you can still store the output on the filesystem by setting flake8-filesystem=True.
+If jenkins is set to False, you can still store the output on the filesystem by setting ``flake8-filesystem = True``.
 This is ignored if jenkins is set to True.
 
 output::
@@ -151,8 +151,7 @@ The recipe supports the following options:
 **flake8-extensions**
     Flake8 now takes advantage of ``flake8`` extension system. Default is none.
     If ``flake8`` is set to False, this option will be ignored. Example to
-    supercharge with some extensions:
-    ::
+    supercharge with some extensions::
 
         [code-analysis]
         recipe = plone.recipe.codeanalysis
@@ -174,8 +173,8 @@ The recipe supports the following options:
 **flake8-exclude**
     Comma-separated filename and glob patterns default. Say you want to
     exclude bootstrap.py, setup.py and all collective.* and plone.* packages.
-    Just set "flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,
-    plone.*" in your buildout configuration. Default is
+    Just set ``flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,plone.*``
+    in your buildout configuration. Default is
     ``bootstrap.py,bootstrap-buildout.py,docs,*.egg``.
 
 **flake8-max-complexity**
@@ -196,7 +195,7 @@ The recipe supports the following options:
 
 **check-manifest**
     If set to True, ``check-manifest`` will be run to check you MANIFEST.in
-    file. Default is False
+    file. Default is ``False``.
 
 **check-manifest-directory**
     Default is ``.`` which means check the current package where you included
@@ -220,7 +219,7 @@ The recipe supports the following options:
         npms = jshint
         scripts = jshint
 
-    set jshint-bin to '${buildout:directory}/bin/jshint'.
+    set jshint-bin to ``${buildout:bin-directory}/jshint``.
 
 **jshint-exclude**
     Allows you to specify directories which you don't want to be linted.
@@ -230,7 +229,7 @@ The recipe supports the following options:
 
 **jshint-suppress-warnings**
     By default warnings of jshint are suppressed and not shown. You may disable
-    this by setting to False, default is True for backward compatibility
+    this by setting to False, default is ``True`` for backward compatibility
     reasons.
 
 **jscs**
@@ -245,8 +244,7 @@ The recipe supports the following options:
     All configuration options are documented on the `jscs website`_.
 
 **jscs-bin**
-    Set the path to a custom version of JSCS, e.g.
-    "/usr/local/bin/jscs".
+    Set the path to a custom version of JSCS, e.g. ``/usr/local/bin/jscs``.
 
     If you have Javascript Code Style Checker installed in your system and
     path, you have nothing to do. To install with Buildout, add the following
@@ -282,8 +280,7 @@ The recipe supports the following options:
     detailed list and description of the rules.
 
 **csslint-bin**
-    Set the path to a custom version of CSS Lint, e.g.
-    "/usr/local/bin/csslint".
+    Set the path to a custom version of CSS Lint, e.g. ``/usr/local/bin/csslint``.
 
     If you have CSS Lint installed in your system and path, you have nothing
     to do. To install CSS Lint with Buildout, add the following section to
