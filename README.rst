@@ -88,6 +88,10 @@ jslint (to read the jshint output)::
 
     **/parts/code-analysis/jshint.xml
 
+checkstyle (to read the jscs output)::
+
+    **/parts/code-analysis/jscs.xml
+
 Filesystem output
 =================
 
