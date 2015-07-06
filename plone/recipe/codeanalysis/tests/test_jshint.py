@@ -8,7 +8,7 @@ from plone.recipe.codeanalysis.jshint import console_script
 from shutil import rmtree
 from tempfile import TemporaryFile
 from tempfile import mkdtemp
-import unittest
+from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 
 INCORRECT_FILE = """var number_ten= =10;
 var word_ten='ten';
@@ -61,24 +61,21 @@ incorrect.js: line 1, col 18, Expected an assignment or function call and instea
 """  # noqa
 
 
-class TestJSHint(unittest.TestCase):
+class TestJSHint(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
-        self.test_dir = mkdtemp()
-        self.options = {
+        super(TestJSHint, self).setUp()
+        self.options.update({
             'jshint-bin': 'bin/jshint',
             'jshint-exclude': '',
             'jshint-suppress-warnings': 'True',
             'jenkins': 'False',
             'directory': self.test_dir,
-        }
+        })
         if path_isfile('../../bin/jshint'):  # when cwd is parts/test
             self.options['jshint-bin'] = '../../bin/jshint'
         with open(path_join(self.test_dir, 'correct.js'), 'w') as correct_code:
             correct_code.write(CORRECT_FILE)
-
-    def tearDown(self):  # noqa
-        rmtree(self.test_dir)
 
     def test_analysis_should_return_false_when_error_found(self):
         full_path = path_join(self.test_dir, 'incorrect.js')
