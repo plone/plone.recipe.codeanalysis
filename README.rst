@@ -1,17 +1,13 @@
 .. contents::
 
-.. image:: https://travis-ci.org/plone/plone.recipe.codeanalysis.png?branch=master
+.. image:: https://img.shields.io/travis/plone/plone.recipe.codeanalysis/master.svg
     :target: http://travis-ci.org/plone/plone.recipe.codeanalysis
 
-.. image:: https://coveralls.io/repos/plone/plone.recipe.codeanalysis/badge.png?branch=master
+.. image:: https://img.shields.io/coveralls/plone/plone.recipe.codeanalysis/master.svg
     :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
 
-.. image:: https://pypip.in/d/plone.recipe.codeanalysis/badge.png
-        :target: https://crate.io/packages/plone.recipe.codeanalysis
-
-.. image:: https://pypip.in/v/plone.recipe.codeanalysis/badge.png
-        :target: https://crate.io/packages/plone.recipe.codeanalysis
-
+.. image:: https://img.shields.io/pypi/v/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis
 
 Introduction
 ============
