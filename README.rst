@@ -31,7 +31,9 @@ Jenkins.
 Installation
 ============
 
-Just add a code-analysis section to your buildout.cfg::
+Just add a code-analysis section to your buildout.cfg:
+
+.. code-block:: ini
 
     [buildout]
     parts += code-analysis
@@ -53,7 +55,9 @@ plone.recipe.codeanalysis provides a Jenkins setting that allows to run it on a 
 Usually you don't want the recipe to create Jenkins output files on your
 local machine. Therefore it makes sense to enable the Jenkins output only
 on the CI machine. To do so, just create a jenkins.cfg that extends and
-overrides the default buildout file (that includes the other settings)::
+overrides the default buildout file (that includes the other settings):
+
+.. code-block:: ini
 
     [buildout]
     parts += code-analysis
@@ -151,7 +155,9 @@ The recipe supports the following options:
 **flake8-extensions**
     Flake8 now takes advantage of ``flake8`` extension system. Default is none.
     If ``flake8`` is set to False, this option will be ignored. Example to
-    supercharge with some extensions::
+    supercharge with some extensions:
+
+.. code-block:: ini
 
         [code-analysis]
         recipe = plone.recipe.codeanalysis
@@ -212,7 +218,9 @@ The recipe supports the following options:
 **jshint-bin**
     JSHint executable. Default is ``jshint``. If you have JSHint installed on
     your system and in your path, there is nothing to do. To install JSHint in
-    your buildout, use the following::
+    your buildout, use the following:
+
+.. code-block:: ini
 
         [jshint]
         recipe = gp.recipe.node
@@ -249,7 +257,9 @@ The recipe supports the following options:
     If you have Javascript Code Style Checker installed in your system and
     path, you have nothing to do. To install with Buildout, add the following
     section to your buildout and set jscs-bin to
-    ``{buildout:bin-directory}/jscs``::
+    ``{buildout:bin-directory}/jscs``:
+
+.. code-block:: ini
 
         [jscs]
         recipe = gp.recipe.node
@@ -285,7 +295,9 @@ The recipe supports the following options:
     If you have CSS Lint installed in your system and path, you have nothing
     to do. To install CSS Lint with Buildout, add the following section to
     your buildout and set csslint-bin to
-    ``{buildout:bin-directory}/csslint``::
+    ``{buildout:bin-directory}/csslint``:
+
+.. code-block:: ini
 
         [csslint]
         recipe = gp.recipe.node
