@@ -2,6 +2,7 @@
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 import os
+import re
 import subprocess
 
 
@@ -9,7 +10,7 @@ class CheckManifest(Analyser):
 
     name = 'check-manifest'
     title = 'Check MANIFEST.in'
-    output_regex = r'(?P<name>Error[^ -]*)'
+    output_regex = re.compile(r'(?P<name>Error[^ -]*)')
     output_replace = '\033[00;31m\g<name>\033[0m'
 
     @property

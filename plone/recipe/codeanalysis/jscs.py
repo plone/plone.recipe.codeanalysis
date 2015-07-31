@@ -10,6 +10,9 @@ class JSCS(Analyser):
     title = 'JSCS'
     output_file_extension = 'xml'
 
+    jenkins_re = re.compile(r'severity="error"')
+    no_jenkins_re = re.compile(r'[0-9]+ code style errors? found\.')
+
     @property
     def cmd(self):
         cmd = []
@@ -29,14 +32,12 @@ class JSCS(Analyser):
         """JSCS shows errors only, 2 different output types could occurr:
         - 1 code style error found.
         - No code style error found."""
-
+        pattern = self.no_jenkins_re
         if self.use_jenkins:
-            pattern = r'severity="error"'
-        else:
-            pattern = r'[0-9]+ code style errors? found\.'
+            pattern = self.jenkins_re
 
         # skip warnings
-        if not re.compile(pattern).search(output_file.read()):
+        if not pattern.search(output_file.read()):
             return_code = 0
 
         return super(JSCS, self).parse_output(output_file, return_code)

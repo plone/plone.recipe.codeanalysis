@@ -13,9 +13,9 @@ class Imports(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                r'^\s*(?:from\s+[^\s]+\s+)?import(?:\s|\().+,.+\)?$': 'grouped import',  # noqa
-                r'^\s*from\s+[\.]{1,2}\s+import.+$': 'relative import',
-                r'^\s*from\s+[^\s]+\s+import\s+\*$': 'wildcard import',
+                re.compile(r'^\s*(?:from\s+[^\s]+\s+)?import(?:\s|\().+,.+\)?$'): 'grouped import',  # noqa
+                re.compile(r'^\s*from\s+[\.]{1,2}\s+import.+$'): 'relative import',  # noqa
+                re.compile(r'^\s*from\s+[^\s]+\s+import\s+\*$'): 'wildcard import',  # noqa
             },
         }
     ]
@@ -27,15 +27,11 @@ class Imports(CleanLines):
 
     multiline_pattern = re.compile(r'.*(?:\\|\()\s*$')
 
-    @staticmethod
-    def validate_line(pattern, line):
-        return re.compile(pattern).match(line)
-
     def is_import(self, line):
-        return Imports.validate_line(self.passing_pattern, line) is not None
+        return self.passing_pattern.match(line) is not None
 
     def is_multiline_import(self, line):
-        return Imports.validate_line(self.multiline_pattern, line) is not None
+        return self.multiline_pattern.match(line) is not None
 
     def check(self, file_path, fail={}, **kwargs):
         errors = []

@@ -17,25 +17,25 @@ class CleanLines(Analyser):
                 'rst', 'txt', 'md',  # documentation
             ),
             'fail': {
-                r' $': 'trailing spaces',
-                r'\t': 'tabs',
+                re.compile(r' $'): 'trailing spaces',
+                re.compile(r'\t'): 'tabs',
             },
         }
     ]
     ignore_patterns = (
-        r'#\snoqa',
-        r'//\snoqa',
+        re.compile(r'#\snoqa'),
+        re.compile(r'//\snoqa'),
     )
 
     def skip_line(self, line):
         for pattern in self.ignore_patterns:
-            if re.compile(pattern).search(line):
+            if pattern.search(line):
                 return True
         return False
 
     @staticmethod
     def validate_line(pattern, line):
-        return re.compile(pattern).search(line)
+        return pattern.search(line)
 
     def check(self, file_path, fail={}, succeed={}, **kwargs):
         errors = []
