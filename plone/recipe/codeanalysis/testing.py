@@ -19,5 +19,8 @@ class CodeAnalysisTestCase(unittest.TestCase):
         rmtree(self.test_dir)
 
     def given_a_file_in_test_dir(self, filename, contents):
-        with open(os.path.join(self.test_dir, filename), 'w') as a_file:
+        file_path = os.path.join(self.test_dir, filename)
+        with open(file_path, 'w') as a_file:
             a_file.write(contents)
+
+        return file_path

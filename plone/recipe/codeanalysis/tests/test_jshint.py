@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from io import open
 from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.jshint import console_script
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
-from tempfile import TemporaryFile
 from tempfile import mkdtemp
 
 
@@ -75,19 +73,14 @@ class TestJSHint(CodeAnalysisTestCase):
         })
         if path_isfile('../../bin/jshint'):  # when cwd is parts/test
             self.options['jshint-bin'] = '../../bin/jshint'
-        with open(path_join(self.test_dir, 'correct.js'), 'w') as correct_code:
-            correct_code.write(CORRECT_FILE)
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
 
     def test_analysis_should_return_false_when_error_found(self):
-        full_path = path_join(self.test_dir, 'incorrect.js')
-        with open(full_path, 'w') as incorrect_code:
-            incorrect_code.write(INCORRECT_FILE)
+        self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
         self.assertFalse(JSHint(self.options).run())
 
     def test_analysis_should_return_true_for_warnings(self):
-        full_path = path_join(self.test_dir, 'warnings.js')
-        with open(full_path, 'w') as warnings_code:
-            warnings_code.write(WARNINGS_FILE)
+        self.given_a_file_in_test_dir('warnings.js', WARNINGS_FILE)
         self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
@@ -109,57 +102,52 @@ class TestJSHint(CodeAnalysisTestCase):
         self.assertTrue(file_exist)
 
     def test_jshint_parse_output_should_return_true_empty_xml_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(XML_EMPTY_OUTPUT)
-        jshint_file.seek(0)
+        file_path = self.given_a_file_in_test_dir(
+            'jshint.xml',
+            XML_EMPTY_OUTPUT
+        )
         self.options['jenkins'] = 'True'
         linter = JSHint(self.options)
         self.assertTrue(linter.use_jenkins)
-        self.assertTrue(linter.parse_output(jshint_file, 1))
+        self.assertTrue(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_false_with_xml_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(XML_OUTPUT)
-        jshint_file.seek(0)
+        file_path = self.given_a_file_in_test_dir('jshint.xml', XML_OUTPUT)
         self.options['jenkins'] = 'True'
         linter = JSHint(self.options)
         self.assertTrue(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(jshint_file, 1))
+        self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_false_with_normal_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(DEFAULT_OUTPUT)
-        jshint_file.seek(0)
+        file_path = self.given_a_file_in_test_dir('jshint.xml', DEFAULT_OUTPUT)
         self.options['jenkins'] = 'False'
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(jshint_file, 1))
+        self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_true_empty_normal_output(self):
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write('')
-        jshint_file.seek(0)
+        file_path = self.given_a_file_in_test_dir('jshint.xml', '')
         self.options['jenkins'] = 'False'
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertTrue(linter.parse_output(jshint_file, 1))
+        self.assertTrue(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_false_if_warnings_not_suppressed(self):  # noqa
-        jshint_file = TemporaryFile('w+')
-        jshint_file.write(EXPECTED_WARNINGS_OUTPUT)
-        jshint_file.seek(0)
+        file_path = self.given_a_file_in_test_dir(
+            'jshint.xml',
+            EXPECTED_WARNINGS_OUTPUT
+        )
         self.options['jenkins'] = 'False'
         self.options['jshint-suppress-warnings'] = 'False'
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(jshint_file, 1))
+        self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         with self.assertRaisesRegexp(SystemExit, '0'):
             console_script(self.options)
 
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
-        with open(path_join(self.test_dir, 'incorrect.js'), 'w') as f:
-            f.write(INCORRECT_FILE)
+        self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
         with self.assertRaisesRegexp(SystemExit, '1'):
             console_script(self.options)
