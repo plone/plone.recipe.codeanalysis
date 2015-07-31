@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import console_factory
 from plone.recipe.codeanalysis.clean_lines import CleanLines
+import re
 
 
 class PEP3101(CleanLines):
@@ -11,7 +12,7 @@ class PEP3101(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                r'%(?:\(\w+\))?(?:s|i|p|r)': '{0:s} formatter',
+                re.compile(r'%(?:\(\w+\))?(?:s|i|p|r)'): '{0:s} formatter',
             },
         },
     ]

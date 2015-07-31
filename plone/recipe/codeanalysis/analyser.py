@@ -26,7 +26,7 @@ class Analyser:
     __metaclass__ = ABCMeta
 
     output_file_extension = 'log'
-    output_regex = r'(.*)'  # substring to be found
+    output_regex = re.compile(r'(.*)')  # substring to be found
     output_replace = r'\1'  # replace substring
 
     colors = {
@@ -184,7 +184,7 @@ class Analyser:
         :param output: string containing command output
         :return: string containing processed command output
         """
-        error = re.compile(self.output_regex)
+        error = self.output_regex
         output = map(
             lambda x: error.sub(self.output_replace, x), output.splitlines()
         )

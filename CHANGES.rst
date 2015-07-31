@@ -17,6 +17,10 @@ Change history
   Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/124
   [gforcada]
 
+- Compile all regexes on initialization to not have to compile them
+  at every single use, it should make code analysis faster.
+  [gforcada]
+
 2.0b1 (2015-05-03)
 ------------------
 
