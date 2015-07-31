@@ -13,7 +13,6 @@ class HasAttr(CleanLines):
             'extensions': ('py', ),
             'fail': {
                 r'(^|.*\s)hasattr\(.+\).*': 'hasattr',
-                r'^\s*from\s+[^\s]+\s+import\s+\*$': 'wildcard import',
             },
         }
     ]
