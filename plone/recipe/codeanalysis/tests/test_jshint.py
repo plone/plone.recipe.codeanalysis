@@ -5,7 +5,7 @@ from os.path import isfile as path_isfile
 from os.path import join as path_join
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.jshint import console_script
-gifrom plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
+from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import TemporaryFile
 from tempfile import mkdtemp
