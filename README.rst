@@ -1,5 +1,3 @@
-.. contents::
-
 .. image:: https://img.shields.io/travis/plone/plone.recipe.codeanalysis/master.svg
     :target: http://travis-ci.org/plone/plone.recipe.codeanalysis
     :alt: Travis Build Status
@@ -28,6 +26,7 @@
     :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
     :alt: License
 
+.. contents::
 
 Introduction
 ============
