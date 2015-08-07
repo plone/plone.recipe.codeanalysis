@@ -1,3 +1,7 @@
+.. image:: https://img.shields.io/pypi/status/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Egg Status
+
 .. image:: https://img.shields.io/travis/plone/plone.recipe.codeanalysis/master.svg
     :target: http://travis-ci.org/plone/plone.recipe.codeanalysis
     :alt: Travis Build Status
@@ -9,10 +13,6 @@
 .. image:: https://img.shields.io/pypi/dm/plone.recipe.codeanalysis.svg
     :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
     :alt: Downloads
-
-.. image:: https://img.shields.io/pypi/status/plone.recipe.codeanalysis.svg
-    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
-    :alt: Egg Status
 
 .. image:: https://img.shields.io/pypi/pyversions/plone.recipe.codeanalysis.svg
     :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
