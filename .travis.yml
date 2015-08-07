@@ -5,7 +5,8 @@ python:
 sudo: false
 cache:
   directories:
-    - eggs
+    - $HOME/buildout-cache
+    - $HOME/parts/node
 env:
   matrix:
     - CONF=travis.cfg
