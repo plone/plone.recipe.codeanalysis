@@ -1,8 +1,8 @@
 Change history
 ==============
 
-2.0b2 (unreleased)
-------------------
+2.0 (2015-08-07)
+----------------
 
 - Improve split_lines from analyser which makes exclude statements with more
   than one directory to be ignored with ``zc.buildout 1.7.1``.
