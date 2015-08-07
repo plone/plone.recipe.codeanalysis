@@ -18,9 +18,14 @@
     :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
     :alt: Egg Status
 
+.. image:: https://img.shields.io/pypi/pyversions/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Python Versions
+
 .. image:: https://img.shields.io/pypi/l/plone.recipe.codeanalysis.svg
     :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
     :alt: License
+
 
 Introduction
 ============
