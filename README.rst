@@ -6,6 +6,21 @@
 .. image:: https://coveralls.io/repos/plone/plone.recipe.codeanalysis/badge.png?branch=master
     :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
 
+.. image:: https://img.shields.io/pypi/dm/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Downloads
+
+.. image:: https://img.shields.io/pypi/v/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/status/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Egg Status
+
+.. image:: https://img.shields.io/pypi/l/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: License
 
 Introduction
 ============
