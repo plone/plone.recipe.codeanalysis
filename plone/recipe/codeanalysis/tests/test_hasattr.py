@@ -2,6 +2,8 @@
 from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.py_hasattr import console_script
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
+from testfixtures import OutputCapture
+
 
 VALID = '\n'.join([
     'def fib(n):',
@@ -45,26 +47,32 @@ class TestHasattr(CodeAnalysisTestCase):
         })
 
     def test_analysis_should_return_true_for_no_files(self):
-        self.assertTrue(HasAttr(self.options).run())
+        with OutputCapture():
+            self.assertTrue(HasAttr(self.options).run())
 
     def test_analysis_should_return_true_if_there_is_no_hasattr(self):
         self.given_a_file_in_test_dir('valid.py', VALID)
-        self.assertTrue(HasAttr(self.options).run())
+        with OutputCapture():
+            self.assertTrue(HasAttr(self.options).run())
 
     def test_analysis_should_return_true_if_there_noqa(self):
         self.given_a_file_in_test_dir('valid.py', VALID_IGNORE)
-        self.assertTrue(HasAttr(self.options).run())
+        with OutputCapture():
+            self.assertTrue(HasAttr(self.options).run())
 
     def test_analysis_should_return_false_if_there_is_hasattr(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_NO_IGNORE)
-        self.assertFalse(HasAttr(self.options).run())
+        with OutputCapture():
+            self.assertFalse(HasAttr(self.options).run())
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         self.given_a_file_in_test_dir('valid.py', VALID)
-        with self.assertRaisesRegexp(SystemExit, '0'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '0'):
+                console_script(self.options)
 
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_NO_IGNORE)
-        with self.assertRaisesRegexp(SystemExit, '1'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '1'):
+                console_script(self.options)

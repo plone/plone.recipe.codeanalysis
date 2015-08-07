@@ -2,8 +2,11 @@
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.i18ndude import console_script
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
+from testfixtures import OutputCapture
+
 import os
 import unittest
+
 
 # EXTRAS_INSTALLED is an environment variable that we set on
 # Travis CI to indicate all external dependencies are, in fact,
@@ -42,19 +45,22 @@ class TestI18NDude(CodeAnalysisTestCase):
     @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('invalid.pt', INVALID_CODE)
-        self.assertFalse(I18NDude(self.options).run())
+        with OutputCapture():
+            self.assertFalse(I18NDude(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
         self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
         # The options are fake, so the function should raise an OSError
         # but return True.
         self.options['i18ndude-bin'] = ''
-        self.assertTrue(I18NDude(self.options).run())
+        with OutputCapture():
+            self.assertTrue(I18NDude(self.options).run())
 
     @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true(self):
         self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
-        self.assertTrue(I18NDude(self.options).run())
+        with OutputCapture():
+            self.assertTrue(I18NDude(self.options).run())
 
     @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true_if_file_invalid_is_excluded(self):
@@ -63,15 +69,18 @@ class TestI18NDude(CodeAnalysisTestCase):
         self.options['find-untranslated-exclude'] = '{0:s}/{1:s}'.format(
             self.test_dir, filename
         )
-        self.assertTrue(I18NDude(self.options).run())
+        with OutputCapture():
+            self.assertTrue(I18NDude(self.options).run())
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
-        with self.assertRaisesRegexp(SystemExit, '0'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '0'):
+                console_script(self.options)
 
     @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
         self.given_a_file_in_test_dir('invalid.pt', INVALID_CODE)
-        with self.assertRaisesRegexp(SystemExit, '1'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '1'):
+                console_script(self.options)
