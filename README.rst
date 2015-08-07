@@ -2,12 +2,32 @@
 
 .. image:: https://img.shields.io/travis/plone/plone.recipe.codeanalysis/master.svg
     :target: http://travis-ci.org/plone/plone.recipe.codeanalysis
+    :alt: Travis Build Status
 
 .. image:: https://img.shields.io/coveralls/plone/plone.recipe.codeanalysis/master.svg
     :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
+    :alt: Test Coverage
+
+.. image:: https://img.shields.io/pypi/dm/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Downloads
+
+.. image:: https://img.shields.io/pypi/status/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Egg Status
+
+.. image:: https://img.shields.io/pypi/pyversions/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Python Versions
 
 .. image:: https://img.shields.io/pypi/v/plone.recipe.codeanalysis.svg
-    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/l/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: License
+
 
 Introduction
 ============
