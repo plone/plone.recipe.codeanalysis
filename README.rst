@@ -6,12 +6,6 @@
 .. image:: https://coveralls.io/repos/plone/plone.recipe.codeanalysis/badge.png?branch=master
     :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
 
-.. image:: https://pypip.in/d/plone.recipe.codeanalysis/badge.png
-        :target: https://crate.io/packages/plone.recipe.codeanalysis
-
-.. image:: https://pypip.in/v/plone.recipe.codeanalysis/badge.png
-        :target: https://crate.io/packages/plone.recipe.codeanalysis
-
 
 Introduction
 ============
