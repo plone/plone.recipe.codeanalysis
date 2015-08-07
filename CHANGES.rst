@@ -4,7 +4,9 @@ Change history
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Clean tests output.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/122
+  [gforcada]
 
 
 2.0 (2015-08-07)
