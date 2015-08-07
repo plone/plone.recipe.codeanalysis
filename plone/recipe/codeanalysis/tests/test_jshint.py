@@ -7,6 +7,7 @@ from plone.recipe.codeanalysis.jshint import console_script
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp
+from testfixtures import OutputCapture
 
 
 INCORRECT_FILE = """var number_ten= =10;
@@ -77,26 +78,31 @@ class TestJSHint(CodeAnalysisTestCase):
 
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
-        self.assertFalse(JSHint(self.options).run())
+        with OutputCapture():
+            self.assertFalse(JSHint(self.options).run())
 
     def test_analysis_should_return_true_for_warnings(self):
         self.given_a_file_in_test_dir('warnings.js', WARNINGS_FILE)
-        self.assertTrue(JSHint(self.options).run())
+        with OutputCapture():
+            self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
         # The options are fake, so the function should raise an OSError
         # but return True.
         self.options['jshint-bin'] = 'FAKE_BIN'
-        self.assertTrue(JSHint(self.options).run())
+        with OutputCapture():
+            self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_should_return_true(self):
-        self.assertTrue(JSHint(self.options).run())
+        with OutputCapture():
+            self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         location_tmp_dir = mkdtemp()
         self.options['location'] = location_tmp_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
-        JSHint(self.options).run()
+        with OutputCapture():
+            JSHint(self.options).run()
         file_exist = path_isfile(path_join(location_tmp_dir, 'jshint.xml'))
         rmtree(location_tmp_dir)
         self.assertTrue(file_exist)
@@ -109,28 +115,32 @@ class TestJSHint(CodeAnalysisTestCase):
         self.options['jenkins'] = 'True'
         linter = JSHint(self.options)
         self.assertTrue(linter.use_jenkins)
-        self.assertTrue(linter.parse_output(open(file_path), 1))
+        with OutputCapture():
+            self.assertTrue(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_false_with_xml_output(self):
         file_path = self.given_a_file_in_test_dir('jshint.xml', XML_OUTPUT)
         self.options['jenkins'] = 'True'
         linter = JSHint(self.options)
         self.assertTrue(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(open(file_path), 1))
+        with OutputCapture():
+            self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_false_with_normal_output(self):
         file_path = self.given_a_file_in_test_dir('jshint.xml', DEFAULT_OUTPUT)
         self.options['jenkins'] = 'False'
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(open(file_path), 1))
+        with OutputCapture():
+            self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_true_empty_normal_output(self):
         file_path = self.given_a_file_in_test_dir('jshint.xml', '')
         self.options['jenkins'] = 'False'
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertTrue(linter.parse_output(open(file_path), 1))
+        with OutputCapture():
+            self.assertTrue(linter.parse_output(open(file_path), 1))
 
     def test_jshint_parse_output_should_return_false_if_warnings_not_suppressed(self):  # noqa
         file_path = self.given_a_file_in_test_dir(
@@ -141,13 +151,16 @@ class TestJSHint(CodeAnalysisTestCase):
         self.options['jshint-suppress-warnings'] = 'False'
         linter = JSHint(self.options)
         self.assertFalse(linter.use_jenkins)
-        self.assertFalse(linter.parse_output(open(file_path), 1))
+        with OutputCapture():
+            self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
-        with self.assertRaisesRegexp(SystemExit, '0'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '0'):
+                console_script(self.options)
 
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
         self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
-        with self.assertRaisesRegexp(SystemExit, '1'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '1'):
+                console_script(self.options)

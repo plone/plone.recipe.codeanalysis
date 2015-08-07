@@ -2,6 +2,8 @@
 from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.imports import console_script
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
+from testfixtures import OutputCapture
+
 
 VALID = '\n'.join([
     'from Foo.bar import baz',
@@ -84,43 +86,53 @@ class TestImports(CodeAnalysisTestCase):
         })
 
     def test_analysis_should_return_true_for_no_files(self):
-        self.assertTrue(Imports(self.options).run())
+        with OutputCapture():
+            self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_valid_imports(self):
         self.given_a_file_in_test_dir('valid.py', VALID)
-        self.assertTrue(Imports(self.options).run())
+        with OutputCapture():
+            self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_valid_multi_imports(self):
         self.given_a_file_in_test_dir('valid.py', VALID_MULTILINE)
-        self.assertTrue(Imports(self.options).run())
+        with OutputCapture():
+            self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_2_valid_multi_imports(self):
         self.given_a_file_in_test_dir('valid.py', VALID_MULTIPLE_MULTILINE)
-        self.assertTrue(Imports(self.options).run())
+        with OutputCapture():
+            self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_true_for_unsorted_ignored_imports(self):
         self.given_a_file_in_test_dir('valid.py', VALID_IGNORED_SORTED)
-        self.assertTrue(Imports(self.options).run())
+        with OutputCapture():
+            self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_grouped_imports(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_GROUPED)
-        self.assertFalse(Imports(self.options).run())
+        with OutputCapture():
+            self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_unsorted_imports(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_SORTED)
-        self.assertFalse(Imports(self.options).run())
+        with OutputCapture():
+            self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_unsorted_multi_imports(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_MULTILINE)
-        self.assertFalse(Imports(self.options).run())
+        with OutputCapture():
+            self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_2_unsorted_multi_imports(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_MULTIPLE_MULTILINE)
-        self.assertFalse(Imports(self.options).run())
+        with OutputCapture():
+            self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_relative_import(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_RELATIVE)
-        self.assertFalse(Imports(self.options).run())
+        with OutputCapture():
+            self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_return_true_on_invalid_but_ignored(self):
         filename = 'invalid.py'
@@ -128,17 +140,21 @@ class TestImports(CodeAnalysisTestCase):
         self.options['imports-exclude'] = '{0:s}/{1:s}'.format(
             self.test_dir, filename
         )
-        self.assertTrue(Imports(self.options).run())
+        with OutputCapture():
+            self.assertTrue(Imports(self.options).run())
 
     def test_analysis_should_return_false_on_relative_parent_import(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_RELATIVE_PARENT)
-        self.assertFalse(Imports(self.options).run())
+        with OutputCapture():
+            self.assertFalse(Imports(self.options).run())
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
-        with self.assertRaisesRegexp(SystemExit, '0'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '0'):
+                console_script(self.options)
 
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
         self.given_a_file_in_test_dir('invalid.py', INVALID_GROUPED)
-        with self.assertRaisesRegexp(SystemExit, '1'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '1'):
+                console_script(self.options)

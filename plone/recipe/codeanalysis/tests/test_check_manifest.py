@@ -2,6 +2,8 @@
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.check_manifest import console_script
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
+from testfixtures import OutputCapture
+
 import os
 
 
@@ -21,30 +23,39 @@ class TestCheckManifest(CodeAnalysisTestCase):
         executable = '{0:s}/check-manifest'.format(
             self.options['bin-directory']
         )
-        self.assertEqual(CheckManifest(self.options).cmd, [executable, '-v', ])
+        with OutputCapture():
+            self.assertEqual(
+                CheckManifest(self.options).cmd,
+                [executable, '-v', ]
+            )
 
     def test_check_manifest_packages(self):
-        self.assertEqual(
-            CheckManifest(self.options).packages, set([self.test_dir])
-        )
+        with OutputCapture():
+            self.assertEqual(
+                CheckManifest(self.options).packages, set([self.test_dir])
+            )
 
     def test_check_manifest_should_return_true_on_this_package(self):
         self.options['check-manifest-directory'] = os.path.realpath(
             os.path.join(os.path.dirname(__file__), '../../../..')
         )
-        self.assertTrue(CheckManifest(self.options).run())
+        with OutputCapture():
+            self.assertTrue(CheckManifest(self.options).run())
 
     def test_check_manifest_should_return_true_if_no_check_manifest_installed(self):  # noqa
         self.options['bin-directory'] = ''
-        self.assertTrue(CheckManifest(self.options).run())
+        with OutputCapture():
+            self.assertTrue(CheckManifest(self.options).run())
 
     def test_check_manifest_should_raise_systemexit_0_in_console_script(self):
         self.options['check-manifest-directory'] = os.path.realpath(
             os.path.join(os.path.dirname(__file__), '../../../..')
         )
-        with self.assertRaisesRegexp(SystemExit, '0'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '0'):
+                console_script(self.options)
 
     def test_check_manifest_should_raise_systemexit_1_in_console_script(self):
-        with self.assertRaisesRegexp(SystemExit, '1'):
-            console_script(self.options)
+        with OutputCapture():
+            with self.assertRaisesRegexp(SystemExit, '1'):
+                console_script(self.options)

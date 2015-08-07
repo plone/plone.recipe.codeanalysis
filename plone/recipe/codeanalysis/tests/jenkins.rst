@@ -28,7 +28,8 @@ Jenkins are stored::
 When running the code-analysis script::
 
     >>> import subprocess
-    >>> subprocess.call(['bin/code-analysis'])
+    >>> f = open("bla.txt", "w")
+    >>> subprocess.call(['bin/code-analysis'], stdout=f)
     0
 
 a flake8 log file is written to the 'code-analysis' directory::
