@@ -1,6 +1,12 @@
 Change history
 ==============
 
+2.0.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.0 (2015-08-07)
 ----------------
 
