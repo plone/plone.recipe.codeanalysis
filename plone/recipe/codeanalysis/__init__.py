@@ -14,6 +14,7 @@ from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.pep3101 import PEP3101
 from plone.recipe.codeanalysis.py_hasattr import HasAttr
+from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 import os
@@ -36,6 +37,7 @@ all_checks = [
     JSCS,
     JSHint,
     PEP3101,
+    XMLLint,
     ZPTLint,
 ]
 
@@ -107,6 +109,8 @@ class Recipe(object):
         # zptlint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', '')
+        # xmllint
+        self.options.setdefault('xmllint', 'False')
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis'
