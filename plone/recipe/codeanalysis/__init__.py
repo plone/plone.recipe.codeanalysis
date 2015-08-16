@@ -6,6 +6,7 @@ from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
+from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 
@@ -25,6 +26,7 @@ all_checks = [
     I18NDude,
     JSCS,
     JSHint,
+    XMLLint,
     ZPTLint,
 ]
 
@@ -82,6 +84,8 @@ class Recipe(object):
         # zptlint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', '')
+        # xmllint
+        self.options.setdefault('xmllint', 'False')
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis'
