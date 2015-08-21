@@ -2,6 +2,7 @@
 from multiprocessing import Lock
 from multiprocessing import Process
 from multiprocessing import Value
+from pkg_resources import get_distribution
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
@@ -54,9 +55,11 @@ class Recipe(object):
         options['location'] = os.path.join(
             buildout['buildout']['parts-directory'], name)
 
+        bringiton = str('bringiton' in get_distribution(__name__).extras)
+
         # Set required default options
         self.options.setdefault('directory', '.')
-        self.options.setdefault('multiprocessing', 'False')
+        self.options.setdefault('multiprocessing', bringiton)
         self.options.setdefault('pre-commit-hook', 'True')
         # Flake 8
         self.options.setdefault('flake8', 'True')
@@ -65,47 +68,47 @@ class Recipe(object):
         self.options.setdefault('flake8-max-complexity', '10')
         self.options.setdefault('flake8-max-line-length', '79')
         # JSHint
-        self.options.setdefault('jshint', 'False')
+        self.options.setdefault('jshint', bringiton)
         self.options.setdefault('jshint-bin', 'jshint')
         self.options.setdefault('jshint-exclude', '')
         self.options.setdefault('jshint-suppress-warnings', 'True')
         # JSCS
-        self.options.setdefault('jscs', 'False')
+        self.options.setdefault('jscs', bringiton)
         self.options.setdefault('jscs-bin', 'jscs')
         self.options.setdefault('jscs-exclude', '')
         # CSS Lint
-        self.options.setdefault('csslint', 'False')
+        self.options.setdefault('csslint', bringiton)
         self.options.setdefault('csslint-bin', 'csslint')
         # check-manifest
-        self.options.setdefault('check-manifest', 'False')
+        self.options.setdefault('check-manifest', bringiton)
         self.options.setdefault('check-manifest-directory', '.')
         # Warn about usage of deprecated aliases
-        self.options.setdefault('deprecated-aliases', 'False')
+        self.options.setdefault('deprecated-aliases', bringiton)
         # utf-8 header
-        self.options.setdefault('utf8-header', 'False')
+        self.options.setdefault('utf8-header', bringiton)
         # clean lines
-        self.options.setdefault('clean-lines', 'False')
+        self.options.setdefault('clean-lines', bringiton)
         self.options.setdefault('clean-lines-exclude', '')
         # Prefer single quotes over double quotes
-        self.options.setdefault('prefer-single-quotes', 'False')
+        self.options.setdefault('prefer-single-quotes', bringiton)
         # PEP 3101 (Advanced String Formatting)
-        self.options.setdefault('pep3101', 'False')
+        self.options.setdefault('pep3101', bringiton)
         # imports
-        self.options.setdefault('imports', 'False')
+        self.options.setdefault('imports', bringiton)
         # Debug statements
-        self.options.setdefault('debug-statements', 'False')
+        self.options.setdefault('debug-statements', bringiton)
         # Jenkins output
-        self.options.setdefault('jenkins', 'False')
-        self.options.setdefault('flake8-filesystem', 'False')
+        self.options.setdefault('jenkins', bringiton)
+        self.options.setdefault('flake8-filesystem', bringiton)
         # hasattr
-        self.options.setdefault('hasattr', 'False')
+        self.options.setdefault('hasattr', bringiton)
         # Error codes
-        self.options.setdefault('return-status-codes', 'False')
+        self.options.setdefault('return-status-codes', bringiton)
         # Find untranslated strings
-        self.options.setdefault('find-untranslated', 'False')
+        self.options.setdefault('find-untranslated', bringiton)
         self.options.setdefault('i18ndude-bin', '')
         # zptlint
-        self.options.setdefault('zptlint', 'False')
+        self.options.setdefault('zptlint', bringiton)
         self.options.setdefault('zptlint-bin', '')
         # Figure out default output file
         plone_jenkins = os.path.join(

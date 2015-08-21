@@ -67,6 +67,8 @@ setup(name='plone.recipe.codeanalysis',
               'zc.buildout [test]',
               'zope.testing',
           ],
+          'bringiton': [
+          ],
       },
       test_suite='plone.recipe.codeanalysis.tests.test_docs.test_suite',
       entry_points=entry_points,
