@@ -4,6 +4,9 @@ Change history
 2.0.1 (unreleased)
 ------------------
 
+- Add option to quickly activate all checks
+  [do3cc]
+
 - Clean tests output.
   Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/122
   [gforcada]

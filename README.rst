@@ -64,6 +64,20 @@ Just add a code-analysis section to your buildout.cfg:
 The directory option is not required. Though, if you don't specify a directory
 the code analysis will check every file in your buildout directory.
 
+This configuration will activate a few checks only. This is a good choice for existing packages. For new packages it is advisable to activate all checks, because doing so later is very hard.
+
+Instead of manually setting a lot of options, you can add an extra:
+
+.. code-block:: ini
+
+    [buildout]
+    parts += code-analysis
+
+    [code-analysis]
+    recipe = plone.recipe.codeanalysis[BRINGITON]
+    directory = ${buildout:directory}/src
+
+
 
 Jenkins Installation
 ====================
