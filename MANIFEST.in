@@ -1,6 +1,7 @@
 global-exclude *.pyc
 global-exclude **/.DS_Store
 global-exclude **/__pycache__
+global-exclude **.un~
 graft docs
 graft plone
 include *.rst
