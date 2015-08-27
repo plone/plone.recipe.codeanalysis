@@ -64,6 +64,59 @@ Just add a code-analysis section to your buildout.cfg:
 The directory option is not required. Though, if you don't specify a directory
 the code analysis will check every file in your buildout directory.
 
+This configuration is helpful for working on already existing packages.
+If you create a new package you might want to enable all checks.
+This configuration looks like this:
+
+.. code-block:: ini
+
+    [code-analysis]
+    recipe =lone.recipe.codeanalysis
+    multiprocessing = True
+    jenkins = False
+    directory =
+        ${buildout:directory}/src
+    pre-commit-hook = True
+    # JS
+    jshint = True
+    jshint-bin = ${buildout:bin-directory}/jshint
+    jshint-suppress-warnings = False
+    jscs = True
+    jscs-bin = ${buildout:bin-directory}/jscs
+    jscs-exclude =
+        ${buildout:directory}/dev/bower_components
+        ${buildout:directory}/node_modules
+    # CSS
+    csslint = True
+    csslint-bin = ${buildout:bin-directory}/csslint
+    # ZPT
+    zptlint = True
+    zptlint-bin = ${buildout:bin-directory}/zptlint
+    # TS
+    tslint = True
+    tslint-bin = ${buildout:directory}/bin/tslint
+    tslint-exclude = ${:jscs-exclude}
+    # Deprecation warnings
+    deprecated-aliases = True
+    # Conventions
+    clean-lines = True
+    clean-lines-exclude = ${:jscs-exclude}
+    imports = True
+    pep3101 = True
+    prefer-single-quotes = True
+    debug-statements = True
+    debug-statements-exclude = ${:jscs-exclude}
+    # i18n
+    utf8-header = True
+    find-untranslated = True
+    i18ndude-bin = ${buildout:bin-directory}/i18ndude
+    return-status-codes = True
+    flake8-exclude = bootstrap.py,docs,*.egg,*.cpy,*.vpy,overrides
+
+    [node]
+    recipe = gp.recipe.node
+    npms = csslint jshint jscs tslint
+    scripts = csslint jshint jscs tsling
 
 Jenkins Installation
 ====================
