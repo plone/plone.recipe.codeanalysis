@@ -71,7 +71,7 @@ This configuration looks like this:
 .. code-block:: ini
 
     [code-analysis]
-    recipe =lone.recipe.codeanalysis
+    recipe = plone.recipe.codeanalysis
     multiprocessing = True
     jenkins = False
     directory =
@@ -111,12 +111,12 @@ This configuration looks like this:
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
     return-status-codes = True
-    flake8-exclude = bootstrap.py,docs,*.egg,*.cpy,*.vpy,overrides
+    flake8-exclude = bootstrap.py,bootstrap-buildout.py,docs,*.egg,*.cpy,*.vpy,overrides
 
     [node]
     recipe = gp.recipe.node
     npms = csslint jshint jscs tslint
-    scripts = csslint jshint jscs tsling
+    scripts = csslint jshint jscs tslint
 
 Jenkins Installation
 ====================
