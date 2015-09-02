@@ -212,11 +212,12 @@ class Analyser:
     def run(self):
         """Run the analyser command using options.
 
-        Run the analyser command using options and return the output. The
-        analyser command is defined by the 'bin' option, it can be any one
-        of the external analyser commands, as csslint, jshint, flake8, for
-        example. The return code is stored on the return_code attribute.
-        The output is returned but is also stored in the output attribute.
+        Run the analyser command using options and return if the result was
+        sucessful. The analyser command is defined by the 'bin' option, it can
+        be any one of the external analyser commands, as csslint, jshint,
+        flake8, for example. The return code is stored on the return_code
+        attribute. The output is returned but is also stored in the output
+        attribute.
 
         :return: It return the output of the analyser command.
         """
