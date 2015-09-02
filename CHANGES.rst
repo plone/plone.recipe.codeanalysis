@@ -4,6 +4,10 @@ Change history
 2.0.1 (unreleased)
 ------------------
 
+- synchronize :-)
+  [do3cc]
+  Fix multiprocessing bug. Shared state is hard to
+
 - Change pep3101 logic. No more false positives on log
   strings.
   [do3cc]
