@@ -223,7 +223,10 @@ class Analyser:
         with self.open_output_file() as output_file:
             command = self.cmd
             try:
-                assert len(command) > 0  # skip if there's no command
+                # skip if there's no command
+                if not len(command):
+                    self.log('ok')
+                    return True
                 process = subprocess.Popen(command,
                                            stderr=subprocess.STDOUT,
                                            stdout=output_file)
@@ -231,9 +234,6 @@ class Analyser:
                 output_file.flush()
                 output_file.seek(0)
                 return self.parse_output(output_file, process.returncode)
-            except AssertionError:
-                self.log('ok')
-                return True
             except OSError:
                 self.log('skip')
                 return True
