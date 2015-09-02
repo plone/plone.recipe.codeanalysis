@@ -51,7 +51,8 @@ class CheckManifest(Analyser):
                     self.log('skip')
         finally:
             output_file.close()
-            return status
+
+        return status
 
 
 def console_script(options):
