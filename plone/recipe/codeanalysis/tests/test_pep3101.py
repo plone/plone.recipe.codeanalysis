@@ -57,6 +57,31 @@ class TestPEP3101(CodeAnalysisTestCase):
         with OutputCapture():
             self.assertFalse(PEP3101(self.options).run())
 
+    def test_analysis_should_return_false_for_multiline_invalid(self):
+        self.given_a_file_in_test_dir('invalid.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            'print("hello %s"',
+            '% (self)',
+        ]))
+        with OutputCapture():
+            self.assertFalse(PEP3101(self.options).run())
+
+    def test_analysis_its_complicated(self):
+        self.given_a_file_in_test_dir('valid.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            'log("%s is bad", "me")'
+        ]))
+        with OutputCapture():
+            self.assertTrue(PEP3101(self.options).run())
+
+    def test_analysis_should_return_true_for_logs(self):
+        self.given_a_file_in_test_dir('valid.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            'console.log("hello %s", "world")',  # noqa
+        ]))
+        with OutputCapture():
+            self.assertTrue(PEP3101(self.options).run())
+
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         with OutputCapture():
             with self.assertRaisesRegexp(SystemExit, '0'):
