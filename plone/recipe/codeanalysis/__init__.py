@@ -225,15 +225,13 @@ def code_analysis(options):
     start = time()
     multiprocessing = bool_option(options.get('multiprocessing'))
     lock = Lock() if multiprocessing else None
-    status = Value('i', 0)
+    status = Value('b', True)
 
     def taskrunner(klass, options, lock, status):
         check = klass(options, lock)
         if check.enabled:
-            if check.run():
-                status.value += 1
-        else:
-            status.value += 1
+            if not check.run():
+                status.value = False
 
     if multiprocessing:
         procs = [
@@ -249,7 +247,7 @@ def code_analysis(options):
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
     if bool_option(options['return-status-codes']):
-        exit_code = int(not status.value == len(all_checks))
+        exit_code = 0 if status.value else 1
 
         print('The command "bin/code-analysis" exited with {0:d} in {1:.03f}s.'
               .format(exit_code, time() - start))
