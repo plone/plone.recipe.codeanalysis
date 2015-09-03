@@ -35,6 +35,9 @@ class Flake8(Analyser):
             )
             for o in options
         ]
+        if not self.normalize_boolean(self.options.get('multiprocessing')):
+            options.append('--jobs=1')
+
         return options
 
     @property

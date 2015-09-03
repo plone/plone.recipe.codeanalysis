@@ -4,7 +4,12 @@ Change history
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``--jobs=1`` to flake8 if ``multiprocessing`` is set to ``False``.
+  [saily]
+
+- Fix #151 by not instantiating ``Lock`` and ``Value`` if ``multiprocessing``
+  was set to ``False``.
+  [saily]
 
 
 2.0.1 (2015-09-02)
