@@ -408,15 +408,6 @@ The recipe supports the following options:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-**imports**
-    If set to True, checks that imports in Python files follow `plone.api
-    conventions`_. This also includes checking for alphabetically sorted
-    import statements. Default is ``False``.
-
-**imports-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
 **debug-statements**
     If set to True, scan Python and Javascript files looking for debug-like
     statements like ``print`` and ``console.log``. Default is ``False``.
@@ -434,6 +425,25 @@ The recipe supports the following options:
 **hasattr-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
+
+**isort**
+    If set to True, use `isort`_ to scan Python files and report about imports
+    not sorted according to the **isort-options**. Default is ``False``.
+
+**isort-exclude**
+    Allows you to specify directories and/or files which you don't want to be
+    checked. Default is none.
+
+**isort-[option]**
+    Allows you to change the way imports should be sorted. Default is to follow
+    `plone.api conventions`_. See `isort documentation for available options
+    <http://pypi.python.org/pypi/isort>`_::
+
+        ...
+        isort = True
+        isort-force-alphabetical-sort = True
+        isort-force_single_line_imports = True
+        isort-diff = True
 
 **return-status-codes**
     If set to True, the ``bin/code-analysis`` script returns an error code
@@ -507,6 +517,7 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`Jenkins Violations plugin`: https://wiki.jenkins-ci.org/display/JENKINS/Violations
 .. _`flake8`: https://pypi.python.org/pypi/flake8
+.. _`isort`: https://pypi.python.org/pypi/isort
 .. _`JSHint documentation`: http://jshint.com/docs/
 .. _`JSHint`: http://www.jshint.com/
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
@@ -516,4 +527,3 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup
 .. _`jscs website`: https://www.npmjs.org/package/jscs
-
