@@ -7,8 +7,8 @@ Change history
 - Add ``--jobs=1`` to flake8 if ``multiprocessing`` is set to ``False``.
   [saily]
 
-- Don't instantiate a ``Lock`` and ``Value`` if ``multiprocessing`` is set
-  to ``False``.
+- Fix #151 by not instantiating ``Lock`` and ``Value`` if ``multiprocessing``
+  was set to ``False``.
   [saily]
 
 
