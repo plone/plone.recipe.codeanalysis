@@ -97,7 +97,6 @@ class TestIsort(CodeAnalysisTestCase):
         super(TestIsort, self).setUp()
         self.options.update({
             'isort': 'True',
-            'isort-diff': 'False',
             'isort-exclude': '',
         })
         if os.path.isfile('../../bin/isort'):  # when cwd is parts/test
