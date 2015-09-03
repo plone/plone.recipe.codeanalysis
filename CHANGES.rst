@@ -4,6 +4,9 @@ Change history
 2.0.2 (unreleased)
 ------------------
 
+- Less false positives for pep3101.
+  [do3cc]
+
 - Add ``--jobs=1`` to flake8 if ``multiprocessing`` is set to ``False``.
   [saily]
 
