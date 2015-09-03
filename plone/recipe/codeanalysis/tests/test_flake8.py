@@ -106,12 +106,13 @@ class TestFlake8(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
         super(TestFlake8, self).setUp()
-        self.options.update({
+        self.flake8_default_options = {
             'flake8-ignore': '',
             'flake8-exclude': 'bootstrap.py,bootstrap-buildout.py,docs,*.egg',
             'flake8-max-complexity': '10',
             'flake8-max-line-length': '79',
-        })
+        }
+        self.options.update(self.flake8_default_options)
         if os.path.isfile('../../bin/flake8'):  # when cwd is parts/test
             self.options['bin-directory'] = '../../bin'
 
@@ -234,24 +235,36 @@ class TestFlake8(CodeAnalysisTestCase):
                 console_script(self.options)
 
     def test_get_flake8_options(self):
-        self.options = {
+        self.options.update({
             'flake8-one': 'something',
             'flake8-two': 'else',
-        }
+        })
         options = Flake8(self.options).get_flake8_options()
         self.assertEqual(
             len(options),
-            2
+            # --one=something --two=else --jobs=1 + default options
+            2 + 1 + len(self.flake8_default_options)
         )
 
     def test_get_flake8_options_ignored(self):
-        self.options = {
+        self.options.update({
             'flake8-one': 'something',
             'flake8-filesystem': 'ignored',
             'flake8-extensions': 'ignored',
-        }
+        })
         options = Flake8(self.options).get_flake8_options()
         self.assertEqual(
             len(options),
-            1
+            # --one=something --jobs=1 + default options
+            1 + 1 + len(self.flake8_default_options)
+        )
+
+    def test_get_flake8_options_on_deactivated_multiprocessing(self):
+        self.options.update({
+            'multiprocessing': 'True',
+        })
+        options = Flake8(self.options).get_flake8_options()
+        self.assertEqual(
+            len(options),
+            len(self.flake8_default_options)  # just default options
         )

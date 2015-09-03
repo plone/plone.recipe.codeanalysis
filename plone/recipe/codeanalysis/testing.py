@@ -13,6 +13,7 @@ class CodeAnalysisTestCase(unittest.TestCase):
             'bin-directory': 'bin',
             'directory': self.test_dir,
             'jenkins': 'False',
+            'multiprocessing': 'False',
         }
 
     def tearDown(self):  # noqa
