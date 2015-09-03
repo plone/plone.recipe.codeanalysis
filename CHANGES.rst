@@ -1,7 +1,7 @@
 Change history
 ==============
 
-2.0.2 (unreleased)
+2.0.2 (2015-09-03)
 ------------------
 
 - Less false positives for pep3101.
