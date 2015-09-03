@@ -3,6 +3,8 @@ from plone.recipe.codeanalysis.analyser import console_factory
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 import re
 
+FAIL_RE = re.compile(ur'^(?:[^\'"]*[\'"][^\'"]*[\'"])*\s*%|^\s*%')
+
 
 class PEP3101(CleanLines):
     """
@@ -30,7 +32,7 @@ class PEP3101(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                re.compile(ur'^(?:[^\'"]*[\'"][^\'"]*[\'"])*\s*%|^\s*%'): '{0:s} formatter',
+                FAIL_RE: '{0:s} formatter',
             },
         },
     ]
