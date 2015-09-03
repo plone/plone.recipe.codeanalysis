@@ -19,7 +19,7 @@ VALID = '\n'.join([
 VALID_MULTILINE = '\n'.join([
     'from foo.bar import baz',
     'from foo.bar import \\',
-    '    this_is_a_very_long_baz',
+    '    this_is_a_very_long_baz_which_for_sure_exceeds_line_length',
     '',
     'import baz',
 ])
@@ -27,9 +27,9 @@ VALID_MULTILINE = '\n'.join([
 VALID_MULTIPLE_MULTILINE = '\n'.join([
     'from foo.bar import baz',
     'from foo.bar import \\',
-    '    this_is_a_very_long_baz',
+    '    this_is_a_very_long_baz_which_for_sure_exceeds_line_length',
     'from foo.car import \\',
-    '    this_is_a_very_long_baz',
+    '    this_is_a_very_long_baz_which_for_sure_exceeds_line_length',
     '',
     'import baz',
 ])
