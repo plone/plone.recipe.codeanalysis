@@ -4,7 +4,9 @@ Change history
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't instantiate a ``Lock`` and ``Value`` if ``multiprocessing`` is set
+  to ``False``.
+  [saily]
 
 
 2.0.1 (2015-09-02)

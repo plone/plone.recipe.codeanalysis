@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from multiprocessing import Lock
-from multiprocessing import Process
-from multiprocessing import Value
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
@@ -223,9 +220,14 @@ class Recipe(object):
 
 def code_analysis(options):
     start = time()
+
+    class DummyValue(object):
+        def __init__(self, value=True):
+            self.value = value
+
+    lock = None
+    status = DummyValue()
     multiprocessing = bool_option(options.get('multiprocessing'))
-    lock = Lock() if multiprocessing else None
-    status = Value('b', True)
 
     def taskrunner(klass, options, lock, status):
         check = klass(options, lock)
@@ -234,6 +236,12 @@ def code_analysis(options):
                 status.value = False
 
     if multiprocessing:
+        from multiprocessing import Lock
+        from multiprocessing import Process
+        from multiprocessing import Value
+
+        lock = Lock()
+        status = Value('b', True)
         procs = [
             Process(target=taskrunner, args=(klass, options, lock, status))
             for klass in all_checks
