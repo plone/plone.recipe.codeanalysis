@@ -30,7 +30,7 @@ class PEP3101(CleanLines):
         {
             'extensions': ('py', ),
             'fail': {
-                re.compile(r'[\'"].*[\'"]\s*%|^\s*%'): '{0:s} formatter',
+                re.compile(ur'^(?:[^\'"]*[\'"][^\'"]*[\'"])*\s*%|^\s*%'): '{0:s} formatter',
             },
         },
     ]

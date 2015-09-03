@@ -74,6 +74,21 @@ class TestPEP3101(CodeAnalysisTestCase):
         with OutputCapture():
             self.assertTrue(PEP3101(self.options).run())
 
+    def test_analysis_its_complicated2(self):
+        self.given_a_file_in_test_dir('valid.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            '"""""""1" if "%" else "2"'
+        ]))
+        with OutputCapture():
+            self.assertTrue(PEP3101(self.options).run())
+
+        self.given_a_file_in_test_dir('valid.py', '\n'.join([
+            '# -*- coding: utf-8 -*-',
+            '"""""""1" if "%" else "2%s" % "x"'
+        ]))
+        with OutputCapture():
+            self.assertFalse(PEP3101(self.options).run())
+
     def test_analysis_should_return_true_for_logs(self):
         self.given_a_file_in_test_dir('valid.py', '\n'.join([
             '# -*- coding: utf-8 -*-',
