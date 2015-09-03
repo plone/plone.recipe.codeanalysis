@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.csslint import console_script
+from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.py_hasattr import console_script
+from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from testfixtures import OutputCapture
 
