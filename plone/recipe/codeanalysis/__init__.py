@@ -6,7 +6,7 @@ from plone.recipe.codeanalysis.debug_statements import DebugStatements
 from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
-from plone.recipe.codeanalysis.imports import Imports
+from plone.recipe.codeanalysis.isort import Isort
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.pep3101 import PEP3101
@@ -29,7 +29,7 @@ all_checks = [
     Flake8,
     HasAttr,
     I18NDude,
-    Imports,
+    Isort,
     JSCS,
     JSHint,
     PEP3101,
@@ -87,8 +87,15 @@ class Recipe(object):
         self.options.setdefault('prefer-single-quotes', 'False')
         # PEP 3101 (Advanced String Formatting)
         self.options.setdefault('pep3101', 'False')
-        # imports
-        self.options.setdefault('imports', 'False')
+        # isort (sort imports)
+        self.options.setdefault(
+            'isort',
+            self.options.get('imports', 'False')  # BBB
+        )
+        self.options.setdefault(
+            'isort-exclude',
+            self.options.get('imports-exclude', 'False')  # BBB
+        )
         # Debug statements
         self.options.setdefault('debug-statements', 'False')
         # Jenkins output
@@ -150,6 +157,8 @@ class Recipe(object):
                 extension = item.strip()
                 if extension:
                     extensions.append(extension)
+        if bool_option(self.options['isort']):
+            extensions.append('isort>=4.1.0')
         return extensions
 
     def install_extensions(self):
@@ -169,6 +178,8 @@ class Recipe(object):
 
         # flake8
         add_script('flake8')
+        if bool_option(self.options['isort']):
+            add_script('isort')
         # check-manifest
         add_script('check-manifest')
         # bin/code-analysis

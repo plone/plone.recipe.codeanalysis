@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.deprecated_aliases import console_script
+from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from testfixtures import OutputCapture
 
