@@ -4,8 +4,10 @@ Change history
 2.1 (unreleased)
 ----------------
 
-- Remove debug statements checker, flake8-debugger, flake8-print and jshint can do the
-  same job.
+- Remove debug statements checker,
+  `flake8-debugger <https://pypi.python.org/pypi/flake8-debugger>`_,
+  `flake8-print <https://pypi.python.org/pypi/flake8-print>`_
+  and jshint can do the same job.
   [gforcada]
 
 
