@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.flake8 import console_script
+from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp
@@ -68,7 +68,7 @@ import pdb; pdb.set_trace()
 
 IPDB_STATEMENT = """\
 # -*- coding: utf-8 -*-
-import pdb; pdb.set_trace()
+import ipdb; ipdb.set_trace()
 """
 
 # pep8-naming
