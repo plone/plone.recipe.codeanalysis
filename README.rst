@@ -104,8 +104,6 @@ This configuration looks like this:
     imports = True
     pep3101 = True
     prefer-single-quotes = True
-    debug-statements = True
-    debug-statements-exclude = ${:jscs-exclude}
     # i18n
     utf8-header = True
     find-untranslated = True
@@ -414,14 +412,6 @@ The recipe supports the following options:
     import statements. Default is ``False``.
 
 **imports-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**debug-statements**
-    If set to True, scan Python and Javascript files looking for debug-like
-    statements like ``print`` and ``console.log``. Default is ``False``.
-
-**debug-statements-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
