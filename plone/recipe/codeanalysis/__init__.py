@@ -2,7 +2,6 @@
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
-from plone.recipe.codeanalysis.debug_statements import DebugStatements
 from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
@@ -24,7 +23,6 @@ all_checks = [
     CSSLint,
     CheckManifest,
     CleanLines,
-    DebugStatements,
     DeprecatedAliases,
     Flake8,
     HasAttr,
@@ -89,8 +87,6 @@ class Recipe(object):
         self.options.setdefault('pep3101', 'False')
         # imports
         self.options.setdefault('imports', 'False')
-        # Debug statements
-        self.options.setdefault('debug-statements', 'False')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')

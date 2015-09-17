@@ -1,10 +1,12 @@
 Change history
 ==============
 
-2.0.3 (unreleased)
-------------------
+2.1 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Remove debug statements checker, flake8-debugger, flake8-print and jshint can do the
+  same job.
+  [gforcada]
 
 
 2.0.2 (2015-09-03)
