@@ -100,7 +100,6 @@ This configuration looks like this:
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
     imports = True
-    prefer-single-quotes = True
     # i18n
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude

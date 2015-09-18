@@ -71,8 +71,6 @@ class Recipe(object):
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         self.options.setdefault('clean-lines-exclude', '')
-        # Prefer single quotes over double quotes
-        self.options.setdefault('prefer-single-quotes', 'False')
         # imports
         self.options.setdefault('imports', 'False')
         # Jenkins output
