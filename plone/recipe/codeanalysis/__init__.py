@@ -2,7 +2,6 @@
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
-from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.imports import Imports
@@ -22,7 +21,6 @@ all_checks = [
     CSSLint,
     CheckManifest,
     CleanLines,
-    DeprecatedAliases,
     Flake8,
     HasAttr,
     I18NDude,
@@ -72,8 +70,6 @@ class Recipe(object):
         # check-manifest
         self.options.setdefault('check-manifest', 'False')
         self.options.setdefault('check-manifest-directory', '.')
-        # Warn about usage of deprecated aliases
-        self.options.setdefault('deprecated-aliases', 'False')
         # utf-8 header
         self.options.setdefault('utf8-header', 'False')
         # clean lines

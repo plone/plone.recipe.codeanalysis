@@ -15,6 +15,10 @@ Change history
   works exactly the same.
   [gforcada]
 
+- Remove deprecated aliases checker,
+  `flake8-deprecated <https://pypi.python.org/pypi/flake8-deprecated>`_
+  does the same job.
+  [gforcada]
 
 2.0.2 (2015-09-03)
 ------------------

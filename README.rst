@@ -96,8 +96,6 @@ This configuration looks like this:
     tslint = True
     tslint-bin = ${buildout:directory}/bin/tslint
     tslint-exclude = ${:jscs-exclude}
-    # Deprecation warnings
-    deprecated-aliases = True
     # Conventions
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
@@ -374,17 +372,6 @@ The recipe supports the following options:
         scripts = csslint
 
 **csslint-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**deprecated-aliases**
-    For historical reasons, some of the unittest.TestCase methods had one or
-    more aliases that are deprecated on Python 2.7. If this option is set to
-    True, warnings about deprecated aliases will be printed. Default is
-    ``False``. See `Unit testing framework documentation`_ for more
-    information.
-
-**deprecated-aliases-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
