@@ -29,6 +29,9 @@ Change history
   some of them where part of p.r.codeanalysis up until this release.
   [gforcada]
 
+- Remove leftovers from utf-8 checker removal.
+  [gforcada]
+
 2.0.2 (2015-09-03)
 ------------------
 

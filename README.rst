@@ -102,7 +102,6 @@ This configuration looks like this:
     imports = True
     prefer-single-quotes = True
     # i18n
-    utf8-header = True
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
     return-status-codes = True

@@ -68,8 +68,6 @@ class Recipe(object):
         # check-manifest
         self.options.setdefault('check-manifest', 'False')
         self.options.setdefault('check-manifest-directory', '.')
-        # utf-8 header
-        self.options.setdefault('utf8-header', 'False')
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         self.options.setdefault('clean-lines-exclude', '')
