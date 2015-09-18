@@ -102,7 +102,6 @@ This configuration looks like this:
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
     imports = True
-    pep3101 = True
     prefer-single-quotes = True
     # i18n
     utf8-header = True
@@ -397,15 +396,6 @@ The recipe supports the following options:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-**pep3101**
-    If set to True, Python files will be scanned in search of existing '%'
-    string formatting operators. Default is ``False``. See `PEP 3101 (Advanced
-    String Formatting)`_ for more information.
-
-**pep3101-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
 **imports**
     If set to True, checks that imports in Python files follow `plone.api
     conventions`_. This also includes checking for alphabetically sorted
@@ -506,4 +496,3 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup
 .. _`jscs website`: https://www.npmjs.org/package/jscs
-

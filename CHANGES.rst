@@ -10,6 +10,11 @@ Change history
   and jshint can do the same job.
   [gforcada]
 
+- Removed pep3101 checker,
+  `flake8-pep3101 <https://pypi.python.org/pypi/flake8-pep3101>`_
+  works exactly the same.
+  [gforcada]
+
 
 2.0.2 (2015-09-03)
 ------------------

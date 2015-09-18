@@ -8,7 +8,6 @@ from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
-from plone.recipe.codeanalysis.pep3101 import PEP3101
 from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
@@ -30,7 +29,6 @@ all_checks = [
     Imports,
     JSCS,
     JSHint,
-    PEP3101,
     ZPTLint,
 ]
 
@@ -83,8 +81,6 @@ class Recipe(object):
         self.options.setdefault('clean-lines-exclude', '')
         # Prefer single quotes over double quotes
         self.options.setdefault('prefer-single-quotes', 'False')
-        # PEP 3101 (Advanced String Formatting)
-        self.options.setdefault('pep3101', 'False')
         # imports
         self.options.setdefault('imports', 'False')
         # Jenkins output
