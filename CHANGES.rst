@@ -25,6 +25,10 @@ Change history
   does the same job.
   [gforcada]
 
+- Add a ``[recommended]`` extra to install a set of flake8 plugins,
+  some of them where part of p.r.codeanalysis up until this release.
+  [gforcada]
+
 2.0.2 (2015-09-03)
 ------------------
 
