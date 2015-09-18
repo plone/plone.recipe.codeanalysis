@@ -96,20 +96,28 @@ This configuration looks like this:
     tslint = True
     tslint-bin = ${buildout:directory}/bin/tslint
     tslint-exclude = ${:jscs-exclude}
-    # Deprecation warnings
-    deprecated-aliases = True
     # Conventions
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
     imports = True
-    pep3101 = True
-    prefer-single-quotes = True
     # i18n
-    utf8-header = True
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
     return-status-codes = True
     flake8-exclude = bootstrap.py,bootstrap-buildout.py,docs,*.egg,*.cpy,*.vpy,overrides
+    flake8-extensions =
+        flake8-blind-except
+        flake8-coding
+        flake8-debugger
+        flake8-deprecated
+        flake8-isort
+        flake8-pep3101
+        flake8-plone-api
+        flake8-plone-hasattr
+        flake8-print
+        flake8-quotes
+        flake8-string-format
+        flake8-todo
 
     [node]
     recipe = gp.recipe.node
@@ -378,31 +386,11 @@ The recipe supports the following options:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-**deprecated-aliases**
-    For historical reasons, some of the unittest.TestCase methods had one or
-    more aliases that are deprecated on Python 2.7. If this option is set to
-    True, warnings about deprecated aliases will be printed. Default is
-    ``False``. See `Unit testing framework documentation`_ for more
-    information.
-
-**deprecated-aliases-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
 
 **clean-lines-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**pep3101**
-    If set to True, Python files will be scanned in search of existing '%'
-    string formatting operators. Default is ``False``. See `PEP 3101 (Advanced
-    String Formatting)`_ for more information.
-
-**pep3101-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
@@ -412,16 +400,6 @@ The recipe supports the following options:
     import statements. Default is ``False``.
 
 **imports-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**hasattr**
-    If set to True, scan Python files looking for ``hasattr`` calls.
-    This is considered bad practice as it swallows exceptions.
-    Use ``getattr(obj, attribute, None)`` always.
-    Default is ``False``.
-
-**hasattr-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
@@ -506,4 +484,3 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup
 .. _`jscs website`: https://www.npmjs.org/package/jscs
-

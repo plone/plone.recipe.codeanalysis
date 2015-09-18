@@ -4,10 +4,33 @@ Change history
 2.1 (unreleased)
 ----------------
 
-- Remove debug statements checker, flake8-debugger, flake8-print and jshint can do the
-  same job.
+- Remove debug statements checker,
+  `flake8-debugger <https://pypi.python.org/pypi/flake8-debugger>`_,
+  `flake8-print <https://pypi.python.org/pypi/flake8-print>`_
+  and jshint can do the same job.
   [gforcada]
 
+- Removed pep3101 checker,
+  `flake8-pep3101 <https://pypi.python.org/pypi/flake8-pep3101>`_
+  works exactly the same.
+  [gforcada]
+
+- Remove deprecated aliases checker,
+  `flake8-deprecated <https://pypi.python.org/pypi/flake8-deprecated>`_
+  does the same job.
+  [gforcada]
+
+- Remove hasattr checker,
+  `flake8-plone-hasattr <https://pypi.python.org/pypi/flake8-plone-hasattr>`_
+  does the same job.
+  [gforcada]
+
+- Add a ``[recommended]`` extra to install a set of flake8 plugins,
+  some of them where part of p.r.codeanalysis up until this release.
+  [gforcada]
+
+- Remove leftovers from utf-8 checker removal.
+  [gforcada]
 
 2.0.2 (2015-09-03)
 ------------------

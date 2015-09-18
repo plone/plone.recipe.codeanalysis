@@ -2,14 +2,11 @@
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
-from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
-from plone.recipe.codeanalysis.pep3101 import PEP3101
-from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 import os
@@ -23,14 +20,11 @@ all_checks = [
     CSSLint,
     CheckManifest,
     CleanLines,
-    DeprecatedAliases,
     Flake8,
-    HasAttr,
     I18NDude,
     Imports,
     JSCS,
     JSHint,
-    PEP3101,
     ZPTLint,
 ]
 
@@ -74,24 +68,14 @@ class Recipe(object):
         # check-manifest
         self.options.setdefault('check-manifest', 'False')
         self.options.setdefault('check-manifest-directory', '.')
-        # Warn about usage of deprecated aliases
-        self.options.setdefault('deprecated-aliases', 'False')
-        # utf-8 header
-        self.options.setdefault('utf8-header', 'False')
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         self.options.setdefault('clean-lines-exclude', '')
-        # Prefer single quotes over double quotes
-        self.options.setdefault('prefer-single-quotes', 'False')
-        # PEP 3101 (Advanced String Formatting)
-        self.options.setdefault('pep3101', 'False')
         # imports
         self.options.setdefault('imports', 'False')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')
-        # hasattr
-        self.options.setdefault('hasattr', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
         # Find untranslated strings
