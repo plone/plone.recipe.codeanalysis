@@ -7,7 +7,6 @@ from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
-from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 import os
@@ -22,7 +21,6 @@ all_checks = [
     CheckManifest,
     CleanLines,
     Flake8,
-    HasAttr,
     I18NDude,
     Imports,
     JSCS,
@@ -82,8 +80,6 @@ class Recipe(object):
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')
-        # hasattr
-        self.options.setdefault('hasattr', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
         # Find untranslated strings

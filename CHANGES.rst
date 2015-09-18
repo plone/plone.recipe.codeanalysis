@@ -20,6 +20,11 @@ Change history
   does the same job.
   [gforcada]
 
+- Remove hasattr checker,
+  `flake8-plone-hasattr <https://pypi.python.org/pypi/flake8-plone-hasattr>`_
+  does the same job.
+  [gforcada]
+
 2.0.2 (2015-09-03)
 ------------------
 
