@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.imports import console_script
+from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from testfixtures import OutputCapture
 

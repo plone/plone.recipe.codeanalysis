@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from zope.testing import renormalizing
+
 import doctest
 import os
 import unittest
 import zc.buildout.testing
 import zc.buildout.tests
+
 
 optionflags = (
     doctest.ELLIPSIS |
