@@ -32,6 +32,11 @@ Change history
 - Remove leftovers from utf-8 checker removal.
   [gforcada]
 
+- Remove imports checker,
+  `flake8-isort <https://pypi.python.org/pypi/flake8-isort>`_
+  does the same job.
+  [tisto] [gforcada]
+
 2.0.2 (2015-09-03)
 ------------------
 
