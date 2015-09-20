@@ -2,6 +2,7 @@
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 
+
 class SCSSLint(Analyser):
 
     name = 'scss-lint'
