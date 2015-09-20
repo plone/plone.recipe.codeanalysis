@@ -4,7 +4,6 @@ from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
-from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
@@ -22,7 +21,6 @@ all_checks = [
     CleanLines,
     Flake8,
     I18NDude,
-    Imports,
     JSCS,
     JSHint,
     ZPTLint,
@@ -71,8 +69,6 @@ class Recipe(object):
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         self.options.setdefault('clean-lines-exclude', '')
-        # imports
-        self.options.setdefault('imports', 'False')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')
