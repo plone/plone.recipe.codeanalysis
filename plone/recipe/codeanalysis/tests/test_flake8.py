@@ -68,7 +68,7 @@ import pdb; pdb.set_trace()
 
 IPDB_STATEMENT = """\
 # -*- coding: utf-8 -*-
-import pdb; pdb.set_trace()
+import ipdb; ipdb.set_trace()
 """
 
 # pep8-naming

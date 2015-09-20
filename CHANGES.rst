@@ -37,6 +37,10 @@ Change history
   does the same job.
   [tisto] [gforcada]
 
+- Fix typo on test that prevented ipdb imports from being found.
+  [hvelarde]
+
+
 2.0.2 (2015-09-03)
 ------------------
 
