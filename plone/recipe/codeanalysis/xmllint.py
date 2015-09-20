@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import distutils
+import lxml.etree
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 
@@ -10,16 +10,27 @@ class XMLLint(Analyser):
     title = 'XML Lint'
     extensions = ('zcml', 'xsl', 'xml')
 
-    @property
     def cmd(self):
-        cmd = [distutils.spawn.find_executable('xmllint'), '--noout']
+        # Please the ABC by faux-implementing the cmd.
+        pass
 
+    def run(self):
         files = []
         for extension in self.extensions:
             files.extend(self.find_files('.*\.{0}'.format(extension)))
-        if files:
-            cmd.extend(files)
-        return cmd
+
+        total_errors = []
+        for file in files:
+            try:
+                lxml.etree.parse(file)
+            except lxml.etree.XMLSyntaxError as e:
+                total_errors.append('{}: {}'.format(file, e.message))
+
+        if total_errors:
+            self.log('failure', '\n'.join(total_errors))
+            return False
+        self.log('ok')
+        return True
 
 
 def console_script(options):
