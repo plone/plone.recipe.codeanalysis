@@ -6,8 +6,6 @@ from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
-from plone.recipe.codeanalysis.pep3101 import PEP3101
-from plone.recipe.codeanalysis.py_hasattr import HasAttr
 from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
@@ -26,7 +24,6 @@ all_checks = [
     I18NDude,
     JSCS,
     JSHint,
-    PEP3101,
     XMLLint,
     ZPTLint,
 ]
