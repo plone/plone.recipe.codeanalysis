@@ -22,6 +22,7 @@
 /src/collective*
 *.mo
 *.swp
+*.swo
 docs/Makefile
 docs/make.bat
 docs/doctrees
