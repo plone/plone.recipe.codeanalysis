@@ -6,6 +6,7 @@ from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
+from plone.recipe.codeanalysis.scsslint import SCSSLint
 from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
@@ -26,6 +27,7 @@ all_checks = [
     I18NDude,
     JSCS,
     JSHint,
+    SCSSLint,
     XMLLint,
     ZPTLint,
 ]
@@ -81,11 +83,15 @@ class Recipe(object):
         # Find untranslated strings
         self.options.setdefault('find-untranslated', 'False')
         self.options.setdefault('i18ndude-bin', '')
+        # scss-lint
+        self.options.setdefault('scss-lint', 'False')
+        self.options.setdefault('scss-lint-bin', 'scss-lint')
+        self.options.setdefault('scss-lint-config', '')
+        # xmllint
+        self.options.setdefault('xmllint', 'False')
         # zptlint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', '')
-        # xmllint
-        self.options.setdefault('xmllint', 'False')
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis'

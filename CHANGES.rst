@@ -66,6 +66,9 @@ Change history
 - Fix typo on test that prevented ipdb imports from being found.
   [hvelarde]
 
+- Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
+
+- Add scss-lint for sass files. [janjaapdriessen]
 
 2.0.2 (2015-09-03)
 ------------------
