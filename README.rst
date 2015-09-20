@@ -64,6 +64,64 @@ Just add a code-analysis section to your buildout.cfg:
 The directory option is not required. Though, if you don't specify a directory
 the code analysis will check every file in your buildout directory.
 
+This configuration is helpful for working on already existing packages.
+If you create a new package you might want to enable all checks.
+This configuration looks like this:
+
+.. code-block:: ini
+
+    [code-analysis]
+    recipe = plone.recipe.codeanalysis
+    multiprocessing = True
+    jenkins = False
+    directory =
+        ${buildout:directory}/src
+    pre-commit-hook = True
+    # JS
+    jshint = True
+    jshint-bin = ${buildout:bin-directory}/jshint
+    jshint-suppress-warnings = False
+    jscs = True
+    jscs-bin = ${buildout:bin-directory}/jscs
+    jscs-exclude =
+        ${buildout:directory}/dev/bower_components
+        ${buildout:directory}/node_modules
+    # CSS
+    csslint = True
+    csslint-bin = ${buildout:bin-directory}/csslint
+    # ZPT
+    zptlint = True
+    zptlint-bin = ${buildout:bin-directory}/zptlint
+    # TS
+    tslint = True
+    tslint-bin = ${buildout:directory}/bin/tslint
+    tslint-exclude = ${:jscs-exclude}
+    # Conventions
+    clean-lines = True
+    clean-lines-exclude = ${:jscs-exclude}
+    # i18n
+    find-untranslated = True
+    i18ndude-bin = ${buildout:bin-directory}/i18ndude
+    return-status-codes = True
+    flake8-exclude = bootstrap.py,bootstrap-buildout.py,docs,*.egg,*.cpy,*.vpy,overrides
+    flake8-extensions =
+        flake8-blind-except
+        flake8-coding
+        flake8-debugger
+        flake8-deprecated
+        flake8-isort
+        flake8-pep3101
+        flake8-plone-api
+        flake8-plone-hasattr
+        flake8-print
+        flake8-quotes
+        flake8-string-format
+        flake8-todo
+
+    [node]
+    recipe = gp.recipe.node
+    npms = csslint jshint jscs tslint
+    scripts = csslint jshint jscs tslint
 
 Jenkins Installation
 ====================
@@ -327,58 +385,11 @@ The recipe supports the following options:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-**deprecated-aliases**
-    For historical reasons, some of the unittest.TestCase methods had one or
-    more aliases that are deprecated on Python 2.7. If this option is set to
-    True, warnings about deprecated aliases will be printed. Default is
-    ``False``. See `Unit testing framework documentation`_ for more
-    information.
-
-**deprecated-aliases-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
 
 **clean-lines-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**pep3101**
-    If set to True, Python files will be scanned in search of existing '%'
-    string formatting operators. Default is ``False``. See `PEP 3101 (Advanced
-    String Formatting)`_ for more information.
-
-**pep3101-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**imports**
-    If set to True, checks that imports in Python files follow `plone.api
-    conventions`_. This also includes checking for alphabetically sorted
-    import statements. Default is ``False``.
-
-**imports-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**debug-statements**
-    If set to True, scan Python and Javascript files looking for debug-like
-    statements like ``print`` and ``console.log``. Default is ``False``.
-
-**debug-statements-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**hasattr**
-    If set to True, scan Python files looking for ``hasattr`` calls.
-    This is considered bad practice as it swallows exceptions.
-    Use ``getattr(obj, attribute, None)`` always.
-    Default is ``False``.
-
-**hasattr-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
@@ -463,4 +474,3 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup
 .. _`jscs website`: https://www.npmjs.org/package/jscs
-

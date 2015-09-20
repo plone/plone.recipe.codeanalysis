@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
+
 import os
 import re
 import subprocess
@@ -51,7 +52,8 @@ class CheckManifest(Analyser):
                     self.log('skip')
         finally:
             output_file.close()
-            return status
+
+        return status
 
 
 def console_script(options):

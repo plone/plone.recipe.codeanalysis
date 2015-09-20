@@ -1,8 +1,70 @@
 Change history
 ==============
 
-2.0.1 (unreleased)
+2.1 (unreleased)
+----------------
+
+- Remove debug statements checker,
+  `flake8-debugger <https://pypi.python.org/pypi/flake8-debugger>`_,
+  `flake8-print <https://pypi.python.org/pypi/flake8-print>`_
+  and jshint can do the same job.
+  [gforcada]
+
+- Removed pep3101 checker,
+  `flake8-pep3101 <https://pypi.python.org/pypi/flake8-pep3101>`_
+  works exactly the same.
+  [gforcada]
+
+- Remove deprecated aliases checker,
+  `flake8-deprecated <https://pypi.python.org/pypi/flake8-deprecated>`_
+  does the same job.
+  [gforcada]
+
+- Remove hasattr checker,
+  `flake8-plone-hasattr <https://pypi.python.org/pypi/flake8-plone-hasattr>`_
+  does the same job.
+  [gforcada]
+
+- Add a ``[recommended]`` extra to install a set of flake8 plugins,
+  some of them where part of p.r.codeanalysis up until this release.
+  [gforcada]
+
+- Remove leftovers from utf-8 checker removal.
+  [gforcada]
+
+- Remove imports checker,
+  `flake8-isort <https://pypi.python.org/pypi/flake8-isort>`_
+  does the same job.
+  [tisto] [gforcada]
+
+- Fix typo on test that prevented ipdb imports from being found.
+  [hvelarde]
+
+
+2.0.2 (2015-09-03)
 ------------------
+
+- Less false positives for pep3101.
+  [do3cc]
+
+- Add ``--jobs=1`` to flake8 if ``multiprocessing`` is set to ``False``.
+  [saily]
+
+- Fix #151 by not instantiating ``Lock`` and ``Value`` if ``multiprocessing``
+  was set to ``False``.
+  [saily]
+
+
+2.0.1 (2015-09-02)
+------------------
+
+- synchronize :-)
+  [do3cc]
+  Fix multiprocessing bug. Shared state is hard to
+
+- Change pep3101 logic. No more false positives on log
+  strings.
+  [do3cc]
 
 - Clean tests output.
   Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/122

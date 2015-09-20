@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
-from plone.recipe.codeanalysis.zptlint import ZPTLint
 from plone.recipe.codeanalysis.zptlint import console_script
+from plone.recipe.codeanalysis.zptlint import ZPTLint
 from shutil import rmtree
 from tempfile import mkdtemp
 from testfixtures import OutputCapture

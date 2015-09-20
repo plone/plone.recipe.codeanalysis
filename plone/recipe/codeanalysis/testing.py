@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from shutil import rmtree
 from tempfile import mkdtemp
+
 import os
 import unittest
 
@@ -13,6 +14,7 @@ class CodeAnalysisTestCase(unittest.TestCase):
             'bin-directory': 'bin',
             'directory': self.test_dir,
             'jenkins': 'False',
+            'multiprocessing': 'False',
         }
 
     def tearDown(self):  # noqa

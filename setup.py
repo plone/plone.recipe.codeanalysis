@@ -11,7 +11,7 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
-version = '2.0.1.dev0'
+version = '2.0.3.dev0'
 
 long_description = '\n\n'.join([
     read('README.rst'),
@@ -67,6 +67,20 @@ setup(name='plone.recipe.codeanalysis',
               'testfixtures',
               'zc.buildout [test]',
               'zope.testing',
+          ],
+          'recommended': [
+              'flake8-blind-except',
+              'flake8-coding',
+              'flake8-debugger',
+              'flake8-deprecated',
+              'flake8-isort',
+              'flake8-pep3101',
+              'flake8-plone-api',
+              'flake8-plone-hasattr',
+              'flake8-print',
+              'flake8-quotes',
+              'flake8-string-format',
+              'flake8-todo',
           ],
       },
       test_suite='plone.recipe.codeanalysis.tests.test_docs.test_suite',

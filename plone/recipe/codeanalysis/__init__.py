@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
-from multiprocessing import Lock
-from multiprocessing import Process
-from multiprocessing import Value
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
-from plone.recipe.codeanalysis.debug_statements import DebugStatements
-from plone.recipe.codeanalysis.deprecated_aliases import DeprecatedAliases
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
-from plone.recipe.codeanalysis.imports import Imports
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.pep3101 import PEP3101
@@ -28,12 +22,8 @@ all_checks = [
     CSSLint,
     CheckManifest,
     CleanLines,
-    DebugStatements,
-    DeprecatedAliases,
     Flake8,
-    HasAttr,
     I18NDude,
-    Imports,
     JSCS,
     JSHint,
     PEP3101,
@@ -81,26 +71,12 @@ class Recipe(object):
         # check-manifest
         self.options.setdefault('check-manifest', 'False')
         self.options.setdefault('check-manifest-directory', '.')
-        # Warn about usage of deprecated aliases
-        self.options.setdefault('deprecated-aliases', 'False')
-        # utf-8 header
-        self.options.setdefault('utf8-header', 'False')
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         self.options.setdefault('clean-lines-exclude', '')
-        # Prefer single quotes over double quotes
-        self.options.setdefault('prefer-single-quotes', 'False')
-        # PEP 3101 (Advanced String Formatting)
-        self.options.setdefault('pep3101', 'False')
-        # imports
-        self.options.setdefault('imports', 'False')
-        # Debug statements
-        self.options.setdefault('debug-statements', 'False')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')
-        # hasattr
-        self.options.setdefault('hasattr', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
         # Find untranslated strings
@@ -227,19 +203,28 @@ class Recipe(object):
 
 def code_analysis(options):
     start = time()
+
+    class DummyValue(object):
+        def __init__(self, value=True):
+            self.value = value
+
+    lock = None
+    status = DummyValue()
     multiprocessing = bool_option(options.get('multiprocessing'))
-    lock = Lock() if multiprocessing else None
-    status = Value('i', 0)
 
     def taskrunner(klass, options, lock, status):
         check = klass(options, lock)
         if check.enabled:
-            if check.run():
-                status.value += 1
-        else:
-            status.value += 1
+            if not check.run():
+                status.value = False
 
     if multiprocessing:
+        from multiprocessing import Lock
+        from multiprocessing import Process
+        from multiprocessing import Value
+
+        lock = Lock()
+        status = Value('b', True)
         procs = [
             Process(target=taskrunner, args=(klass, options, lock, status))
             for klass in all_checks
@@ -253,7 +238,7 @@ def code_analysis(options):
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
     if bool_option(options['return-status-codes']):
-        exit_code = int(not status.value == len(all_checks))
+        exit_code = 0 if status.value else 1
 
         print('The command "bin/code-analysis" exited with {0:d} in {1:.03f}s.'
               .format(exit_code, time() - start))
