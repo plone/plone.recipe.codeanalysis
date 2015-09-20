@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import lxml.etree
+from lxml.etree import parse
+from lxml.etree import XMLSyntaxError
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 
@@ -20,11 +21,11 @@ class XMLLint(Analyser):
             files.extend(self.find_files('.*\.{0}'.format(extension)))
 
         total_errors = []
-        for file in files:
+        for file_path in files:
             try:
-                lxml.etree.parse(file)
-            except lxml.etree.XMLSyntaxError as e:
-                total_errors.append('{}: {}'.format(file, e.message))
+                parse(file_path)
+            except XMLSyntaxError as e:
+                total_errors.append('{}: {}'.format(file_path, e.message))
 
         if total_errors:
             self.log('failure', '\n'.join(total_errors))
