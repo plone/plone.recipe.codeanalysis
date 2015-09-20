@@ -99,7 +99,6 @@ This configuration looks like this:
     # Conventions
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
-    imports = True
     # i18n
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
@@ -391,15 +390,6 @@ The recipe supports the following options:
     on the lines will cause a warning. Default is ``False``.
 
 **clean-lines-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
-**imports**
-    If set to True, checks that imports in Python files follow `plone.api
-    conventions`_. This also includes checking for alphabetically sorted
-    import statements. Default is ``False``.
-
-**imports-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 

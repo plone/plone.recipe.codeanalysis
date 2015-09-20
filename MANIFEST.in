@@ -12,3 +12,4 @@ include bootstrap-buildout.py
 include buildout.cfg
 include extras.cfg
 include travis.cfg
+include .isort.cfg

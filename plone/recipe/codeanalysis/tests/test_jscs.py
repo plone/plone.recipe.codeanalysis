@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jscs import console_script
+from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
-from tempfile import TemporaryFile
 from tempfile import mkdtemp
+from tempfile import TemporaryFile
 from testfixtures import OutputCapture
 
 import os
+
 
 INCORRECT_FILE = """\
 function a_method(){
