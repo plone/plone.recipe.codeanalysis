@@ -236,18 +236,18 @@ The recipe supports the following options:
 
 .. code-block:: ini
 
-        [code-analysis]
-        recipe = plone.recipe.codeanalysis
-        flake8 = True
-        flake8-extensions =
-            flake8-blind-except
-            flake8-coding
-            flake8-debugger
-            flake8-quotes
-            pep8-naming
+    [code-analysis]
+    recipe = plone.recipe.codeanalysis
+    flake8 = True
+    flake8-extensions =
+        flake8-blind-except
+        flake8-coding
+        flake8-debugger
+        flake8-quotes
+        pep8-naming
 
-    All through flake8 extensions raised validation errors may be suppressed
-    using the ``flake8-ignore`` option.
+All through flake8 extensions raised validation errors may be suppressed
+using the ``flake8-ignore`` option.
 
 **flake8-ignore**
     Skip errors or warnings. See `Flake8 documentation`_ for error codes.
@@ -299,12 +299,12 @@ The recipe supports the following options:
 
 .. code-block:: ini
 
-        [jshint]
-        recipe = gp.recipe.node
-        npms = jshint
-        scripts = jshint
+    [jshint]
+    recipe = gp.recipe.node
+    npms = jshint
+    scripts = jshint
 
-    set jshint-bin to ``${buildout:bin-directory}/jshint``.
+set jshint-bin to ``${buildout:bin-directory}/jshint``.
 
 **jshint-exclude**
     Allows you to specify directories which you don't want to be linted.
@@ -338,10 +338,10 @@ The recipe supports the following options:
 
 .. code-block:: ini
 
-        [jscs]
-        recipe = gp.recipe.node
-        npms = jscs
-        scripts = jscs
+    [jscs]
+    recipe = gp.recipe.node
+    npms = jscs
+    scripts = jscs
 
 **jscs-exclude**
     Allows you to specify directories and/or files which you don't want to be
@@ -376,10 +376,10 @@ The recipe supports the following options:
 
 .. code-block:: ini
 
-        [csslint]
-        recipe = gp.recipe.node
-        npms = csslint
-        scripts = csslint
+    [csslint]
+    recipe = gp.recipe.node
+    npms = csslint
+    scripts = csslint
 
 **csslint-exclude**
     Allows you to specify directories and/or files which you don't want to be
