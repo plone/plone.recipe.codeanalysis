@@ -4,7 +4,10 @@ Change history
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add a filter to the pre commit hook to only show failures and only show problems in files that are being modified.
+  It does not limit errors to the code pieces you modified, only whole files are filtered.
+  http://www.goodreads.com/quotes/65111-but-the-real-way-to-get-happiness-is-by-giving
+  [do3cc]
 
 
 2.1 (2015-09-21)
