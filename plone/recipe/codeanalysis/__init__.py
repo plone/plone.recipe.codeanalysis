@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.chameleonlint import ChameleonLint
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
@@ -20,6 +21,7 @@ import zc.recipe.egg
 
 current_dir = os.path.dirname(__file__)
 all_checks = [
+    ChameleonLint,
     CSSLint,
     CheckManifest,
     CleanLines,
@@ -66,6 +68,8 @@ class Recipe(object):
         self.options.setdefault('jscs', 'False')
         self.options.setdefault('jscs-bin', 'jscs')
         self.options.setdefault('jscs-exclude', '')
+        # Chameleon Lint
+        self.options.setdefault('chameleon-lint', 'False')
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')

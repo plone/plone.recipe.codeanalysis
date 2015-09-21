@@ -70,6 +70,8 @@ Change history
 
 - Add scss-lint for sass files. [janjaapdriessen]
 
+- Add a XML linter for Chameleon template files. [janjaapdriessen]
+
 2.0.2 (2015-09-03)
 ------------------
 
