@@ -71,7 +71,7 @@ This configuration looks like this:
 .. code-block:: ini
 
     [code-analysis]
-    recipe = plone.recipe.codeanalysis
+    recipe = plone.recipe.codeanalysis[recommended]
     multiprocessing = True
     jenkins = False
     directory =
@@ -104,24 +104,15 @@ This configuration looks like this:
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
     return-status-codes = True
     flake8-exclude = bootstrap.py,bootstrap-buildout.py,docs,*.egg,*.cpy,*.vpy,overrides
-    flake8-extensions =
-        flake8-blind-except
-        flake8-coding
-        flake8-debugger
-        flake8-deprecated
-        flake8-isort
-        flake8-pep3101
-        flake8-plone-api
-        flake8-plone-hasattr
-        flake8-print
-        flake8-quotes
-        flake8-string-format
-        flake8-todo
 
     [node]
     recipe = gp.recipe.node
     npms = csslint jshint jscs tslint
     scripts = csslint jshint jscs tslint
+
+.. note::
+   The ``[recommended]`` extra enables a host of flake8 plugins that will make
+   your python code more readable and better checked for possible mistakes.
 
 Jenkins Installation
 ====================
