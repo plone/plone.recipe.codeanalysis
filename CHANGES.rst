@@ -1,7 +1,7 @@
 Change history
 ==============
 
-2.1 (unreleased)
+2.1 (2015-09-21)
 ----------------
 
 - Remove debug statements checker,
