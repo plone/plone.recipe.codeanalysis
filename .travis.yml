@@ -27,6 +27,7 @@ after_success:
   - pip install -q coveralls
   - coveralls
 after_failure:
+  - bin/flake8 --version
   - bin/csslint --version
   - bin/jshint --version
   - bin/jscs --version
