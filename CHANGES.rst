@@ -7,6 +7,9 @@ Change history
 - Install isort script if flake8-isort is installed as well.
   [gforcada]
 
+- Add a zest.releaser entry point to run code-analysis before releasing.
+  Fixes https://github.com/plone/plone.recipe.codeanalysis/issues/154
+  [gforcada]
 
 2.2 (2016-02-20)
 ----------------
