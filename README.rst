@@ -446,6 +446,14 @@ system:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
+zest.releaser plugin
+====================
+
+plone.recipe.codeanalysis integrates with `zest.releaser`_ on the pre-release stage.
+
+It runs code-analysis, it shows the result to the user and it allows to write them on a ``status.rst``.
+
+This file is meant to be used to add it on setup.py's long description so that it shows up on PyPI.
 
 Known Issues
 ============
@@ -488,3 +496,4 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`jscs website`: https://www.npmjs.org/package/jscs
 .. _`Plone's styleguide`: http://docs.plone.org/develop/styleguide/
 .. _`extra configuration`: https://raw.githubusercontent.com/plone/plone.recipe.codeanalysis/master/.isort.cfg
+.. _`zest.releaser`: https://pypi.python.org/pypi/zest.releaser
