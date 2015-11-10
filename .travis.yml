@@ -16,7 +16,7 @@ matrix:
     - python: 3.4
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
-  - python bootstrap-buildout.py --setuptools-version=8.3
+  - python bootstrap-buildout.py --setuptools-version=18.5
   - bin/buildout -c $CONF annotate
   - bin/buildout -N -t 3 -c $CONF
 script:
