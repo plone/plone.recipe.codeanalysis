@@ -10,36 +10,6 @@ from testfixtures import OutputCapture
 import os
 
 
-VALID_CODE = '''\
-# -*- coding: utf-8 -*-
-def foobar():
-    """
-    A docstring with a "comment"
-    """
-    if ('foo' == 'bar'):
-        return 'foobar'
-
-    # A comment with "quote"
-    def bar(baz):
-        """a method "called" bar"""
-        return baz  # could also be "baz"
-
-    def foo(baz):
-        \'\'\'a method "called" foobar\'\'\'
-        return baz  # could also be 'baz'
-
-    def foobar():
-        """A complex docstring:
-           Show an "example" of nested multiline \'\'\'inline string\'\'\'
-           and multiline \'\'\'
-           multiline string with again a containing "quote"
-           \'\'\'
-           here we are.  # and 'nowhere' "else"
-        """
-        # flake8-quotes could not handle this
-        # return "hello world"  # noqa
-'''
-
 INVALID_CODE = '''\
 # -*- coding: utf-8 -*-
 def foo(bar):
@@ -50,55 +20,14 @@ def foo(bar):
         return 'foobar'
 '''
 
-SINGLE_IN_DOUBLE = '''\
+VALID_CODE = """
 # -*- coding: utf-8 -*-
-print("this is a string with 'quotes'.")
-'''
 
-DOUBLE_IN_SINGLE = """\
-# -*- coding: utf-8 -*-
-print('this is a string with "quotes".')
-"""
 
-# flake8-debugger
-PDB_STATEMENT = """\
-# -*- coding: utf-8 -*-
-import pdb; pdb.set_trace()
-"""
-
-IPDB_STATEMENT = """\
-# -*- coding: utf-8 -*-
-import ipdb; ipdb.set_trace()
-"""
-
-# pep8-naming
-INVALID_NAMING_STATEMENT = """\
-# -*- coding: utf-8 -*-
-def Foo(bar):
-    return bar
-"""
-
-# flake8-blind-except
-INVALID_EXCEPT = """\
-# -*- coding: utf-8 -*-
-try:
-    assert False
-except:
-    assert False
-"""  # noqa
-
-VALID_EXCEPT = """\
-# -*- coding: utf-8 -*-
-try:
-    assert False
-except Exception:
-    assert False
-"""
-
-# missing utf8 header
-MISSING_CODING = """\
-def foo(bar)
-    return bar
+class MyClass():
+    def __init__(self):
+        my_sum = 1 + 1
+        self.my_sum = my_sum
 """
 
 
@@ -117,14 +46,7 @@ class TestFlake8(CodeAnalysisTestCase):
             self.options['bin-directory'] = '../../bin'
 
     def test_analysis_should_return_false_when_error_found(self):
-        self.given_a_file_in_test_dir('incorrect.py', '\n'.join([
-            '# -*- coding: utf-8 -*-',
-            'import sys',
-            'class MyClass():',
-            '    def __init__(self):',
-            '        my_sum=1+1'  # No space between operators.
-            '',
-        ]))
+        self.given_a_file_in_test_dir('incorrect.py', INVALID_CODE)
         with OutputCapture():
             self.assertFalse(Flake8(self.options).run())
 
@@ -136,26 +58,13 @@ class TestFlake8(CodeAnalysisTestCase):
             self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_should_return_true(self):
-        self.given_a_file_in_test_dir('correct.py', '\n'.join([
-            '# -*- coding: utf-8 -*-',
-            'class MyClass():',
-            '    def __init__(self):',
-            '        my_sum = 1 + 1',
-            '        self.my_sum = my_sum',
-            '',
-        ]))
+        self.given_a_file_in_test_dir('correct.py', VALID_CODE)
         with OutputCapture():
             self.assertTrue(Flake8(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         parts_dir = mkdtemp()
-        self.given_a_file_in_test_dir('correct.py', '\n'.join([
-            'class MyClass():',
-            '    def __init__(self):',
-            '        my_sum = 1 + 1',
-            '        self.my_sum = my_sum',
-            '',
-        ]))
+        self.given_a_file_in_test_dir('correct.py', VALID_CODE)
         self.options['location'] = parts_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         with OutputCapture():
@@ -163,11 +72,6 @@ class TestFlake8(CodeAnalysisTestCase):
         file_exist = os.path.isfile(os.path.join(parts_dir, 'flake8.log'))
         rmtree(parts_dir)
         self.assertTrue(file_exist)
-
-    def test_analysis_should_return_false_if_double_quotes_found(self):
-        self.given_a_file_in_test_dir('invalid.py', INVALID_CODE)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_return_true_if_invalid_file_is_excluded(self):
         filename = 'invalid.py'
@@ -177,51 +81,6 @@ class TestFlake8(CodeAnalysisTestCase):
         )
         with OutputCapture():
             self.assertTrue(Flake8(self.options).run())
-
-    def test_analysis_should_return_true_for_valid_files(self):
-        self.given_a_file_in_test_dir('valid.py', VALID_CODE)
-        with OutputCapture():
-            self.assertTrue(Flake8(self.options).run())
-
-    def test_analysis_should_return_true_if_double_in_single_quotes(self):
-        self.given_a_file_in_test_dir('double_in_single.py', DOUBLE_IN_SINGLE)
-        with OutputCapture():
-            self.assertTrue(Flake8(self.options).run())
-
-    def test_analysis_should_return_false_if_single_in_double_quotes(self):
-        self.given_a_file_in_test_dir('single_in_double.py', SINGLE_IN_DOUBLE)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
-
-    def test_analysis_should_return_false_if_pdb_found(self):
-        self.given_a_file_in_test_dir('pdb.py', PDB_STATEMENT)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
-
-    def test_analysis_should_return_false_if_ipdb_found(self):
-        self.given_a_file_in_test_dir('ipdb.py', IPDB_STATEMENT)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
-
-    def test_analysis_should_return_false_on_invalid_method_naming(self):
-        self.given_a_file_in_test_dir('naming.py', INVALID_NAMING_STATEMENT)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
-
-    def test_analysis_should_return_false_on_invalid_except_statement(self):
-        self.given_a_file_in_test_dir('invalid_except.py', INVALID_EXCEPT)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
-
-    def test_analysis_should_return_true_on_valid_except_statement(self):
-        self.given_a_file_in_test_dir('valid_except.py', VALID_EXCEPT)
-        with OutputCapture():
-            self.assertTrue(Flake8(self.options).run())
-
-    def test_analysis_should_return_false_if_coding_missing(self):
-        self.given_a_file_in_test_dir('missing_coding.py', MISSING_CODING)
-        with OutputCapture():
-            self.assertFalse(Flake8(self.options).run())
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         with OutputCapture():
