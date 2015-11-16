@@ -8,6 +8,7 @@ from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
+
 import os
 import subprocess
 import zc.buildout
