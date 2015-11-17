@@ -4,8 +4,8 @@ Change history
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Allow to pass a folder where to run code analysis against.
+  [gforcada]
 
 2.1 (2015-09-21)
 ----------------

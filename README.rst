@@ -46,6 +46,10 @@ order to run the code analysis automatically before each commit.
 use the same code analysis settings on your local machine as well as on
 Jenkins.
 
+It also allows to run code analysis to any arbitrary folder::
+
+    bin/code-analysis src/Products.CMFPlone
+
 
 Installation
 ============
