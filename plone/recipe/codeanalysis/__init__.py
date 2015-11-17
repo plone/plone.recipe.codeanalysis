@@ -11,6 +11,7 @@ from time import time
 
 import os
 import subprocess
+import sys
 import zc.buildout
 import zc.recipe.egg
 
@@ -197,6 +198,11 @@ class Recipe(object):
 
 def code_analysis(options):
     start = time()
+
+    # if there is a second argument (first is always the progam itself)
+    # use that one to run code analysis against
+    if len(sys.argv) > 1:
+        options['directory'] = sys.argv[1]
 
     class DummyValue(object):
         def __init__(self, value=True):
