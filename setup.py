@@ -57,6 +57,7 @@ setup(name='plone.recipe.codeanalysis',
       install_requires=[
           'check-manifest',
           'flake8>=2.0.0',
+          'lxml',
           'setuptools',
           'zc.buildout',
           'zc.recipe.egg',

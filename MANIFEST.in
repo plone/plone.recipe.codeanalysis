@@ -1,4 +1,6 @@
 global-exclude *.pyc
+global-exclude *.swp
+global-exclude *.swo
 global-exclude **/.DS_Store
 global-exclude **/__pycache__
 global-exclude *.un~
