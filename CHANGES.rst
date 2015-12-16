@@ -7,6 +7,10 @@ Change history
 - Allow to pass a folder where to run code analysis against.
   [gforcada]
 
+- Increase minimum requirement of flake8. Older versions could make
+  checks with exceptions in plugins as passed.
+  [do3cc]
+
 2.1 (2015-09-21)
 ----------------
 
