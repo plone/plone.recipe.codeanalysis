@@ -178,7 +178,7 @@ class Recipe(object):
             os.mkdir(git_hooks_directory)
 
         with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
-            output_file.write('#!/bin/bash\nbin/code-analysis')
+            output_file.write('#!/usr/bin/env bash\nbin/code-analysis')
         subprocess.call([
             'chmod',
             '775',
