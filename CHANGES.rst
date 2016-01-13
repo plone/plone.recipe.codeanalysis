@@ -4,6 +4,10 @@ Change history
 2.1.1 (unreleased)
 ------------------
 
+- Fix issue where commit hook did not work on NixOS
+  (fixed to use ``/usr/bin/env bash`` instead ``/bin/bash``).
+  [datakurre]
+
 - Allow to pass a folder where to run code analysis against.
   [gforcada]
 
