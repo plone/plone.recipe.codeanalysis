@@ -199,7 +199,7 @@ class Recipe(object):
 def code_analysis(options):
     start = time()
 
-    # if there is a second argument (first is always the progam itself)
+    # if there is a second argument (first is always the program itself)
     # use that one to run code analysis against
     if len(sys.argv) > 1:
         options['directory'] = sys.argv[1]
