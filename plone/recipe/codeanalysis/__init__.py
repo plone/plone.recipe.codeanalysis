@@ -203,6 +203,7 @@ def code_analysis(options):
     # use that one to run code analysis against
     if len(sys.argv) > 1:
         options['directory'] = sys.argv[1]
+        options['check-manifest-directory'] = sys.argv[1]
 
     class DummyValue(object):
         def __init__(self, value=True):
