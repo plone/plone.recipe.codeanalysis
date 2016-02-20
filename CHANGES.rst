@@ -7,6 +7,11 @@ Change history
 - Install isort script if flake8-isort is installed as well.
   [gforcada]
 
+- Add two new recommended flake8 plugins:
+  `flake8-commas <https://pypi.python.org/pypi/flake8-commas>`_ and
+  `flake8_strict <https://pypi.python.org/pypi/flake8_strict>`_.
+  [gforcada]
+
 
 2.2 (2016-02-20)
 ----------------

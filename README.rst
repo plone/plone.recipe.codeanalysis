@@ -134,6 +134,8 @@ These are the current extras installed:
 - flake8-quotes: warns about using double quotes (plone style guide says single quotes)
 - flake8-string-format: warns about errors on string formatting
 - flake8-todo: warns if there are ``TODO``, ``XXX`` found on the code
+- flake8-commas: warns if the last element on a method call, list or dictionary does not end with a comma
+- flake8_strict: warns if a multi-line method call has its first element on the first line
 
 Jenkins Installation
 ====================
