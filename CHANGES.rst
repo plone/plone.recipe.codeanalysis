@@ -1,8 +1,8 @@
 Change history
 ==============
 
-2.1.1 (unreleased)
-------------------
+2.2 (2016-02-20)
+----------------
 
 - Fix issue where commit hook did not work on NixOS
   (fixed to use ``/usr/bin/env bash`` instead ``/bin/bash``).
