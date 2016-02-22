@@ -114,9 +114,26 @@ This configuration looks like this:
     npms = csslint jshint jscs tslint
     scripts = csslint jshint jscs tslint
 
-.. note::
-   The ``[recommended]`` extra enables a host of flake8 plugins that will make
-   your python code more readable and better checked for possible mistakes.
+``[recommended]`` extra
+=======================
+
+This extra enables a host of flake8 plugins.
+They are mostly coding `Plone's styleguide`_ (specially the Python section).
+
+These are the current extras installed:
+
+- flake8-blind-except: warns about catching any exception, i.e ``except:``
+- flake8-coding: warns about python files with missing coding header
+- flake8-debugger: warns about debug statements found in code (like pdb...)
+- flake8-deprecated: warns about deprecated method calls
+- flake8-isort: warns about imports not sorted properly (note that an `extra configuration`_ is needed)
+- flake8-pep3101: warns about old-style formatting, i.e ``'format a %s' % string``
+- flake8-plone-api: warns about code that could be replaced by plone.api calls (note that this is forbidden for Plone core packages)
+- flake8-plone-hasattr: warns about using ``hasattr`` as it shallows exceptions
+- flake8-print: warns about ``print`` being used
+- flake8-quotes: warns about using double quotes (plone style guide says single quotes)
+- flake8-string-format: warns about errors on string formatting
+- flake8-todo: warns if there are ``TODO``, ``XXX`` found on the code
 
 Jenkins Installation
 ====================
@@ -469,3 +486,5 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup
 .. _`jscs website`: https://www.npmjs.org/package/jscs
+.. _`Plone's styleguide`: http://docs.plone.org/develop/styleguide/
+.. _`extra configuration`: https://raw.githubusercontent.com/plone/plone.recipe.codeanalysis/master/.isort.cfg
