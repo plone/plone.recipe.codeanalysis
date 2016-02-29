@@ -154,6 +154,10 @@ class Recipe(object):
             (self.name, self.__module__, 'code_analysis'),
             arguments=arguments
         )
+        # isort
+        if 'flake8-isort' in self.extensions:
+            add_script('isort')
+
         # others
         for klass in all_checks:
             instance = klass(self.options)

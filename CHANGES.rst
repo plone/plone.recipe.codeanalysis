@@ -4,7 +4,8 @@ Change history
 2.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Install isort script if flake8-isort is installed as well.
+  [gforcada]
 
 
 2.2 (2016-02-20)
