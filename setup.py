@@ -24,7 +24,10 @@ entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {
     'zc.buildout': [
         'default = {0:s}'.format(entry_point)
-    ]
+    ],
+    'zest.releaser.prereleaser.before': [
+        'run_prcodeanalysis = plone.recipe.codeanalysis.entry_points:check',
+    ],
 }
 
 setup(name='plone.recipe.codeanalysis',
@@ -80,6 +83,7 @@ setup(name='plone.recipe.codeanalysis',
               'flake8-quotes',
               'flake8-string-format',
               'flake8-todo',
+              'zest.releaser',
           ],
       },
       test_suite='plone.recipe.codeanalysis.tests.test_docs.test_suite',
