@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pkg_resources import iter_entry_points
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
@@ -8,10 +9,8 @@ from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
-
 import os
 import subprocess
-import sys
 import zc.buildout
 import zc.recipe.egg
 
@@ -28,12 +27,19 @@ all_checks = [
     ZPTLint,
 ]
 
+all_checks.extend(
+    [analyser.load() for analyser in iter_entry_points(
+        group='codeanalysis.analysers')
+    ]
+)
 
 class Recipe(object):
     """zc.buildout recipe"""
 
     def __init__(self, buildout, name, options):
         self.buildout, self.name, self.options = buildout, name, options
+        import pdb
+        pdb.set_trace()
         self.egg = zc.recipe.egg.Scripts(
             buildout,
             self.options['recipe'],
@@ -135,6 +141,10 @@ class Recipe(object):
             zc.recipe.egg.Egg(self.buildout, extension, self.options)
 
     def install_scripts(self):
+        print "evo me"
+        import pdb
+        pdb.set_trace()
+
         eggs = self.egg.working_set(extra=self.extensions)[1]
         python_buildout = self.buildout['buildout']['python']
         python = self.buildout[python_buildout]['executable']
@@ -154,10 +164,6 @@ class Recipe(object):
             (self.name, self.__module__, 'code_analysis'),
             arguments=arguments
         )
-        # isort
-        if 'flake8-isort' in self.extensions:
-            add_script('isort')
-
         # others
         for klass in all_checks:
             instance = klass(self.options)
@@ -182,7 +188,7 @@ class Recipe(object):
             os.mkdir(git_hooks_directory)
 
         with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
-            output_file.write('#!/usr/bin/env bash\nbin/code-analysis')
+            output_file.write('#!/bin/bash\nbin/code-analysis')
         subprocess.call([
             'chmod',
             '775',
@@ -203,12 +209,6 @@ class Recipe(object):
 def code_analysis(options):
     start = time()
 
-    # if there is a second argument (first is always the program itself)
-    # use that one to run code analysis against
-    if len(sys.argv) > 1:
-        options['directory'] = sys.argv[1]
-        options['check-manifest-directory'] = sys.argv[1]
-
     class DummyValue(object):
         def __init__(self, value=True):
             self.value = value
@@ -219,6 +219,7 @@ def code_analysis(options):
 
     def taskrunner(klass, options, lock, status):
         check = klass(options, lock)
+        print "klass:{}, enabled:{}".format(klass, check.enabled)
         if check.enabled:
             if not check.run():
                 status.value = False
