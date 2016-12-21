@@ -12,6 +12,9 @@ Change history
   `flake8_strict <https://pypi.python.org/pypi/flake8_strict>`_.
   [gforcada]
 
+- Split the plone specific flake8 pluings out of the ``recommended`` extra.
+  Move them into a new ``plone`` specific extra.
+  [gforcada]
 
 2.2 (2016-02-20)
 ----------------
