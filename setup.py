@@ -28,7 +28,7 @@ entry_points = {
 }
 
 setup(name='plone.recipe.codeanalysis',
-      version=version,
+      version='2.4',
       description='Static code analysis for buildout-based Python projects.',
       long_description=long_description,
       # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers
