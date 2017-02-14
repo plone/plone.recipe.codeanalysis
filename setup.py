@@ -20,6 +20,8 @@ long_description = '\n\n'.join([
     read('CHANGES.rst'),
 ])
 
+
+
 entry_point = 'plone.recipe.codeanalysis:Recipe'
 entry_points = {
     'zc.buildout': [
