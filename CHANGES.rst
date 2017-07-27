@@ -4,6 +4,9 @@ Change history
 2.3 (unreleased)
 ----------------
 
+- remove ``flake8-commas`` from recommended due to bugs in the plugin.
+  [jensens]
+
 - Install isort script if flake8-isort is installed as well.
   [gforcada]
 
