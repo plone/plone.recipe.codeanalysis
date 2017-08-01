@@ -2,6 +2,8 @@ language: python
 python:
   - 2.7
   - 3.4
+  - 3.5
+  - 3.6
 sudo: false
 cache:
   directories:
@@ -13,12 +15,15 @@ env:
     - CONF=extras.cfg EXTRAS_INSTALLED=true
 matrix:
   allow_failures:
-    - python: 3.4
+    - python:
+      - 3.4
+      - 3.5
+      - 3.6
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
-  - python bootstrap-buildout.py --setuptools-version=18.5
-  - bin/buildout -c $CONF annotate
-  - bin/buildout -N -t 3 -c $CONF
+  - pip install -r requirements.txt
+  - buildout -c $CONF annotate
+  - buildout -N -t 3 -c $CONF
 script:
   - bin/code-analysis
   - bin/test

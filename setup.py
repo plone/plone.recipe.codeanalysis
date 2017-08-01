@@ -70,7 +70,6 @@ setup(name='plone.recipe.codeanalysis',
           'recommended': [
               'flake8-blind-except',
               'flake8-coding',
-              'flake8-commas',
               'flake8-debugger',
               'flake8-deprecated',
               'flake8-isort',
