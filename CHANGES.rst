@@ -7,9 +7,8 @@ Change history
 - Install isort script if flake8-isort is installed as well.
   [gforcada]
 
-- Add two new recommended flake8 plugins:
-  `flake8-commas <https://pypi.python.org/pypi/flake8-commas>`_ and
-  `flake8_strict <https://pypi.python.org/pypi/flake8_strict>`_.
+- Add a new recommended flake8 plugin:
+  `flake8-commas <https://pypi.python.org/pypi/flake8-commas>`_.
   [gforcada]
 
 - Fix Continuous Integration (Travis) by using pip to install setuptools and zc.buildout.
