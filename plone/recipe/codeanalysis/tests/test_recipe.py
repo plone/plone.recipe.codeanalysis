@@ -48,7 +48,7 @@ class RecipeTestCase(unittest.TestCase):
         return Recipe(
             buildout_options,
             name,
-            options
+            options,
         )
 
     def test_minimal_options(self):
@@ -61,11 +61,11 @@ class RecipeTestCase(unittest.TestCase):
     def test_location(self):
         location = '{0}/{1}'.format(
             self.buildout_options['buildout']['parts-directory'],
-            self.name
+            self.name,
         )
         self.assertEqual(
             self.code_analysis.options['location'],
-            location
+            location,
         )
 
     def test_jenkins_path(self):
@@ -80,7 +80,7 @@ class RecipeTestCase(unittest.TestCase):
         )
         location = '{0}/{1}'.format(
             self.buildout_options['buildout']['parts-directory'],
-            self.name
+            self.name,
         )
         self.assertIn(jenkins_path, self.code_analysis.files)
         self.assertIn(location, self.code_analysis.files)
@@ -104,7 +104,7 @@ class RecipeTestCase(unittest.TestCase):
             self.code_analysis.install_pre_commit_hook()
             out.compare('Install Git pre-commit hook.')
         self.assertTrue(
-            os.path.exists('{0}/.git/hooks/pre-commit'.format(self.test_dir))
+            os.path.exists('{0}/.git/hooks/pre-commit'.format(self.test_dir)),
         )
 
     def test_hook_contents(self):
@@ -136,7 +136,7 @@ class RecipeTestCase(unittest.TestCase):
     def test_extensions_default(self):
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', ]
+            ['flake8>=2.0.0', ],
         )
 
     def test_extensions_no_flake8(self):
@@ -149,7 +149,7 @@ class RecipeTestCase(unittest.TestCase):
         self.code_analysis = self._get_recipe()
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', 'pep8-naming', 'flake8-todo']
+            ['flake8>=2.0.0', 'pep8-naming', 'flake8-todo'],
         )
 
     def test_extensions_flake8_empty_plugins(self):
@@ -157,5 +157,5 @@ class RecipeTestCase(unittest.TestCase):
         self.code_analysis = self._get_recipe()
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', ]
+            ['flake8>=2.0.0', ],
         )

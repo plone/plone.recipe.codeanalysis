@@ -40,7 +40,7 @@ class TestCleanLines(CodeAnalysisTestCase):
         filename = 'invalid.py'
         self.given_a_file_in_test_dir(filename, INVALID_CODE)
         self.options['clean-lines-exclude'] = '{0:s}/{1:s}'.format(
-            self.test_dir, filename
+            self.test_dir, filename,
         )
         with OutputCapture():
             self.assertTrue(CleanLines(self.options).run())
@@ -59,7 +59,7 @@ class TestCleanLines(CodeAnalysisTestCase):
         filename = 'invalid.xml'
         self.given_a_file_in_test_dir(filename, INVALID_TABS)
         self.options['clean-lines-exclude'] = '{0:s}/{1:s}'.format(
-            self.test_dir, filename
+            self.test_dir, filename,
         )
         with OutputCapture():
             self.assertTrue(CleanLines(self.options).run())

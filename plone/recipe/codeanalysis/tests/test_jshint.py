@@ -110,7 +110,7 @@ class TestJSHint(CodeAnalysisTestCase):
     def test_jshint_parse_output_should_return_true_empty_xml_output(self):
         file_path = self.given_a_file_in_test_dir(
             'jshint.xml',
-            XML_EMPTY_OUTPUT
+            XML_EMPTY_OUTPUT,
         )
         self.options['jenkins'] = 'True'
         linter = JSHint(self.options)
@@ -145,7 +145,7 @@ class TestJSHint(CodeAnalysisTestCase):
     def test_jshint_parse_output_should_return_false_if_warnings_not_suppressed(self):  # noqa
         file_path = self.given_a_file_in_test_dir(
             'jshint.xml',
-            EXPECTED_WARNINGS_OUTPUT
+            EXPECTED_WARNINGS_OUTPUT,
         )
         self.options['jenkins'] = 'False'
         self.options['jshint-suppress-warnings'] = 'False'

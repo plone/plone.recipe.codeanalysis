@@ -18,14 +18,15 @@ class CheckManifest(Analyser):
     def cmd(self):
         return [
             os.path.join(self.options['bin-directory'], 'check-manifest'),
-            '-v'
+            '-v',
         ]
 
     @property
     def packages(self):
         paths = set()
         items = CheckManifest.split_lines(
-            self.options['check-manifest-directory'])
+            self.options['check-manifest-directory'],
+        )
         for item in items:
             paths.add(os.path.realpath(item))
         if not paths:
@@ -40,14 +41,17 @@ class CheckManifest(Analyser):
                 cmd = self.cmd
                 cmd.append(package)
                 try:
-                    process = subprocess.Popen(cmd,
-                                               stderr=subprocess.STDOUT,
-                                               stdout=output_file)
+                    process = subprocess.Popen(
+                        cmd,
+                        stderr=subprocess.STDOUT,
+                        stdout=output_file,
+                    )
                     process.wait()
                     output_file.flush()
                     output_file.seek(0)
                     status = status and self.parse_output(
-                        output_file, process.returncode)
+                        output_file, process.returncode,
+                    )
                 except OSError:
                     self.log('skip')
         finally:
