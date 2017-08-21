@@ -18,6 +18,9 @@ Change history
 - Run tests only once on CI.
   [gforcada]
 
+- Remove bootstrap-buildout.py as it is no longer used.
+  [gforcada]
+
 2.2 (2016-02-20)
 ----------------
 
