@@ -12,6 +12,8 @@ Change history
   `flake8_strict <https://pypi.python.org/pypi/flake8_strict>`_.
   [gforcada]
 
+- Fix Continuous Integration (Travis) by using pip to install setuptools and zc.buildout.
+  [gforcada]
 
 2.2 (2016-02-20)
 ----------------
