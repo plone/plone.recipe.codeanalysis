@@ -21,9 +21,8 @@ install:
   - buildout -N -t 3 -c $CONF
 script:
   - bin/code-analysis
-  - bin/test
-after_success:
   - bin/createcoverage -d htmlcov
+after_success:
   - coveralls
 after_failure:
   - bin/flake8 --version
