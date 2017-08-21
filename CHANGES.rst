@@ -15,6 +15,9 @@ Change history
 - Fix Continuous Integration (Travis) by using pip to install setuptools and zc.buildout.
   [gforcada]
 
+- Run tests only once on CI.
+  [gforcada]
+
 2.2 (2016-02-20)
 ----------------
 
