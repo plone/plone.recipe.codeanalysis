@@ -154,7 +154,7 @@ class Analyser:
         process_files = subprocess.Popen(
             cmd,
             stderr=subprocess.STDOUT,
-            stdout=subprocess.PIPE
+            stdout=subprocess.PIPE,
         )
         exclude, err = process_files.communicate()
         if isinstance(exclude, bytes):
@@ -176,7 +176,8 @@ class Analyser:
             return TemporaryFile('w+')
 
         return open(
-            os.path.join(self.options['location'], self.output_filename), 'w+')
+            os.path.join(self.options['location'], self.output_filename), 'w+',
+        )
 
     def process_output(self, output):
         """Replace all occurrences of substring ``self.output_regex``
@@ -187,7 +188,7 @@ class Analyser:
         """
         error = self.output_regex
         output = map(
-            lambda x: error.sub(self.output_replace, x), output.splitlines()
+            lambda x: error.sub(self.output_replace, x), output.splitlines(),
         )
         return '\n'.join(output).strip()
 
@@ -198,12 +199,12 @@ class Analyser:
             if self.use_jenkins:
                 self.log(
                     'failure',
-                    'Output file written to {0}.'.format(output_file.name)
+                    'Output file written to {0}.'.format(output_file.name),
                 )
             else:
                 self.log(
                     'failure',
-                    self.process_output(output_file.read())
+                    self.process_output(output_file.read()),
                 )
             return False
         else:
@@ -229,9 +230,11 @@ class Analyser:
                 if not len(command):
                     self.log('ok')
                     return True
-                process = subprocess.Popen(command,
-                                           stderr=subprocess.STDOUT,
-                                           stdout=output_file)
+                process = subprocess.Popen(
+                    command,
+                    stderr=subprocess.STDOUT,
+                    stdout=output_file,
+                )
                 process.wait()
                 output_file.flush()
                 output_file.seek(0)

@@ -67,7 +67,7 @@ class TestI18NDude(CodeAnalysisTestCase):
         filename = 'invalid.pt'
         self.given_a_file_in_test_dir(filename, INVALID_CODE)
         self.options['find-untranslated-exclude'] = '{0:s}/{1:s}'.format(
-            self.test_dir, filename
+            self.test_dir, filename,
         )
         with OutputCapture():
             self.assertTrue(I18NDude(self.options).run())

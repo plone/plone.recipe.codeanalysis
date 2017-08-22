@@ -18,7 +18,7 @@ body {color: purple}
 
 INCORRECT_CSS = """\
 a:link {color: blue}
-{}
+<>
 h3 {color: red}
 bodyy {color: purple}
 """

@@ -21,23 +21,23 @@ class TestCheckManifest(CodeAnalysisTestCase):
 
     def test_check_manifest_cmd(self):
         executable = '{0:s}/check-manifest'.format(
-            self.options['bin-directory']
+            self.options['bin-directory'],
         )
         with OutputCapture():
             self.assertEqual(
                 CheckManifest(self.options).cmd,
-                [executable, '-v', ]
+                [executable, '-v', ],
             )
 
     def test_check_manifest_packages(self):
         with OutputCapture():
             self.assertEqual(
-                CheckManifest(self.options).packages, set([self.test_dir])
+                CheckManifest(self.options).packages, set([self.test_dir]),
             )
 
     def test_check_manifest_should_return_true_on_this_package(self):
         self.options['check-manifest-directory'] = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), '../../../..')
+            os.path.join(os.path.dirname(__file__), '../../../..'),
         )
         with OutputCapture():
             self.assertTrue(CheckManifest(self.options).run())
@@ -49,7 +49,7 @@ class TestCheckManifest(CodeAnalysisTestCase):
 
     def test_check_manifest_should_raise_systemexit_0_in_console_script(self):
         self.options['check-manifest-directory'] = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), '../../../..')
+            os.path.join(os.path.dirname(__file__), '../../../..'),
         )
         with OutputCapture():
             with self.assertRaisesRegexp(SystemExit, '0'):

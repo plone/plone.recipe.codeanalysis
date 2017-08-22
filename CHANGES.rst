@@ -20,6 +20,9 @@ Change history
 - Remove bootstrap-buildout.py as it is no longer used.
   [gforcada]
 
+- Fix code analysis errors.
+  [gforcada]
+
 2.2 (2016-02-20)
 ----------------
 

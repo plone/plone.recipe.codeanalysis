@@ -79,7 +79,7 @@ class TestJavascriptCodeStyleChecker(CodeAnalysisTestCase):
         filename = 'incorrect.js'
         self.given_a_file_in_test_dir(filename, INCORRECT_FILE)
         self.options['jscs-exclude'] = '{0:s}/{1:s}'.format(
-            self.test_dir, filename
+            self.test_dir, filename,
         )
         with OutputCapture():
             self.assertTrue(JSCS(self.options).run())

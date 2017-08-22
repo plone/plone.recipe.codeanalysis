@@ -21,7 +21,7 @@ class CleanLines(Analyser):
                 re.compile(r' $'): 'trailing spaces',
                 re.compile(r'\t'): 'tabs',
             },
-        }
+        },
     ]
     ignore_patterns = (
         re.compile(r'#\snoqa'),
@@ -52,7 +52,7 @@ class CleanLines(Analyser):
                     if match:
                         message = message.format(match.group())
                         errors.append(self.message.format(
-                            file_path, 1 + linenumber, message
+                            file_path, 1 + linenumber, message,
                         ))
 
                 # Fail if succeed was not found
@@ -61,7 +61,7 @@ class CleanLines(Analyser):
                         continue
 
                     errors.append(self.message.format(
-                        file_path, 1 + linenumber, message
+                        file_path, 1 + linenumber, message,
                     ))
 
         return errors
