@@ -23,6 +23,12 @@ Change history
 - Fix code analysis errors.
   [gforcada]
 
+- Fix travis (newer setuptools and zc.buildout needed)
+  [gforcada]
+
+- Check Python 3.5 and 3.6 in travis as well (although they fail currently).
+  [gforcada]
+
 2.2 (2016-02-20)
 ----------------
 
