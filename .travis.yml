@@ -2,6 +2,8 @@ language: python
 python:
   - 2.7
   - 3.4
+  - 3.5
+  - 3.6
 sudo: false
 cache:
   directories:
@@ -15,6 +17,14 @@ env:
 matrix:
   allow_failures:
     - python: 3.4
+      env: CONF=extras.cfg EXTRAS_INSTALLED=true
+    - python: 3.5
+      env: CONF=travis.cfg
+    - python: 3.5
+      env: CONF=extras.cfg EXTRAS_INSTALLED=true
+    - python: 3.6
+      env: CONF=travis.cfg
+    - python: 3.6
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
   - pip install -r requirements.txt
