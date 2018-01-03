@@ -26,7 +26,7 @@ class I18NDude(Analyser):
     def nosummary(self):
         """The report will contain only the errors for each file."""
         return I18NDude.normalize_boolean(
-            self.get_prefixed_option('no-summary')
+            self.get_prefixed_option('no-summary'),
         )
 
 
