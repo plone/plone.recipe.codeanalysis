@@ -29,6 +29,9 @@ Change history
 - Check Python 3.5 and 3.6 in travis as well (although they fail currently).
   [gforcada]
 
+- Add 'find-untranslated-no-summary' option for i18ndude.
+  [tmassman]
+
 2.2 (2016-02-20)
 ----------------
 
