@@ -10,6 +10,10 @@
     :target: https://coveralls.io/r/plone/plone.recipe.codeanalysis
     :alt: Test Coverage
 
+.. image:: https://img.shields.io/pypi/dm/plone.recipe.codeanalysis.svg
+    :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
+    :alt: Downloads
+
 .. image:: https://img.shields.io/pypi/pyversions/plone.recipe.codeanalysis.svg
     :target: https://pypi.python.org/pypi/plone.recipe.codeanalysis/
     :alt: Python Versions
