@@ -1,6 +1,12 @@
 Change history
 ==============
 
+2.4.0 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.3 (2018-01-18)
 ----------------
 
