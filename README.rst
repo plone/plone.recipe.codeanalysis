@@ -430,6 +430,10 @@ system:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
+**find-untranslated-no-summary**
+    The report will contain only the errors for each file.
+    Default is ``False``.
+
 **i18ndude-bin**
     Set the path to a custom version of `i18ndude`_.
     Default is none.

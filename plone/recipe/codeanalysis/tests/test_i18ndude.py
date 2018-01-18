@@ -42,6 +42,22 @@ class TestI18NDude(CodeAnalysisTestCase):
         if os.path.isfile('../../bin/i18ndude'):  # when cwd is parts/test
             self.options['i18ndude-bin'] = '../../bin/i18ndude'
 
+    def test_nosummary_option(self):
+        i18ndude = I18NDude(self.options)
+        self.assertFalse(i18ndude.nosummary)
+        self.options['find-untranslated-no-summary'] = 'True'
+        i18ndude = I18NDude(self.options)
+        self.assertTrue(i18ndude.nosummary)
+
+    @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
+    def test_nosummary_cmd(self):
+        self.given_a_file_in_test_dir('invalid.pt', INVALID_CODE)
+        i18ndude = I18NDude(self.options)
+        self.assertNotIn('--nosummary', i18ndude.cmd)
+        self.options['find-untranslated-no-summary'] = 'True'
+        i18ndude = I18NDude(self.options)
+        self.assertIn('--nosummary', i18ndude.cmd)
+
     @unittest.skipIf(not I18NDUDE_INSTALLED, I18NDUDE_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('invalid.pt', INVALID_CODE)
