@@ -144,7 +144,11 @@ class Recipe(object):
 
         def add_script(cmd, **kwargs):
             zc.buildout.easy_install.scripts(
-                [cmd], eggs, python, directory, **kwargs
+                [cmd],
+                eggs,
+                python,
+                directory,
+                **kwargs
             )
 
         # flake8
