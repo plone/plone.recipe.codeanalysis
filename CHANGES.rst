@@ -1,7 +1,7 @@
 Change history
 ==============
 
-2.3 (unreleased)
+2.3 (2018-01-18)
 ----------------
 
 - Install isort script if flake8-isort is installed as well.
