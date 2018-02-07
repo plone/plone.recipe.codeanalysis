@@ -4,7 +4,7 @@ from lxml.etree import XMLSyntaxError
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 
-import cStringIO
+import io
 import re
 
 
@@ -36,7 +36,7 @@ class ChameleonLint(Analyser):
                 file_content = DOCTYPE_WRAPPER.format(file_content)
                 offset = len(DOCTYPE_WRAPPER.splitlines()) - 1
             try:
-                parse(cStringIO.StringIO(file_content))
+                parse(io.StringIO(file_content))
             except XMLSyntaxError as e:
                 # Line number offset correction.
                 msg = e.message
