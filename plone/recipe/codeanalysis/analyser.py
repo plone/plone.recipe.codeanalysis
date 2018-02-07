@@ -230,6 +230,7 @@ class Analyser:
                 if not len(command):
                     self.log('ok')
                     return True
+                print(command)
                 process = subprocess.Popen(
                     command,
                     stderr=subprocess.STDOUT,

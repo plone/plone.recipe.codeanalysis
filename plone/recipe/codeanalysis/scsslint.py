@@ -5,8 +5,9 @@ from plone.recipe.codeanalysis.analyser import console_factory
 
 class SCSSLint(Analyser):
 
-    name = 'scss-lint'
+    name = 'scsslint'
     title = 'SCSS Lint'
+    output_file_extension = 'xml'
 
     @property
     def cmd(self):
@@ -14,8 +15,8 @@ class SCSSLint(Analyser):
         files = self.find_files('.*\.scss')
 
         if files:
-            cmd.append(self.options.get('scss-lint-bin'))
-            config = self.options.get('scss-lint-config')
+            cmd.append(self.options.get('scsslint-bin'))
+            config = self.options.get('scsslint-config')
             if config:
                 cmd.extend(['--config', config])
             cmd.extend(files)
