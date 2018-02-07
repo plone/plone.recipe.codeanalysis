@@ -4,7 +4,20 @@ Change history
 2.4.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Work around Travis bootstrapping and coverage failures caused by
+  https://github.com/buildout/buildout/issues/434 and
+  https://github.com/pypa/pip/issues/4695, which obscure that the tests
+  are actually green. Mark python3 builds without extras as critical again.
+  [gyst]
+
+- Revive XMLLint and SCSSLint work by janjaapdriessen, add tests and documentation.
+  [gyst]
+  
+- Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
+
+- Add scss-lint for sass files. [janjaapdriessen]
+
+- Add a XML linter for Chameleon template files. [janjaapdriessen]
 
 
 2.3 (2018-01-18)
@@ -90,12 +103,6 @@ Change history
 
 - Fix typo on test that prevented ipdb imports from being found.
   [hvelarde]
-
-- Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
-
-- Add scss-lint for sass files. [janjaapdriessen]
-
-- Add a XML linter for Chameleon template files. [janjaapdriessen]
 
 2.0.2 (2015-09-03)
 ------------------
