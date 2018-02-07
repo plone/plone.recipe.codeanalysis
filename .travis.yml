@@ -33,9 +33,7 @@ install:
   - buildout -N -t 3 -c $CONF
 script:
   - bin/code-analysis
-  - bin/createcoverage -d htmlcov
-after_success:
-  - coveralls
+  - bin/test
 after_failure:
   - bin/flake8 --version
   - bin/csslint --version
