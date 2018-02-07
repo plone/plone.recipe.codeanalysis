@@ -10,6 +10,7 @@ from testfixtures import OutputCapture
 import os
 import unittest
 
+
 # EXTRAS_INSTALLED is an environment variable that we set on
 # Travis CI to indicate all external dependencies are, in fact,
 # installed; we used it as a flag to skip some tests here
