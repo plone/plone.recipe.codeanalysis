@@ -96,6 +96,8 @@ This configuration looks like this:
     # ZPT
     zptlint = True
     zptlint-bin = ${buildout:bin-directory}/zptlint
+    # XML (there is not xmllint-bin, it uses lxml)
+    xmllint = True
     # TS
     tslint = True
     tslint-bin = ${buildout:directory}/bin/tslint
@@ -450,6 +452,15 @@ system:
 **zptlint-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
+
+XMLLint support
+---------------
+
+XMLLint uses ``lxml`` for xml parsing. There is not ``xmllint-bin``.
+Buildout options:
+
+**xmllint**
+    If set to True, XMLLint code analysis is run. Default is ``True``.
 
 
 Known Issues

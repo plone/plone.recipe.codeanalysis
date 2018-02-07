@@ -25,11 +25,11 @@ class XMLLint(Analyser):
             try:
                 parse(file_path)
             except XMLSyntaxError as e:
-                total_errors.append('{}: {}'.format(file_path, e.message))
+                total_errors.append('{}: {}'.format(file_path, e.msg))
 
         with self.open_output_file() as output_file:
             output_file.write('\n'.join(total_errors))
-            self.parse_output(output_file, bool(total_errors))
+            return self.parse_output(output_file, bool(total_errors))
 
 
 def console_script(options):
