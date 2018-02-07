@@ -40,3 +40,5 @@ after_failure:
   - bin/csslint --version
   - bin/jshint --version
   - bin/jscs --version
+  - which scss-lint
+  - scss-lint --version
