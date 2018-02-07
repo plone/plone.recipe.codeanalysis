@@ -15,12 +15,16 @@
 /.Python
 /include
 /lib
+/pip-selfcheck.json
+/pyvenv.cfg
 /.project
 /.pydevproject
 /.mr.developer.cfg
 /src/plone*
 /src/collective*
 *.mo
+*.swp
+*.swo
 docs/Makefile
 docs/make.bat
 docs/doctrees

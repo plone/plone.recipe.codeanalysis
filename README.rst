@@ -96,6 +96,8 @@ This configuration looks like this:
     # ZPT
     zptlint = True
     zptlint-bin = ${buildout:bin-directory}/zptlint
+    # XML (there is not xmllint-bin, it uses lxml)
+    xmllint = True
     # TS
     tslint = True
     tslint-bin = ${buildout:directory}/bin/tslint
@@ -398,6 +400,27 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
+**scsslint**
+    If set to True, `SCSS Lint`_ code analysis is run. Default is ``True``.
+
+**csslint-bin**
+    Set the path to a custom version of SCSS Lint.
+
+    If you have CSS Lint installed in your system and path, you have nothing
+    to do. To install CSS Lint with Buildout, add the following section to
+    your buildout and set csslint-bin to
+    ``{buildout:bin-directory}/csslint``:
+
+.. code-block:: ini
+
+    [rubygems]
+    recipe = rubygemsrecipe
+    gems = bundler scss_lint
+
+**scsslint-configuration**
+
+    SCSS Lint options can be configured, see `SCSS Lint`_ README.
+
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
@@ -451,6 +474,15 @@ system:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
+XMLLint support
+---------------
+
+XMLLint uses ``lxml`` for xml parsing. There is not ``xmllint-bin``.
+Buildout options:
+
+**xmllint**
+    If set to True, XMLLint code analysis is run. Default is ``True``.
+
 
 Known Issues
 ============
@@ -479,6 +511,7 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`CSS Lint documentation`: https://github.com/CSSLint/csslint/wiki/Rules
 .. _`CSS Lint command-line interface`: https://github.com/CSSLint/csslint/wiki/Command-line-interface
 .. _`CSS Lint`: http://csslint.net/
+.. _`SCSS Lint`: https://github.com/brigade/scss-lint
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`Jenkins Violations plugin`: https://wiki.jenkins-ci.org/display/JENKINS/Violations
 .. _`flake8`: https://pypi.python.org/pypi/flake8

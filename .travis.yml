@@ -19,24 +19,20 @@ matrix:
     - python: 3.4
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
     - python: 3.5
-      env: CONF=travis.cfg
-    - python: 3.5
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
-    - python: 3.6
-      env: CONF=travis.cfg
     - python: 3.6
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
   - pip install -r requirements.txt
+  - easy_install -U zc.buildout==2.10.0
   - buildout -c $CONF annotate
   - buildout -N -t 3 -c $CONF
 script:
   - bin/code-analysis
-  - bin/createcoverage -d htmlcov
-after_success:
-  - coveralls
+  - bin/test
 after_failure:
   - bin/flake8 --version
   - bin/csslint --version
   - bin/jshint --version
   - bin/jscs --version
+

@@ -58,6 +58,7 @@ setup(
     install_requires=[
         'check-manifest',
         'flake8>=2.4.0',
+        'lxml',
         'setuptools',
         'zc.buildout',
         'zc.recipe.egg',
