@@ -11,11 +11,12 @@ class SCSSLint(Analyser):
 
     @property
     def cmd(self):
+        linter = self.options.get('scsslint-bin')
         cmd = []
         files = self.find_files('.*\.scss')
 
-        if files:
-            cmd.append(self.options.get('scsslint-bin'))
+        if files and linter:
+            cmd.append(linter)
             config = self.options.get('scsslint-config')
             if config:
                 cmd.extend(['--config', config])

@@ -8,7 +8,13 @@ from tempfile import mkdtemp
 from testfixtures import OutputCapture
 
 import os
+import unittest
 
+# EXTRAS_INSTALLED is an environment variable that we set on
+# Travis CI to indicate all external dependencies are, in fact,
+# installed; we used it as a flag to skip some tests here
+SCSSLINT_INSTALLED = os.environ.get('EXTRAS_INSTALLED', False)
+SCSSLINT_NOT_INSTALLED_MSG = 'scsslint is not installed'
 
 CORRECT_SCSS = """\
 .foo {
@@ -35,17 +41,16 @@ class TestSCSSLint(CodeAnalysisTestCase):
         super(TestSCSSLint, self).setUp()
         if os.path.isfile('../../bin/scss-lint'):  # when cwd is parts/test
             self.options['scsslint-bin'] = '../../bin/scss-lint'
-        else:
-            # F*ck Travis
-            self.skipTest('No scsslint.')
 
         self.given_a_file_in_test_dir('correct.scss', CORRECT_SCSS)
 
+    @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('incorrect.scss', INCORRECT_SCSS)
         with OutputCapture():
             self.assertFalse(SCSSLint(self.options).run())
 
+    @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true_when_config_ignores_error(self):
         config = self.given_a_file_in_test_dir('scss.config',
                                                NOINDENTATION_CONFIG)
@@ -80,6 +85,7 @@ class TestSCSSLint(CodeAnalysisTestCase):
             with self.assertRaisesRegexp(SystemExit, '0'):
                 console_script(self.options)
 
+    @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
         self.given_a_file_in_test_dir('incorrect.scss', INCORRECT_SCSS)
         with OutputCapture():
