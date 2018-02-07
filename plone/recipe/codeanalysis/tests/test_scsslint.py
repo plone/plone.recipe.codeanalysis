@@ -35,6 +35,9 @@ class TestSCSSLint(CodeAnalysisTestCase):
         super(TestSCSSLint, self).setUp()
         if os.path.isfile('../../bin/scss-lint'):  # when cwd is parts/test
             self.options['scsslint-bin'] = '../../bin/scss-lint'
+        else:
+            # F*ck Travis
+            self.skipTest('No scsslint.')
 
         self.given_a_file_in_test_dir('correct.scss', CORRECT_SCSS)
 

@@ -31,7 +31,6 @@ install:
   - easy_install -U zc.buildout==2.10.0
   - buildout -c $CONF annotate
   - buildout -N -t 3 -c $CONF
-  - sudo gem install scss_lint && ln -s `which scss-lint` bin/
 script:
   - bin/code-analysis
   - bin/test
@@ -40,4 +39,4 @@ after_failure:
   - bin/csslint --version
   - bin/jshint --version
   - bin/jscs --version
-  - bin/scss-lint --version
+
