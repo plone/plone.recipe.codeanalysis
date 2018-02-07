@@ -40,9 +40,8 @@ class TestSCSSLint(CodeAnalysisTestCase):
 
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('incorrect.scss', INCORRECT_SCSS)
-        self.assertFalse(SCSSLint(self.options).run())
-        # with OutputCapture():
-        #     self.assertFalse(SCSSLint(self.options).run())
+        with OutputCapture():
+            self.assertFalse(SCSSLint(self.options).run())
 
     def test_analysis_should_return_true_when_config_ignores_error(self):
         config = self.given_a_file_in_test_dir('scss.config',
