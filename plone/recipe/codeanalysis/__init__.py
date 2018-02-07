@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.chameleonlint import ChameleonLint
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
@@ -6,6 +7,8 @@ from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
+from plone.recipe.codeanalysis.scsslint import SCSSLint
+from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 
@@ -18,6 +21,7 @@ import zc.recipe.egg
 
 current_dir = os.path.dirname(__file__)
 all_checks = [
+    ChameleonLint,
     CSSLint,
     CheckManifest,
     CleanLines,
@@ -25,6 +29,8 @@ all_checks = [
     I18NDude,
     JSCS,
     JSHint,
+    SCSSLint,
+    XMLLint,
     ZPTLint,
 ]
 
@@ -63,6 +69,8 @@ class Recipe(object):
         self.options.setdefault('jscs', 'False')
         self.options.setdefault('jscs-bin', 'jscs')
         self.options.setdefault('jscs-exclude', '')
+        # Chameleon Lint
+        self.options.setdefault('chameleon-lint', 'False')
         # CSS Lint
         self.options.setdefault('csslint', 'False')
         self.options.setdefault('csslint-bin', 'csslint')
@@ -80,6 +88,12 @@ class Recipe(object):
         # Find untranslated strings
         self.options.setdefault('find-untranslated', 'False')
         self.options.setdefault('i18ndude-bin', '')
+        # scss-lint
+        self.options.setdefault('scss-lint', 'False')
+        self.options.setdefault('scss-lint-bin', 'scss-lint')
+        self.options.setdefault('scss-lint-config', '')
+        # xmllint
+        self.options.setdefault('xmllint', 'False')
         # zptlint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', '')

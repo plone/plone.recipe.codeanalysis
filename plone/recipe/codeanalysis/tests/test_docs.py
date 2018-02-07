@@ -28,6 +28,7 @@ def setUp(test):  # noqa
 
     # Install second level install_requires dependencies
     zc.buildout.testing.install('pep8', test)
+    zc.buildout.testing.install('lxml', test)
     zc.buildout.testing.install('pyflakes', test)
     zc.buildout.testing.install('mccabe', test)
     zc.buildout.testing.install('zope.exceptions', test)
