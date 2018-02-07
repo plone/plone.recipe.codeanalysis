@@ -30,7 +30,8 @@ class JSHint(Analyser):
     @property
     def suppress_warnings(self):
         return JSHint.normalize_boolean(
-            self.get_prefixed_option('suppress-warnings'))
+            self.get_prefixed_option('suppress-warnings'),
+        )
 
     def parse_output(self, output_file, return_code):
         """Search for error markers as JSHint always return an exit code of 2

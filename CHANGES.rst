@@ -1,17 +1,42 @@
 Change history
 ==============
 
-2.3 (unreleased)
+2.4.0 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.3 (2018-01-18)
 ----------------
 
 - Install isort script if flake8-isort is installed as well.
   [gforcada]
 
-- Add two new recommended flake8 plugins:
-  `flake8-commas <https://pypi.python.org/pypi/flake8-commas>`_ and
-  `flake8_strict <https://pypi.python.org/pypi/flake8_strict>`_.
+- Add a new recommended flake8 plugin:
+  `flake8-commas <https://pypi.python.org/pypi/flake8-commas>`_.
   [gforcada]
 
+- Fix Continuous Integration (Travis) by using pip to install setuptools and zc.buildout.
+  [gforcada]
+
+- Run tests only once on CI.
+  [gforcada]
+
+- Remove bootstrap-buildout.py as it is no longer used.
+  [gforcada]
+
+- Fix code analysis errors.
+  [gforcada]
+
+- Fix travis (newer setuptools and zc.buildout needed)
+  [gforcada]
+
+- Check Python 3.5 and 3.6 in travis as well (although they fail currently).
+  [gforcada]
+
+- Add 'find-untranslated-no-summary' option for i18ndude.
+  [tmassman]
 
 2.2 (2016-02-20)
 ----------------

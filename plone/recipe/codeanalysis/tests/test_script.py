@@ -73,7 +73,7 @@ class TestScripts(unittest.TestCase):
 
         self.assertIn(
             'C101 Coding magic comment not found',
-            output.captured
+            output.captured,
         )
 
     def test_another_directory(self):
@@ -83,11 +83,11 @@ class TestScripts(unittest.TestCase):
             with wrap_sys_argv():
                 sys.argv = [
                     'bin/code-analysis',
-                    folder
+                    folder,
                 ]
                 code_analysis(self.options)
 
         self.assertNotIn(
             'C101 Coding magic comment not found',
-            output.captured
+            output.captured,
         )

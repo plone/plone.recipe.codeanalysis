@@ -77,7 +77,7 @@ class TestFlake8(CodeAnalysisTestCase):
         filename = 'invalid.py'
         self.given_a_file_in_test_dir(filename, INVALID_CODE)
         self.options['flake8-exclude'] = '{0:s}/{1:s}'.format(
-            self.test_dir, filename
+            self.test_dir, filename,
         )
         with OutputCapture():
             self.assertTrue(Flake8(self.options).run())
@@ -102,7 +102,7 @@ class TestFlake8(CodeAnalysisTestCase):
         self.assertEqual(
             len(options),
             # --one=something --two=else --jobs=1 + default options
-            2 + 1 + len(self.flake8_default_options)
+            2 + 1 + len(self.flake8_default_options),
         )
 
     def test_get_flake8_options_ignored(self):
@@ -115,7 +115,7 @@ class TestFlake8(CodeAnalysisTestCase):
         self.assertEqual(
             len(options),
             # --one=something --jobs=1 + default options
-            1 + 1 + len(self.flake8_default_options)
+            1 + 1 + len(self.flake8_default_options),
         )
 
     def test_get_flake8_options_on_deactivated_multiprocessing(self):
@@ -125,5 +125,5 @@ class TestFlake8(CodeAnalysisTestCase):
         options = Flake8(self.options).get_flake8_options()
         self.assertEqual(
             len(options),
-            len(self.flake8_default_options)  # just default options
+            len(self.flake8_default_options),  # just default options
         )

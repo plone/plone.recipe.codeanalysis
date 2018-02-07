@@ -43,11 +43,12 @@ class Recipe(object):
         self.egg = zc.recipe.egg.Scripts(
             buildout,
             self.options['recipe'],
-            options
+            options,
         )
 
         options['location'] = os.path.join(
-            buildout['buildout']['parts-directory'], name)
+            buildout['buildout']['parts-directory'], name,
+        )
 
         # Set required default options
         self.options.setdefault('directory', '.')
@@ -98,7 +99,7 @@ class Recipe(object):
         self.options.setdefault('zptlint-bin', '')
         # Figure out default output file
         plone_jenkins = os.path.join(
-            self.buildout['buildout']['parts-directory'], 'code-analysis'
+            self.buildout['buildout']['parts-directory'], 'code-analysis',
         )
         if not os.path.exists(plone_jenkins):
             os.makedirs(plone_jenkins)
@@ -107,8 +108,8 @@ class Recipe(object):
         self.files = [
             plone_jenkins,
             os.path.join(
-                self.buildout['buildout']['bin-directory'], self.name
-            )
+                self.buildout['buildout']['bin-directory'], self.name,
+            ),
         ]
 
     def install(self):
@@ -157,7 +158,12 @@ class Recipe(object):
 
         def add_script(cmd, **kwargs):
             zc.buildout.easy_install.scripts(
-                [cmd], eggs, python, directory, **kwargs)
+                [cmd],
+                eggs,
+                python,
+                directory,
+                **kwargs
+            )
 
         # flake8
         add_script('flake8')
@@ -166,7 +172,7 @@ class Recipe(object):
         # bin/code-analysis
         add_script(
             (self.name, self.__module__, 'code_analysis'),
-            arguments=arguments
+            arguments=arguments,
         )
         # isort
         if 'flake8-isort' in self.extensions:
@@ -179,16 +185,20 @@ class Recipe(object):
             if not instance.enabled and 'console_script' in klass.__module__:
                 continue
 
-            cmd = ('{0}-{1}'.format(self.name, instance.name),
-                   klass.__module__, 'console_script')
+            cmd = (
+                '{0}-{1}'.format(self.name, instance.name),
+                klass.__module__, 'console_script',
+            )
 
             add_script(cmd, arguments=arguments)
 
     def install_pre_commit_hook(self):
         git_directory = self.buildout['buildout']['directory'] + '/.git'
         if not os.path.exists(git_directory):
-            print('Unable to create git pre-commit hook, '
-                  'this does not seem to be a git repository.')
+            print(
+                'Unable to create git pre-commit hook, '
+                'this does not seem to be a git repository.'
+            )
             return
 
         git_hooks_directory = git_directory + '/hooks'

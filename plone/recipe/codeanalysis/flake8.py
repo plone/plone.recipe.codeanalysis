@@ -20,7 +20,7 @@ class Flake8(Analyser):
         # by flake8 itself or any of its plugins
         no_options = (
             'flake8-extensions',
-            'flake8-filesystem'
+            'flake8-filesystem',
         )
         # get the options
         options = [
@@ -32,7 +32,7 @@ class Flake8(Analyser):
         options = [
             '{0}={1}'.format(
                 o.replace('flake8', '-'),
-                self.options.get(o)
+                self.options.get(o),
             )
             for o in options
         ]
