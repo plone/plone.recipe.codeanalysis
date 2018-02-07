@@ -47,6 +47,8 @@ class TestSCSSLint(CodeAnalysisTestCase):
 
     @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
+        if 'scsslint-bin' not in self.options:
+            self.skipTest(SCSSLINT_NOT_INSTALLED_MSG)
         self.given_a_file_in_test_dir('incorrect.scss', INCORRECT_SCSS)
         with OutputCapture():
             self.assertFalse(SCSSLint(self.options).run())
@@ -88,6 +90,8 @@ class TestSCSSLint(CodeAnalysisTestCase):
 
     @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
+        if 'scsslint-bin' not in self.options:
+            self.skipTest(SCSSLINT_NOT_INSTALLED_MSG)
         self.given_a_file_in_test_dir('incorrect.scss', INCORRECT_SCSS)
         with OutputCapture():
             with self.assertRaisesRegexp(SystemExit, '1'):
