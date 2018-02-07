@@ -28,7 +28,7 @@ matrix:
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
   - pip install -r requirements.txt
-  - easy_install -U zc.buildout
+  - easy_install -U zc.buildout==2.10.0
   - buildout -c $CONF annotate
   - buildout -N -t 3 -c $CONF
 script:
