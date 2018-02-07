@@ -19,11 +19,7 @@ matrix:
     - python: 3.4
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
     - python: 3.5
-      env: CONF=travis.cfg
-    - python: 3.5
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
-    - python: 3.6
-      env: CONF=travis.cfg
     - python: 3.6
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
