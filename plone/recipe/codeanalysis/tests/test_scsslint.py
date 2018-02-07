@@ -33,9 +33,6 @@ class TestSCSSLint(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
         super(TestSCSSLint, self).setUp()
-        self.options.update({
-            'scsslint-bin': 'bin/scss-lint',
-        })
         if os.path.isfile('../../bin/scss-lint'):  # when cwd is parts/test
             self.options['scsslint-bin'] = '../../bin/scss-lint'
 
