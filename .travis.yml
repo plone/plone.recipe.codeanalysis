@@ -27,11 +27,11 @@ matrix:
     - python: 3.6
       env: CONF=extras.cfg EXTRAS_INSTALLED=true
 install:
-  - sudo gem install scss-lint && ln -s `which scss-lint` bin/
   - pip install -r requirements.txt
   - easy_install -U zc.buildout==2.10.0
   - buildout -c $CONF annotate
   - buildout -N -t 3 -c $CONF
+  - sudo gem install scss_lint && ln -s `which scss-lint` bin/
 script:
   - bin/code-analysis
   - bin/test
