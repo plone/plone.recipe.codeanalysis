@@ -14,7 +14,8 @@ i18ndude code analysis is included by default::
     ... """
     ... )
     >>> buildout_output_lower = system(buildout).lower()
-    >>> output = open('/tmp/output.txt', 'w').write(buildout_output_lower)
+    >>> with open('/tmp/output.txt', 'w') as fh:
+    ...   ignore = fh.write(buildout_output_lower)
 
 find-untranslated code analysis script has been created::
 
