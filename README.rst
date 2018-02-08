@@ -507,6 +507,35 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
     $ sudo npm install -g jshint
 
 
+Rubygems woes::
+
+  Installing rubygems.
+  rubygems: Extracting package to /app/plone.recipe.codeanalysis/parts
+  ERROR:  While executing gem ... (Errno::EACCES)
+  Permission denied @ rb_sysopen - /usr/lib/ruby/gems/2.3.0/specifications/default/bundler-1.16.1.gemspec
+  rubygems: b''
+  rubygems: Command failed with exit code 1: ['ruby', 'setup.rb', 'all', '--prefix=/app/plone.recipe.codeanalysis/parts/rubygems', '--no-rdoc', '--no-ri']
+  While:
+  Installing rubygems.
+  Error: System error
+
+Solution: run buildout again. Really.
+  
+Tests fail::
+  
+  Traceback (most recent call last):
+  File "/app/plone.recipe.codeanalysis/plone/recipe/codeanalysis/__init__.py", line 18, in <module>
+  import zc.buildout
+  ModuleNotFoundError: No module named 'zc.buildout'
+
+This is likely caused by https://github.com/pypa/pip/issues/4695.
+Solution: run::
+
+  bin/easy_install -U zc.buildout==2.11.0
+
+before running ``bin/buildout``.
+  
+        
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
 .. _`CSS Lint documentation`: https://github.com/CSSLint/csslint/wiki/Rules
 .. _`CSS Lint command-line interface`: https://github.com/CSSLint/csslint/wiki/Command-line-interface
