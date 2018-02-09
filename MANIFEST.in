@@ -11,7 +11,6 @@ include .coveragerc
 include .csslintrc
 include .jscs.json
 include buildout.cfg
-include extras.cfg
 include travis.cfg
 include .isort.cfg
 include requirements.txt

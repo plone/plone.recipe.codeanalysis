@@ -13,15 +13,15 @@ cache:
 env:
   matrix:
     - CONF=travis.cfg
-    - CONF=extras.cfg EXTRAS_INSTALLED=true
+    - CONF=travis.cfg TEST_ALL=true
 matrix:
   allow_failures:
     - python: 3.4
-      env: CONF=extras.cfg EXTRAS_INSTALLED=true
+      env: CONF=travis.cfg TEST_ALL=true
     - python: 3.5
-      env: CONF=extras.cfg EXTRAS_INSTALLED=true
+      env: CONF=travis.cfg TEST_ALL=true
     - python: 3.6
-      env: CONF=extras.cfg EXTRAS_INSTALLED=true
+      env: CONF=travis.cfg TEST_ALL=true
 install:
   - pip install -r requirements.txt
   - easy_install -U zc.buildout==2.11.0

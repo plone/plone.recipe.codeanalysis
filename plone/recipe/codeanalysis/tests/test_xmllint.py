@@ -10,10 +10,10 @@ import os
 import unittest
 
 
-# EXTRAS_INSTALLED is an environment variable that we set on
+# TEST_ALL is an environment variable that we set on
 # Travis CI to indicate all external dependencies are, in fact,
 # installed; we used it as a flag to skip some tests here
-XMLLINT_INSTALLED = os.environ.get('EXTRAS_INSTALLED', False)
+XMLLINT_INSTALLED = os.environ.get('TEST_ALL', False)
 XMLLINT_NOT_INSTALLED_MSG = 'xmllint is not installed'
 
 VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"

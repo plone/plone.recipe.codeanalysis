@@ -10,10 +10,10 @@ import os
 import unittest
 
 
-# EXTRAS_INSTALLED is an environment variable that we set on
+# TEST_ALL is an environment variable that we set on
 # Travis CI to indicate all external dependencies are, in fact,
 # installed; we used it as a flag to skip some tests here
-ZPTLINT_INSTALLED = os.environ.get('EXTRAS_INSTALLED', False)
+ZPTLINT_INSTALLED = os.environ.get('TEST_ALL', False)
 ZPTLINT_NOT_INSTALLED_MSG = 'zptlint is not installed'
 
 VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
@@ -37,10 +37,6 @@ class TestZPTLint(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
         super(TestZPTLint, self).setUp()
-        self.options.update({
-            'zptlint': 'True',
-            'zptlint-bin': 'bin/zptlint',
-        })
         if os.path.isfile('../../bin/zptlint'):  # when cwd is parts/test
             self.options['zptlint-bin'] = '../../bin/zptlint'
 

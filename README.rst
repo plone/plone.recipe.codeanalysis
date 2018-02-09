@@ -400,27 +400,11 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-**scsslint**
-    If set to True, `SCSS Lint`_ code analysis is run. Default is ``True``.
+**xmllint**
+    If set to True, XMLLint code analysis is run. Default is ``False``.
 
-**csslint-bin**
-    Set the path to a custom version of SCSS Lint.
-
-    If you have CSS Lint installed in your system and path, you have nothing
-    to do. To install CSS Lint with Buildout, add the following section to
-    your buildout and set csslint-bin to
-    ``{buildout:bin-directory}/csslint``:
-
-.. code-block:: ini
-
-    [rubygems]
-    recipe = rubygemsrecipe
-    gems = bundler scss_lint
-
-**scsslint-configuration**
-
-    SCSS Lint options can be configured, see `SCSS Lint`_ README.
-
+    XMLLint uses ``lxml`` for xml parsing. There is no ``xmllint-bin``.
+        
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
@@ -437,12 +421,12 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     Violations plugin). Note that this option does not have any effect on the
     other code analysis scripts. Default is ``False``.
 
-i18ndude and zptlint support
-----------------------------
+i18ndude, scsslint and zptlint support
+--------------------------------------
 
-To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `zptlint`_;
+To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `SCSS Lint`_ nor `zptlint`_;
 in order to use the following options you have to install them on your
-system:
+system, see ``buildout.cfg`` for an example install.
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings.
@@ -461,6 +445,30 @@ system:
     Set the path to a custom version of `i18ndude`_.
     Default is none.
 
+**scsslint**
+    If set to True, `SCSS Lint`_ code analysis is run. Default is ``True``.
+
+**csslint-bin**
+    Set the path to a custom version of SCSS Lint.
+
+    If you have CSS Lint installed in your system and path, you have nothing
+    to do. To install CSS Lint with Buildout, add the following section to
+    your buildout and set csslint-bin to
+    ``{buildout:bin-directory}/csslint``:
+
+.. code-block:: ini
+
+    [rubygems]
+    recipe = rubygemsrecipe
+    gems = scss_lint
+
+    Please note that due to some buildout weirdness this will break buildout
+    on the first buildout run; a second buildout run will complete just fine.
+
+**scsslint-configuration**
+
+    SCSS Lint options can be configured, see `SCSS Lint`_ README.
+
 **zptlint**
     If set to True, zptlint code analysis is run.
     Default is ``False``.
@@ -474,15 +482,10 @@ system:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-XMLLint support
----------------
+Self-tests for these extra linters are disabled by default.
+To run a ``plone.recipe.codeanalysis`` self-test that covers these extra linters::
 
-XMLLint uses ``lxml`` for xml parsing. There is not ``xmllint-bin``.
-Buildout options:
-
-**xmllint**
-    If set to True, XMLLint code analysis is run. Default is ``True``.
-
+  TEST_ALL=true bin/test
 
 Known Issues
 ============
@@ -548,7 +551,7 @@ before running ``bin/buildout``.
 .. _`JSHint`: http://www.jshint.com/
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
-.. _`zptlint`: https://pypi.python.org/pypi/zptlint
+.. _`zptlint`: https://pypi.python.org/pypi/spirit.zptlint
 .. _`i18ndude`: https://pypi.python.org/pypi/i18ndude
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup

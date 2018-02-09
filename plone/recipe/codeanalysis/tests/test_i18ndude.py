@@ -8,10 +8,10 @@ import os
 import unittest
 
 
-# EXTRAS_INSTALLED is an environment variable that we set on
+# TEST_ALL is an environment variable that we set on
 # Travis CI to indicate all external dependencies are, in fact,
 # installed; we used it as a flag to skip some tests here
-I18NDUDE_INSTALLED = os.environ.get('EXTRAS_INSTALLED', False)
+I18NDUDE_INSTALLED = os.environ.get('TEST_ALL', False)
 I18NDUDE_NOT_INSTALLED_MSG = 'i18ndude is not installed'
 
 VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
@@ -35,10 +35,6 @@ class TestI18NDude(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
         super(TestI18NDude, self).setUp()
-        self.options.update({
-            'find-untranslated': 'True',
-            'i18ndude-bin': 'bin/i18ndude',
-        })
         if os.path.isfile('../../bin/i18ndude'):  # when cwd is parts/test
             self.options['i18ndude-bin'] = '../../bin/i18ndude'
 
