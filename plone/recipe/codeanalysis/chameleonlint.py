@@ -20,7 +20,7 @@ class ChameleonLint(Analyser):
 
     name = 'chameleon-lint'
     title = 'Chameleon Lint'
-    extensions = ('pt', 'cpt')
+    extensions = ('pt', 'cpt', 'zpt', )
 
     def cmd(self):
         # Please the ABC by faux-implementing the cmd.

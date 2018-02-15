@@ -96,7 +96,9 @@ This configuration looks like this:
     # ZPT
     zptlint = True
     zptlint-bin = ${buildout:bin-directory}/zptlint
-    # XML (there is not xmllint-bin, it uses lxml)
+    # Chameleon uses XML (there is no chameleon-lint-bin, it uses lxml)
+    chameleon-lint = False
+    # XML (there is no xmllint-bin, it uses lxml)
     xmllint = True
     # TS
     tslint = True
@@ -399,6 +401,18 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
 **csslint-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
+
+**chameleon-lint**
+    If set to True, ChamleonLint code analysis is run. Default is ``False``.
+
+    ChameleonLint uses ``lxml`` for xml parsing. There is no ``chameleon-lint-bin``.
+
+    Note that you will want to activate either ``chameleon-lint`` or ``zpt-lint``,
+    not both, since they will apply to the same set of file extensions (``.pt``,
+    ``.cpt``, ``.zpt``). The ``zpt-lint`` parser uses the actual TAL expression engine
+    to validate templates, and this will generally choke on the Chameleon extensions.
+    The ``chameleon-lint`` parser on the other hand just checks that the template is
+    valid XML basically.
 
 **xmllint**
     If set to True, XMLLint code analysis is run. Default is ``False``.
