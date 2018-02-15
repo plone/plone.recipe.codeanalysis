@@ -235,7 +235,7 @@ The recipe supports the following options:
     hook. Default is ``False``.
 
 **jenkins**
-    If set to True, the flake8, jshint and csslint code analysis steps will
+    If set to True, the code analysis steps will
     write output files that can be processed by the
     `Jenkins Violations plugin`_. Default is ``False``.
 
@@ -469,13 +469,10 @@ system, see ``buildout.cfg`` for an example install.
     Note that you'll typically install the gem ``scss_lint`` (with underscore)
     to get a bin file ``scss-lint`` (with a dash).
 
-**csslint-bin**
-    Set the path to a custom version of SCSS Lint.
-
-    If you have CSS Lint installed in your system and path, you have nothing
-    to do. To install CSS Lint with Buildout, add the following section to
-    your buildout and set csslint-bin to
-    ``{buildout:bin-directory}/csslint``:
+    If you have SCSS Lint installed in your system and path, you have nothing
+    to do. To install SCSS Lint with Buildout, add the following section to
+    your buildout and set scsslint-bin to
+    ``{buildout:bin-directory}/scss-lint``:
 
 .. code-block:: ini
 
@@ -494,6 +491,8 @@ system, see ``buildout.cfg`` for an example install.
     If set to True, zptlint code analysis is run.
     Default is ``False``.
     To use this you will need to set the ``zptlint-bin`` option.
+
+    Note that you will want to use either ``zptlint`` or ``chameleon-lint``, not both.
 
 **zptlint-bin**
     Set the path to a custom version of `zptlint`_.

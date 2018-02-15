@@ -80,12 +80,9 @@ class CleanLines(Analyser):
             for file_path in files:
                 total_errors.extend(self.check(file_path, **check))
 
-        if total_errors:
-            self.log('failure', '\n'.join(total_errors))
-            return False
-
-        self.log('ok')
-        return True
+        with self.open_output_file() as output_file:
+            output_file.write('\n'.join(total_errors))
+            return self.parse_output(output_file, bool(total_errors))
 
 
 def console_script(options):
