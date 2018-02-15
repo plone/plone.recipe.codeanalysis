@@ -7,14 +7,7 @@ from tempfile import mkdtemp
 from testfixtures import OutputCapture
 
 import os
-import unittest
 
-
-# TEST_ALL is an environment variable that we set on
-# Travis CI to indicate all external dependencies are, in fact,
-# installed; we used it as a flag to skip some tests here
-XMLLINT_INSTALLED = os.environ.get('TEST_ALL', False)
-XMLLINT_NOT_INSTALLED_MSG = 'xmllint is not installed'
 
 VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:tal="http://xml.zope.org/namespaces/tal">
@@ -39,18 +32,13 @@ class TestXMLLint(CodeAnalysisTestCase):
         super(TestXMLLint, self).setUp()
         self.options.update({
             'xmllint': 'True',
-            'xmllint-bin': 'bin/xmllint',
         })
-        if os.path.isfile('../../bin/xmllint'):  # when cwd is parts/test
-            self.options['xmllint-bin'] = '../../bin/xmllint'
 
-    @unittest.skipIf(not XMLLINT_INSTALLED, XMLLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('invalid.xml', INVALID_CODE)
         with OutputCapture():
             self.assertFalse(XMLLint(self.options).run())
 
-    @unittest.skipIf(not XMLLINT_INSTALLED, XMLLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_return_true(self):
         self.given_a_file_in_test_dir('valid.xml', VALID_CODE)
         with OutputCapture():
@@ -73,7 +61,6 @@ class TestXMLLint(CodeAnalysisTestCase):
             with self.assertRaisesRegexp(SystemExit, '0'):
                 console_script(self.options)
 
-    @unittest.skipIf(not XMLLINT_INSTALLED, XMLLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_raise_systemexit_1_in_console_script(self):
         self.given_a_file_in_test_dir('invalid.xml', INVALID_CODE)
         with OutputCapture():
