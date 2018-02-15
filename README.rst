@@ -418,7 +418,7 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     If set to True, XMLLint code analysis is run. Default is ``False``.
 
     XMLLint uses ``lxml`` for xml parsing. There is no ``xmllint-bin``.
-        
+
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
@@ -461,6 +461,13 @@ system, see ``buildout.cfg`` for an example install.
 
 **scsslint**
     If set to True, `SCSS Lint`_ code analysis is run. Default is ``True``.
+
+**scsslint-bin**
+    Set the path to a custom version of `SCSS Lint`_.
+    Default is none.
+
+    Note that you'll typically install the gem ``scss_lint`` (with underscore)
+    to get a bin file ``scss-lint`` (with a dash).
 
 **csslint-bin**
     Set the path to a custom version of SCSS Lint.
@@ -537,9 +544,9 @@ Rubygems woes::
   Error: System error
 
 Solution: run buildout again. Really.
-  
+
 Tests fail::
-  
+
   Traceback (most recent call last):
   File "/app/plone.recipe.codeanalysis/plone/recipe/codeanalysis/__init__.py", line 18, in <module>
   import zc.buildout
@@ -551,8 +558,8 @@ Solution: run::
   bin/easy_install -U zc.buildout==2.11.0
 
 before running ``bin/buildout``.
-  
-        
+
+
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
 .. _`CSS Lint documentation`: https://github.com/CSSLint/csslint/wiki/Rules
 .. _`CSS Lint command-line interface`: https://github.com/CSSLint/csslint/wiki/Command-line-interface
