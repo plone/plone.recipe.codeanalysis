@@ -12,7 +12,7 @@ import os
 VALID_CODE = """<html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:tal="http://xml.zope.org/namespaces/tal">
   <body>
-    <p>Hello World! -- with: &nbsp; --</p>
+    <p>Hello World! -- with: &nbsp; and 2 &times; 2 = 4 --</p>
   </body>
 </html>
 """
