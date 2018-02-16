@@ -107,6 +107,9 @@ This configuration looks like this:
     # Conventions
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
+    # dependency-checker
+    dependencychecker = True
+    dependencychecker-bin = ${buildout:directory}/bin/dependencychecker
     # i18n
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
@@ -304,6 +307,12 @@ using the ``flake8-ignore`` option.
     EXPERIMENTAL: For project buildouts where you use several source
     packages you may want to enter multiple directories or use
     ``${buildout:develop}`` to include all your development packages.
+
+**dependencychecker**
+    If set to True, import statement analysis is run. Default is ``False``.
+
+**dependencychecker-bin**
+    Set the path to a custom version of ``dependencychecker``.
 
 **jshint**
     If set to True, jshint code analysis is run. Default is ``False``. Note

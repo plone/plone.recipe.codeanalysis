@@ -3,6 +3,7 @@ from plone.recipe.codeanalysis.chameleonlint import ChameleonLint
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
 from plone.recipe.codeanalysis.csslint import CSSLint
+from plone.recipe.codeanalysis.dependencychecker import DependencyChecker
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.jscs import JSCS
@@ -25,6 +26,7 @@ all_checks = [
     CSSLint,
     CheckManifest,
     CleanLines,
+    DependencyChecker,
     Flake8,
     I18NDude,
     JSCS,
@@ -80,6 +82,9 @@ class Recipe(object):
         # clean lines
         self.options.setdefault('clean-lines', 'False')
         self.options.setdefault('clean-lines-exclude', '')
+        # dependencychecker
+        self.options.setdefault('dependencychecker', 'False')
+        self.options.setdefault('dependencychecker-bin', 'dependencychecker')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')
