@@ -4,20 +4,41 @@ Change history
 2.4.0 (unreleased)
 ------------------
 
-- Work around Travis bootstrapping and coverage failures caused by
-  https://github.com/buildout/buildout/issues/434 and
-  https://github.com/pypa/pip/issues/4695, which obscure that the tests
-  are actually green. Mark python3 builds without extras as critical again.
-  [gyst]
-
-- Revive XMLLint and SCSSLint work by janjaapdriessen, add tests and documentation.
-  [gyst]
-  
 - Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
 
 - Add scss-lint for sass files. [janjaapdriessen]
 
-- Add a XML linter for Chameleon template files. [janjaapdriessen]
+- Add a XML linter for Chameleon template files.
+  [janjaapdriessen]
+
+- Work around Travis bootstrapping and coverage failures caused by
+  https://github.com/buildout/buildout/issues/434 and
+  https://github.com/pypa/pip/issues/4695, which obscure that the tests
+  are actually green. Mark python3 builds without extras as critical again.
+  Note that this requires a double-buildout sequence to get the ``scss-lint``
+  gem properly installed...
+  Fixes #214.
+  [gyst]
+
+- Revive XMLLint, and SCSSLint work by janjaapdriessen.
+  Add tests and documentation.
+  [gyst]
+
+- Replace unmaintained ``zptlint`` upstream by ``spirit.zptlint``.
+  [gyst]
+
+- Add tests for Chameleon Linter and fixup the linter.
+  Fixes #180, sort of; the validation is much less strict than the ZPTLint one.
+  [gyst]
+
+- Pull in ``i18ndude`` python3 fixes and mark EXTRAS tests as critical.
+  [gyst]
+
+- Update ``z3c.dependencychecker`` dependency and provide an analyser for it.
+  No tests for this since it would require a full egg fixture.
+  Fixes #67.
+  [gyst]
+
 
 
 2.3 (2018-01-18)
