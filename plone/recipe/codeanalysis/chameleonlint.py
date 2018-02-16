@@ -6,7 +6,12 @@ from plone.recipe.codeanalysis.analyser import console_factory
 
 import io
 import re
+import sys
 
+
+PY3 = sys.version_info > (3,)
+if PY3:
+    unicode = str
 
 # inspired by p01.checker:
 #   http://pydoc.net/Python/p01.checker/0.5.6/p01.checker.checker/
@@ -39,7 +44,7 @@ class ChameleonLint(Analyser):
                 file_content = DOCTYPE_WRAPPER.format(file_content)
                 offset = len(DOCTYPE_WRAPPER.splitlines()) - 1
             try:
-                parse(io.StringIO(file_content))
+                parse(io.StringIO(unicode(file_content)))
             except XMLSyntaxError as e:
                 # Line number offset correction.
                 msg = e.msg

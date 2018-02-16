@@ -21,6 +21,7 @@
 /.pydevproject
 /.mr.developer.cfg
 /src
+/share
 *.mo
 *.swp
 *.swo
