@@ -181,6 +181,10 @@ csslint::
 
     **/parts/code-analysis/csslint.xml
 
+csslint::
+
+    **/parts/code-analysis/scsslint.xml
+    
 jslint (to read the jshint output)::
 
     **/parts/code-analysis/jshint.xml

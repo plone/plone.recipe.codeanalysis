@@ -78,8 +78,25 @@ class TestSCSSLint(CodeAnalysisTestCase):
         with OutputCapture():
             SCSSLint(self.options).run()
         file_exist = os.path.isfile(os.path.join(parts_dir, 'scsslint.xml'))
-        rmtree(parts_dir)
         self.assertTrue(file_exist)
+        rmtree(parts_dir)
+
+    @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
+    def test_analysis_file_contains_xml_warnings_when_jenkins_is_true(self):
+        self.given_a_file_in_test_dir('incorrect.scss', INCORRECT_SCSS)
+        parts_dir = mkdtemp()
+        self.options['location'] = parts_dir
+        self.options['jenkins'] = 'True'  # need to activate jenkins.
+        with OutputCapture():
+            SCSSLint(self.options).run()
+        with open(os.path.join(parts_dir, 'scsslint.xml')) as fh:
+            warnings = fh.read()
+        self.assertTrue(warnings.startswith('<?xml'))
+        self.assertIn('<error', warnings)
+        self.assertIn('line="2"', warnings)
+        self.assertIn('severity="warning"', warnings)
+        self.assertIn('Line should be indented 2 spaces', warnings)
+        rmtree(parts_dir)
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         with OutputCapture():

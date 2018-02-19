@@ -17,6 +17,9 @@ class SCSSLint(Analyser):
 
         if files and linter:
             cmd.append(linter)
+            if self.use_jenkins:
+                cmd.extend(['--require=scss_lint_reporter_checkstyle',
+                            '--format=Checkstyle'])
             config = self.options.get('scsslint-config')
             if config:
                 cmd.extend(['--config', config])
