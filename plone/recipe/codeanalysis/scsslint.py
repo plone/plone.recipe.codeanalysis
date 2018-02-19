@@ -27,6 +27,21 @@ class SCSSLint(Analyser):
 
         return cmd
 
+    def parse_output(self, output_file, return_code):
+        """Strip anything, like ruby deprecation warnings, from the start of the file
+        if we're in Jenkins mode (i.e. emitting xml)'
+        """
+        if self.use_jenkins:
+            clean_output = []
+            output_file.seek(0)
+            for line in output_file.readlines():
+                if clean_output or line.startswith('<?xml'):
+                    clean_output.append(line)
+            output_file.seek(0)
+            output_file.write('\n'.join(clean_output))
+            output_file.seek(0)
+        return super(SCSSLint, self).parse_output(output_file, return_code)
+
 
 def console_script(options):
     console_factory(SCSSLint, options)

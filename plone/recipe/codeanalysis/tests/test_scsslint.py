@@ -35,6 +35,18 @@ linters:
     enabled: false
 """
 
+RUBY_DEPRECATED_XML = """\
+DEPRECATION WARNING:
+Sass 3.5 will no longer support Ruby 1.9.3.
+Please upgrade to Ruby 2.0.0 or greater as soon as possible.
+
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="1.5.6">
+  <file name="/srv/jenkins-slave/var/jenkins/workspace/branch-OPS-798-jenkins-code-analysis-shouldfail-md.widget/src/md/widget/OPS-798-fail/fail.scss">
+    <error source="" line="2" column="1" length="1" severity="error" message="Syntax Error: Invalid CSS after &quot;#boom#&quot;: expected &quot;{&quot;, was &quot;&quot;" />
+  </file>
+</checkstyle>
+"""  # flake8:noqa
 
 class TestSCSSLint(CodeAnalysisTestCase):
 
@@ -78,8 +90,8 @@ class TestSCSSLint(CodeAnalysisTestCase):
         with OutputCapture():
             SCSSLint(self.options).run()
         file_exist = os.path.isfile(os.path.join(parts_dir, 'scsslint.xml'))
-        self.assertTrue(file_exist)
         rmtree(parts_dir)
+        self.assertTrue(file_exist)
 
     @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_file_contains_xml_warnings_when_jenkins_is_true(self):
@@ -91,12 +103,27 @@ class TestSCSSLint(CodeAnalysisTestCase):
             SCSSLint(self.options).run()
         with open(os.path.join(parts_dir, 'scsslint.xml')) as fh:
             warnings = fh.read()
+        rmtree(parts_dir)
         self.assertTrue(warnings.startswith('<?xml'))
         self.assertIn('<error', warnings)
         self.assertIn('line="2"', warnings)
         self.assertIn('severity="warning"', warnings)
         self.assertIn('Line should be indented 2 spaces', warnings)
+
+    def test_parse_output(self):
+        parts_dir = mkdtemp()
+        self.options['location'] = parts_dir
+        self.options['jenkins'] = 'True'  # need to activate jenkins.
+        with open(os.path.join(parts_dir, 'scsslint.xml'), 'w+') as fh:
+            fh.write(RUBY_DEPRECATED_XML)
+            fh.seek(0)
+            linter = SCSSLint(self.options)
+            with OutputCapture():
+                linter.parse_output(fh, True)
+        with open(os.path.join(parts_dir, 'scsslint.xml'), 'r') as fh:            warnings = fh.read()
         rmtree(parts_dir)
+        self.assertNotIn('DEPRECATION', warnings)
+        self.assertTrue(warnings.startswith('<?xml'))
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         with OutputCapture():
