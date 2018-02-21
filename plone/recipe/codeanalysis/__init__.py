@@ -6,6 +6,7 @@ from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.dependencychecker import DependencyChecker
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
+from plone.recipe.codeanalysis.importchecker import ImportChecker
 from plone.recipe.codeanalysis.jscs import JSCS
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.scsslint import SCSSLint
@@ -27,6 +28,7 @@ all_checks = [
     CheckManifest,
     CleanLines,
     DependencyChecker,
+    ImportChecker,
     Flake8,
     I18NDude,
     JSCS,
@@ -85,6 +87,9 @@ class Recipe(object):
         # dependencychecker
         self.options.setdefault('dependencychecker', 'False')
         self.options.setdefault('dependencychecker-bin', 'dependencychecker')
+        # importchecker
+        self.options.setdefault('importchecker', 'False')
+        self.options.setdefault('importchecker-bin', 'importchecker')
         # Jenkins output
         self.options.setdefault('jenkins', 'False')
         self.options.setdefault('flake8-filesystem', 'False')

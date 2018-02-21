@@ -313,11 +313,19 @@ using the ``flake8-ignore`` option.
     ``${buildout:develop}`` to include all your development packages.
 
 **dependencychecker**
-    If set to True, import statement analysis is run. Default is ``False``.
+    If set to True, import statement analysis is run and verified
+    against declared dependencies in setup.py. Default is ``False``.
 
 **dependencychecker-bin**
     Set the path to a custom version of ``dependencychecker``.
 
+**importchecker**
+    If set to True, import statement analysis is run and unused
+    imports are reported. Default is ``False``.
+
+**importchecker-bin**
+    Set the path to a custom version of ``importchecker``.
+    
 **jshint**
     If set to True, jshint code analysis is run. Default is ``False``. Note
     that plone.recipe.codeanalysis requires jshint >= 1.0.

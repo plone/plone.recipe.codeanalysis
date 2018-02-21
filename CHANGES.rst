@@ -39,6 +39,10 @@ Change history
   Fixes #67.
   [gyst]
 
+- Add ``importchecker`` linter.
+  Fixes #67.
+  [gyst]
+  
 
 
 2.3 (2018-01-18)

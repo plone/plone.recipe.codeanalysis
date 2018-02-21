@@ -5,7 +5,6 @@ import doctest
 import os
 import unittest
 import zc.buildout.testing
-import zc.buildout.tests
 
 
 optionflags = (
