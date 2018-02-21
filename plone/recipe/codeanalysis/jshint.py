@@ -23,7 +23,7 @@ class JSHint(Analyser):
         if files:
             cmd.extend([self.get_prefixed_option('bin'), '--verbose'])
             if self.use_jenkins:
-                cmd.append('--reporter=jslint')
+                cmd.append('--reporter=checkstyle')
             cmd.extend(files)
         return cmd
 
