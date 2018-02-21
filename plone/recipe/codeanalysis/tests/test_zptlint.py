@@ -60,6 +60,7 @@ class TestZPTLint(CodeAnalysisTestCase):
         with OutputCapture():
             self.assertTrue(ZPTLint(self.options).run())
 
+    @unittest.skipIf(not ZPTLINT_INSTALLED, ZPTLINT_NOT_INSTALLED_MSG)
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
         parts_dir = mkdtemp()
@@ -71,6 +72,7 @@ class TestZPTLint(CodeAnalysisTestCase):
         rmtree(parts_dir)
         self.assertTrue(file_exists)
 
+    @unittest.skipIf(not ZPTLINT_INSTALLED, ZPTLINT_NOT_INSTALLED_MSG)
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         self.given_a_file_in_test_dir('valid.pt', VALID_CODE)
         with OutputCapture():
