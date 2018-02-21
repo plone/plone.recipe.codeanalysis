@@ -38,6 +38,7 @@ class SCSSLint(Analyser):
                 if clean_output or line.startswith('<?xml'):
                     clean_output.append(line)
             output_file.seek(0)
+            output_file.truncate()  # or we'll have dangling "old" lines
             output_file.write('\n'.join(clean_output))
             output_file.seek(0)
         return super(SCSSLint, self).parse_output(output_file, return_code)

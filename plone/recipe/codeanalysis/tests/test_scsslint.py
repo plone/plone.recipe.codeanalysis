@@ -120,10 +120,14 @@ class TestSCSSLint(CodeAnalysisTestCase):
             linter = SCSSLint(self.options)
             with OutputCapture():
                 linter.parse_output(fh, True)
-        with open(os.path.join(parts_dir, 'scsslint.xml'), 'r') as fh:            warnings = fh.read()
+        with open(os.path.join(parts_dir, 'scsslint.xml'), 'r') as fh:
+            warnings = fh.read()
         rmtree(parts_dir)
         self.assertNotIn('DEPRECATION', warnings)
         self.assertTrue(warnings.startswith('<?xml'))
+        # make sure we have no dangling repeated lines
+        linecount = len([x for x in warnings.split('\n') if x])
+        self.assertEqual(6, linecount)
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
         with OutputCapture():
