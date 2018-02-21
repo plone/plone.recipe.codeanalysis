@@ -467,6 +467,7 @@ system, see ``buildout.cfg`` for an example install.
 **find-untranslated-no-summary**
     The report will contain only the errors for each file.
     Default is ``False``.
+    However, summaries will also be suppressed when ``jenkins`` is set to ``True.
 
 **i18ndude-bin**
     Set the path to a custom version of `i18ndude`_.

@@ -19,7 +19,7 @@ class I18NDude(Analyser):
         if files:
             cmd.append(self.options.get('i18ndude-bin') or '')
             cmd.append('find-untranslated')
-            if self.nosummary:
+            if self.nosummary or self.use_jenkins:
                 cmd.append('--nosummary')
             cmd.extend(files)
 
