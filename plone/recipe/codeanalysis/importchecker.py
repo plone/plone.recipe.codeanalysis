@@ -12,13 +12,10 @@ class ImportChecker(Analyser):
     @property
     def cmd(self):
         cmd = []
-        files = []
-        for extension in self.extensions:
-            files.extend(self.find_files('.*\.{0}'.format(extension)))
-
-        if files:
-            cmd.append(self.get_prefixed_option('bin'))
-            cmd.extend(files)
+        _cmd = self.get_prefixed_option('bin') or ''
+        _dir = self.options['directory']
+        if _cmd and _dir:
+            cmd = [_cmd, _dir]
         return cmd
 
     def parse_output(self, output_file, return_code):
