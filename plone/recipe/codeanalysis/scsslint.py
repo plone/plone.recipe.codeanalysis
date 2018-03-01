@@ -15,7 +15,7 @@ class SCSSLint(Analyser):
         cmd = []
         files = self.find_files('.*\.scss')
 
-        if files and linter:
+        if (files or self.use_jenkins) and linter:
             cmd.append(linter)
             if self.use_jenkins:
                 cmd.extend(['--require=scss_lint_reporter_checkstyle',

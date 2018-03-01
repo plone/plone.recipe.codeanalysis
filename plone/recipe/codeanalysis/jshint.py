@@ -20,7 +20,7 @@ class JSHint(Analyser):
     def cmd(self):
         cmd = []
         files = self.find_files('.*\.js')
-        if files:
+        if files or self.use_jenkins:
             cmd.extend([self.get_prefixed_option('bin'), '--verbose'])
             if self.use_jenkins:
                 cmd.append('--reporter=jslint')
