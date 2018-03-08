@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import os.path
 from plone.recipe.codeanalysis.jshint import console_script
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp
 from testfixtures import OutputCapture
+
+import os.path
 
 
 INCORRECT_FILE = """var number_ten= =10;
