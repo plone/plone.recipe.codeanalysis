@@ -100,6 +100,9 @@ This configuration looks like this:
     chameleon-lint = False
     # XML (there is no xmllint-bin, it uses lxml)
     xmllint = True
+    # scss-lint
+    scsslint = True
+    scsslint-bin = ${buildout:bin-directory}/scss-lint
     # TS
     tslint = True
     tslint-bin = ${buildout:directory}/bin/tslint

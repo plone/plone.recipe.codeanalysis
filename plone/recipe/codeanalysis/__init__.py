@@ -99,9 +99,9 @@ class Recipe(object):
         self.options.setdefault('find-untranslated', 'False')
         self.options.setdefault('i18ndude-bin', '')
         # scss-lint
-        self.options.setdefault('scss-lint', 'False')
-        self.options.setdefault('scss-lint-bin', 'scss-lint')
-        self.options.setdefault('scss-lint-config', '')
+        self.options.setdefault('scsslint', 'False')
+        self.options.setdefault('scsslint-bin', 'scss-lint')
+        self.options.setdefault('scsslint-config', '')
         # xmllint
         self.options.setdefault('xmllint', 'False')
         # zptlint
