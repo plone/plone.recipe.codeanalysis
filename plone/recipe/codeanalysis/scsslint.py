@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 
@@ -20,6 +21,15 @@ class SCSSLint(Analyser):
             if self.use_jenkins:
                 cmd.extend(['--require=scss_lint_reporter_checkstyle',
                             '--format=Checkstyle'])
+                # Jenkins needs to always find a valid checkstyle xml
+                # even in the absence of scss files. But scss-lint requires
+                # files to check. So give it one.
+                if files == [] and 'location' in self.options:
+                    fakeit = os.path.join(self.options.get('location'),
+                                          'fakeit.scss')
+                    fh = open(fakeit, 'w+t')
+                    fh.write('.foo { padding: 1px; }\n')
+                    files.append(fakeit)
             config = self.options.get('scsslint-config')
             if config:
                 cmd.extend(['--config', config])
