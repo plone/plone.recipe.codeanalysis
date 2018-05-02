@@ -96,6 +96,13 @@ This configuration looks like this:
     # ZPT
     zptlint = True
     zptlint-bin = ${buildout:bin-directory}/zptlint
+    # Chameleon uses XML (there is no chameleon-lint-bin, it uses lxml)
+    chameleon-lint = False
+    # XML (there is no xmllint-bin, it uses lxml)
+    xmllint = True
+    # scss-lint
+    scsslint = True
+    scsslint-bin = ${buildout:bin-directory}/scss-lint
     # TS
     tslint = True
     tslint-bin = ${buildout:directory}/bin/tslint
@@ -103,6 +110,9 @@ This configuration looks like this:
     # Conventions
     clean-lines = True
     clean-lines-exclude = ${:jscs-exclude}
+    # dependency-checker
+    dependencychecker = True
+    dependencychecker-bin = ${buildout:directory}/bin/dependencychecker
     # i18n
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
@@ -174,6 +184,10 @@ csslint::
 
     **/parts/code-analysis/csslint.xml
 
+csslint::
+
+    **/parts/code-analysis/scsslint.xml
+    
 jslint (to read the jshint output)::
 
     **/parts/code-analysis/jshint.xml
@@ -231,7 +245,7 @@ The recipe supports the following options:
     hook. Default is ``False``.
 
 **jenkins**
-    If set to True, the flake8, jshint and csslint code analysis steps will
+    If set to True, the code analysis steps will
     write output files that can be processed by the
     `Jenkins Violations plugin`_. Default is ``False``.
 
@@ -301,6 +315,20 @@ using the ``flake8-ignore`` option.
     packages you may want to enter multiple directories or use
     ``${buildout:develop}`` to include all your development packages.
 
+**dependencychecker**
+    If set to True, import statement analysis is run and verified
+    against declared dependencies in setup.py. Default is ``False``.
+
+**dependencychecker-bin**
+    Set the path to a custom version of ``dependencychecker``.
+
+**importchecker**
+    If set to True, import statement analysis is run and unused
+    imports are reported. Default is ``False``.
+
+**importchecker-bin**
+    Set the path to a custom version of ``importchecker``.
+    
 **jshint**
     If set to True, jshint code analysis is run. Default is ``False``. Note
     that plone.recipe.codeanalysis requires jshint >= 1.0.
@@ -398,6 +426,23 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
+**chameleon-lint**
+    If set to True, ChamleonLint code analysis is run. Default is ``False``.
+
+    ChameleonLint uses ``lxml`` for xml parsing. There is no ``chameleon-lint-bin``.
+
+    Note that you will want to activate either ``chameleon-lint`` or ``zpt-lint``,
+    not both, since they will apply to the same set of file extensions (``.pt``,
+    ``.cpt``, ``.zpt``). The ``zpt-lint`` parser uses the actual TAL expression engine
+    to validate templates, and this will generally choke on the Chameleon extensions.
+    The ``chameleon-lint`` parser on the other hand just checks that the template is
+    valid XML basically.
+
+**xmllint**
+    If set to True, XMLLint code analysis is run. Default is ``False``.
+
+    XMLLint uses ``lxml`` for xml parsing. There is no ``xmllint-bin``.
+
 **clean-lines**
     If set to True, **any file** containing trailing spaces or tabs anywhere
     on the lines will cause a warning. Default is ``False``.
@@ -414,12 +459,12 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     Violations plugin). Note that this option does not have any effect on the
     other code analysis scripts. Default is ``False``.
 
-i18ndude and zptlint support
-----------------------------
+i18ndude, scsslint and zptlint support
+--------------------------------------
 
-To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `zptlint`_;
+To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `SCSS Lint`_ nor `zptlint`_;
 in order to use the following options you have to install them on your
-system:
+system, see ``buildout.cfg`` for an example install.
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings.
@@ -433,15 +478,46 @@ system:
 **find-untranslated-no-summary**
     The report will contain only the errors for each file.
     Default is ``False``.
+    However, summaries will also be suppressed when ``jenkins`` is set to ``True.
 
 **i18ndude-bin**
     Set the path to a custom version of `i18ndude`_.
     Default is none.
 
+**scsslint**
+    If set to True, `SCSS Lint`_ code analysis is run. Default is ``True``.
+
+**scsslint-bin**
+    Set the path to a custom version of `SCSS Lint`_.
+    Default is none.
+
+    Note that you'll typically install the gem ``scss_lint`` (with underscore)
+    to get a bin file ``scss-lint`` (with a dash).
+
+    If you have SCSS Lint installed in your system and path, you have nothing
+    to do. To install SCSS Lint with Buildout, add the following section to
+    your buildout and set scsslint-bin to
+    ``{buildout:bin-directory}/scss-lint``:
+
+.. code-block:: ini
+
+    [rubygems]
+    recipe = rubygemsrecipe
+    gems = scss_lint
+
+    Please note that due to some buildout weirdness this will break buildout
+    on the first buildout run; a second buildout run will complete just fine.
+
+**scsslint-configuration**
+
+    SCSS Lint options can be configured, see `SCSS Lint`_ README.
+
 **zptlint**
     If set to True, zptlint code analysis is run.
     Default is ``False``.
     To use this you will need to set the ``zptlint-bin`` option.
+
+    Note that you will want to use either ``zptlint`` or ``chameleon-lint``, not both.
 
 **zptlint-bin**
     Set the path to a custom version of `zptlint`_.
@@ -451,6 +527,10 @@ system:
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
+Self-tests for these extra linters are disabled by default.
+To run a ``plone.recipe.codeanalysis`` self-test that covers these extra linters::
+
+  TEST_ALL=true bin/test
 
 Known Issues
 ============
@@ -475,10 +555,40 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
     $ sudo npm install -g jshint
 
 
+Rubygems woes::
+
+  Installing rubygems.
+  rubygems: Extracting package to /app/plone.recipe.codeanalysis/parts
+  ERROR:  While executing gem ... (Errno::EACCES)
+  Permission denied @ rb_sysopen - /usr/lib/ruby/gems/2.3.0/specifications/default/bundler-1.16.1.gemspec
+  rubygems: b''
+  rubygems: Command failed with exit code 1: ['ruby', 'setup.rb', 'all', '--prefix=/app/plone.recipe.codeanalysis/parts/rubygems', '--no-rdoc', '--no-ri']
+  While:
+  Installing rubygems.
+  Error: System error
+
+Solution: run buildout again. Really.
+
+Tests fail::
+
+  Traceback (most recent call last):
+  File "/app/plone.recipe.codeanalysis/plone/recipe/codeanalysis/__init__.py", line 18, in <module>
+  import zc.buildout
+  ModuleNotFoundError: No module named 'zc.buildout'
+
+This is likely caused by https://github.com/pypa/pip/issues/4695.
+Solution: run::
+
+  bin/easy_install -U zc.buildout==2.11.0
+
+before running ``bin/buildout``.
+
+
 .. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
 .. _`CSS Lint documentation`: https://github.com/CSSLint/csslint/wiki/Rules
 .. _`CSS Lint command-line interface`: https://github.com/CSSLint/csslint/wiki/Command-line-interface
 .. _`CSS Lint`: http://csslint.net/
+.. _`SCSS Lint`: https://github.com/brigade/scss-lint
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`Jenkins Violations plugin`: https://wiki.jenkins-ci.org/display/JENKINS/Violations
 .. _`flake8`: https://pypi.python.org/pypi/flake8
@@ -486,7 +596,7 @@ Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
 .. _`JSHint`: http://www.jshint.com/
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
-.. _`zptlint`: https://pypi.python.org/pypi/zptlint
+.. _`zptlint`: https://pypi.python.org/pypi/spirit.zptlint
 .. _`i18ndude`: https://pypi.python.org/pypi/i18ndude
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup

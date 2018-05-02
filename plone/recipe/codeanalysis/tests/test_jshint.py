@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from os.path import isfile as path_isfile
-from os.path import join as path_join
 from plone.recipe.codeanalysis.jshint import console_script
 from plone.recipe.codeanalysis.jshint import JSHint
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp
 from testfixtures import OutputCapture
+
+import os.path
 
 
 INCORRECT_FILE = """var number_ten= =10;
@@ -72,9 +72,8 @@ class TestJSHint(CodeAnalysisTestCase):
             'jenkins': 'False',
             'directory': self.test_dir,
         })
-        if path_isfile('../../bin/jshint'):  # when cwd is parts/test
+        if os.path.isfile('../../bin/jshint'):  # when cwd is parts/test
             self.options['jshint-bin'] = '../../bin/jshint'
-        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
 
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('incorrect.js', INCORRECT_FILE)
@@ -87,6 +86,7 @@ class TestJSHint(CodeAnalysisTestCase):
             self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_should_return_true_when_oserror(self):
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
         # The options are fake, so the function should raise an OSError
         # but return True.
         self.options['jshint-bin'] = 'FAKE_BIN'
@@ -94,18 +94,38 @@ class TestJSHint(CodeAnalysisTestCase):
             self.assertTrue(JSHint(self.options).run())
 
     def test_analysis_should_return_true(self):
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
         with OutputCapture():
             self.assertTrue(JSHint(self.options).run())
 
-    def test_analysis_file_should_exist_when_jenkins_is_true(self):
+    def test_analysis_file_xml_when_jenkins(self):
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
         location_tmp_dir = mkdtemp()
         self.options['location'] = location_tmp_dir
         self.options['jenkins'] = 'True'  # need to activate jenkins.
         with OutputCapture():
-            JSHint(self.options).run()
-        file_exist = path_isfile(path_join(location_tmp_dir, 'jshint.xml'))
+            returnvalue = JSHint(self.options).run()
+        with open(os.path.join(location_tmp_dir, 'jshint.xml')) as fh:
+            warnings = fh.read()
         rmtree(location_tmp_dir)
-        self.assertTrue(file_exist)
+        self.assertTrue(returnvalue)
+        self.assertTrue(warnings.startswith('<?xml'))
+        self.assertTrue('<jslint>' in warnings)
+        self.assertFalse('<issue ' in warnings)
+
+    def test_analysis_file_xml_when_jenkins_without_files(self):
+        location_tmp_dir = mkdtemp()
+        self.options['location'] = location_tmp_dir
+        self.options['jenkins'] = 'True'  # need to activate jenkins.
+        with OutputCapture():
+            returnvalue = JSHint(self.options).run()
+        with open(os.path.join(location_tmp_dir, 'jshint.xml')) as fh:
+            warnings = fh.read()
+        rmtree(location_tmp_dir)
+        self.assertTrue(returnvalue)
+        self.assertTrue(warnings.startswith('<?xml'))
+        self.assertTrue('<jslint>' in warnings)
+        self.assertFalse('<issue ' in warnings)
 
     def test_jshint_parse_output_should_return_true_empty_xml_output(self):
         file_path = self.given_a_file_in_test_dir(
@@ -155,6 +175,7 @@ class TestJSHint(CodeAnalysisTestCase):
             self.assertFalse(linter.parse_output(open(file_path), 1))
 
     def test_analysis_should_raise_systemexit_0_in_console_script(self):
+        self.given_a_file_in_test_dir('correct.js', CORRECT_FILE)
         with OutputCapture():
             with self.assertRaisesRegexp(SystemExit, '0'):
                 console_script(self.options)

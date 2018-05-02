@@ -43,7 +43,7 @@ class TestCheckManifest(CodeAnalysisTestCase):
             self.assertTrue(CheckManifest(self.options).run())
 
     def test_check_manifest_should_return_true_if_no_check_manifest_installed(self):  # noqa
-        self.options['bin-directory'] = ''
+        self.options['bin-directory'] = 'FAKE_BIN'
         with OutputCapture():
             self.assertTrue(CheckManifest(self.options).run())
 

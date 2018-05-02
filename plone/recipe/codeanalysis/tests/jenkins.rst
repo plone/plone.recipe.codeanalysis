@@ -31,6 +31,7 @@ When running the code-analysis script::
     >>> f = open("bla.txt", "w")
     >>> subprocess.call(['bin/code-analysis'], stdout=f)
     0
+    >>> f.close()
 
 a flake8 log file is written to the 'code-analysis' directory::
 
