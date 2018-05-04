@@ -43,7 +43,7 @@ Change history
   Fixes #67.
   [gyst]
   
-
+- Post-merge cleanup of source dependencies for the python3 work.
 
 2.3 (2018-01-18)
 ----------------
