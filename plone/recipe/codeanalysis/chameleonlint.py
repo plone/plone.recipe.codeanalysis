@@ -16,10 +16,10 @@ if PY3:
 # inspired by p01.checker:
 #   http://pydoc.net/Python/p01.checker/0.5.6/p01.checker.checker/
 
-DOCTYPE_WRAPPER = '''\
+DOCTYPE_WRAPPER = """\
 <!DOCTYPE html [<!ENTITY nbsp 'no-break space'>
                 <!ENTITY times 'multiplication sign'>]>
-{}'''
+{}"""
 
 
 class ChameleonLint(Analyser):
