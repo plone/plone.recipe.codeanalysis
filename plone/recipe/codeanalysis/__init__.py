@@ -107,6 +107,18 @@ class Recipe(object):
         # zptlint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', '')
+
+        # support user-local overrides from e.g. ~/.buildout/default.cfg
+        overrides = self.options.get('overrides')
+        overrides_allowed = self.options.get('overrides-allowed', '')
+        # except when hard-excluded at the project level buildout.cfg
+        if overrides and overrides not in ('False', 'false', '0', 'None'):
+            override_options = self.buildout.get(overrides)
+            if override_options:
+                for (key, value) in override_options.items():
+                    if overrides_allowed == '' or key in overrides_allowed:
+                        self.options[key] = value
+
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis',

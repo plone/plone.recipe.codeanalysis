@@ -146,6 +146,58 @@ These are the current extras installed:
 - flake8-todo: warns if there are ``TODO``, ``XXX`` found on the code
 - flake8-commas: warns if the last element on a method call, list or dictionary does not end with a comma
 
+Configuration ``overrides``
+===========================
+
+The options documented above configure code-analysis at the project level.
+Sometimes developers may want to deviate from the project-level settings locally,
+for example to make the git precommit hook block on violations, even when
+the project-wide setting is to not abort the commit on violations.
+
+As a developer you can configure overrides in your
+``.buildout/default.cfg`` configuration::
+
+  [code-analysis]
+  overrides = code-analysis-overrides
+
+  [code-analysis-overrides]
+  return-status-codes = True
+
+This is especially handy to let users choose themselves whether they want
+a pre-commit-hook or a pre-push-hook (forthcoming), and whether they want
+to block on violations (so they don't have to amend commits) or whether they
+want non-blocking precommit checks (so they can have invalid files in their
+working tree outside the commited set of files). YMMV.
+
+For projects that really really want to NOT offer this option to their
+developers, there's the simple solution of blocking overrides in the
+project ``buildout.cfg``::
+
+  [code-analysis]
+  overrides = False
+
+It's recommended to actually talk to your fellow devs about which
+overrides are not acceptable, instead of taking this nuclear option.
+
+A more suble way of controlling what local reconfigurations a dev is
+allowed to perform is to configure the ``overrides-allowed`` whitelist
+at the project level::
+
+  [code-analysis]
+  overrides-allowed = pre-commit-hook
+                      return-status-codes
+                      multiprocessing
+
+As a result, only the override options listed here will be taken from
+the developer's local configuration, all other options will be taken
+from the project buildout.cfg. Listing an empty ``overrides-allowed``
+option allows all options to be overridden.
+
+If, as a dev, you're working on multiple projects and want to configure
+your local env differently per project, you'll have to talk the project
+maintainers into configuring the ``overrides`` part name differently
+per project.
+
 Jenkins Installation
 ====================
 
@@ -187,7 +239,7 @@ csslint::
 csslint::
 
     **/parts/code-analysis/scsslint.xml
-    
+
 jslint (to read the jshint output)::
 
     **/parts/code-analysis/jshint.xml
@@ -328,7 +380,7 @@ using the ``flake8-ignore`` option.
 
 **importchecker-bin**
     Set the path to a custom version of ``importchecker``.
-    
+
 **jshint**
     If set to True, jshint code analysis is run. Default is ``False``. Note
     that plone.recipe.codeanalysis requires jshint >= 1.0.
