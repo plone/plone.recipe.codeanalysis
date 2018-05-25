@@ -80,6 +80,7 @@ This configuration looks like this:
     jenkins = False
     directory =
         ${buildout:directory}/src
+    return-status-codes = True
     pre-commit-hook = True
     # JS
     jshint = True
@@ -116,7 +117,6 @@ This configuration looks like this:
     # i18n
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
-    return-status-codes = True
     flake8-exclude = bootstrap.py,bootstrap-buildout.py,docs,*.egg,*.cpy,*.vpy,overrides
 
     [node]
@@ -146,28 +146,96 @@ These are the current extras installed:
 - flake8-todo: warns if there are ``TODO``, ``XXX`` found on the code
 - flake8-commas: warns if the last element on a method call, list or dictionary does not end with a comma
 
+
+Git hooks
+=========
+
+- pre-commit-hook
+- pre-commit-return-status-codes
+- pre-push-hook
+- pre-push-return-status-codes
+
+You can choose to activate git ``pre-commit-hook`` and/or ``pre-push-hook`` hooks.
+You can make these hooks blocking (aborting) by setting ``return-status-codes``
+to 'True'. You can tune the return code behavior differently from the default
+for each hook, using ``pre-commit-return-status-codes`` and
+``pre-push-return-status-codes``.
+
+What works best for you is a matter of taste, and code base.
+
+If you want to ensure that your working area is always clean on each commit,
+and you'd like to abort the commit if anything untowards is found, you can
+configure::
+
+  [code-analysis]
+  return-status-codes = True
+  pre-commit-hook = True
+
+If you're working in a large code base, which takes a long time to
+parse, and your workflow is to use many small commits, you may be
+annoyed by the pre-commit delay.  Or maybe you like to check in parts
+of your work, while having other files hanging around in your working
+tree which aren't cleaned up yet.
+
+In that case you may want to disable pre-commit checks, and have a blocking
+pre-push check instead::
+
+  [code-analysis]
+  return-status-codes = True
+  pre-commit-hook = False
+  pre-push-hook = True
+
+Or maybe you want ``code-analysis`` by default to run unblocking, to
+please Jenkins, but still want to have blocking checks on both pre-commit
+and pre-push? Can do::
+
+  [code-analysis]
+  return-status-codes = False
+  pre-commit-hook = True
+  pre-commit-return-status-codes = True
+  pre-push-hook = True
+  pre-push-return-status-codes = True
+
+Yeah I know, it's a contrived example, but it illustrates the relevant options.
+
 Configuration ``overrides``
 ===========================
 
 The options documented above configure code-analysis at the project level.
 Sometimes developers may want to deviate from the project-level settings locally,
-for example to make the git precommit hook block on violations, even when
+for example to make the git pre-commit hook block on violations, even when
 the project-wide setting is to not abort the commit on violations.
 
-As a developer you can configure overrides in your
-``.buildout/default.cfg`` configuration::
+If for example the project ``buildout.cfg`` reads::
+
+  [code-analysis]
+  overrides = code-analysis-overrides
+  return-status-codes = False
+  pre-commit-hook = True
+
+But as a developer I'd rather have a blocking pre-push instead of a nonblocking
+pre-commit, I can configure overrides in my
+``.buildout/default.cfg`` configuration as follows::
+
+  [code-analysis-overrides]
+  return-status-codes = True
+  pre-commit-hook = False
+  pre-push-hook = True
+
+This is especially handy to let users choose themselves whether they want
+a pre-commit-hook or a pre-push-hook, and whether they want
+to block on violations (so they don't have to amend commits) or whether they
+want non-blocking checks (so they can have invalid files in their
+working tree outside the commited c.q. pushed set of files). YMMV.
+
+Note that if a project does not configure ``overrides`` at the project
+level, you can as a dev still configure that in ``.buildout/default.cfg``::
 
   [code-analysis]
   overrides = code-analysis-overrides
 
   [code-analysis-overrides]
   return-status-codes = True
-
-This is especially handy to let users choose themselves whether they want
-a pre-commit-hook or a pre-push-hook (forthcoming), and whether they want
-to block on violations (so they don't have to amend commits) or whether they
-want non-blocking precommit checks (so they can have invalid files in their
-working tree outside the commited set of files). YMMV.
 
 For projects that really really want to NOT offer this option to their
 developers, there's the simple solution of blocking overrides in the
@@ -178,25 +246,27 @@ project ``buildout.cfg``::
 
 It's recommended to actually talk to your fellow devs about which
 overrides are not acceptable, instead of taking this nuclear option.
+If a developer disagrees with the set of flake8 extensions you're validating
+with, that's really a social issue, not something that can be solved in code.
 
 A more suble way of controlling what local reconfigurations a dev is
 allowed to perform is to configure the ``overrides-allowed`` whitelist
 at the project level::
 
   [code-analysis]
-  overrides-allowed = pre-commit-hook
+  overrides-allowed = multiprocessing
                       return-status-codes
-                      multiprocessing
+                      pre-commit-hook
+                      pre-commit-return-status-codes
+                      pre-push-hook
+                      pre-push-return-status-codes
 
 As a result, only the override options listed here will be taken from
 the developer's local configuration, all other options will be taken
 from the project buildout.cfg. Listing an empty ``overrides-allowed``
 option allows all options to be overridden.
 
-If, as a dev, you're working on multiple projects and want to configure
-your local env differently per project, you'll have to talk the project
-maintainers into configuring the ``overrides`` part name differently
-per project.
+But of course, all of this runs on the developer's machine...
 
 Jenkins Installation
 ====================
@@ -286,9 +356,41 @@ The recipe supports the following options:
 **directory**
     Directory that is subject to the code analysis.
 
+**return-status-codes**
+    If set to True, the ``bin/code-analysis`` script returns an error code
+    that Continuous Integration servers (like Travis CI) can use to fail or
+    pass a job, based on the code analysis output. Note that Jenkins usually
+    does not need this option (this is better handled by the Jenkins
+    Violations plugin). Note that this option does not have any effect on the
+    other code analysis scripts. Default is ``False``.
+
+    Note that this option can be overridden command-line by using the
+    ``--return-status-codes`` or ``--no-return-status-codes`` command-line
+    options.
+
+    Note also that the pre-commit and post-commit hooks can be tuned to
+    have a different status code behavior, if wanted, see below.
+
 **pre-commit-hook**
     If set to True, a git pre-commit hook is installed that runs the code
     analysis before each commit. Default is ``True``.
+
+**pre-commit-hook-return-status-codes**
+    If set to True, if a pre-commit hook is run it will abort the commit
+    if violations are found. Default value is the value configured for
+    ``return-status-codes``.
+
+**pre-push-hook**
+    If set to True, a git pre-push hook is installed that runs the code
+    analysis before it gets pushed to a remote. Default is ``False``.
+
+**pre-push-hook-return-status-codes**
+    If set to True, if a pre-push hook is run it will abort the push
+    if violations are found. Default value is the value configured for
+    ``return-status-codes``.
+
+    Note that in general it will be advisable to set this option to ``True``
+    so you will avoid pushing broken work. YMMV.
 
 **multiprocessing**
     If set to ``True``, ``code-analysis`` will fork multiple processes and run
@@ -502,14 +604,6 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
 **clean-lines-exclude**
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
-
-**return-status-codes**
-    If set to True, the ``bin/code-analysis`` script returns an error code
-    that Continuous Integration servers (like Travis CI) can use to fail or
-    pass a job, based on the code analysis output. Note that Jenkins usually
-    does not need this option (this is better handled by the Jenkins
-    Violations plugin). Note that this option does not have any effect on the
-    other code analysis scripts. Default is ``False``.
 
 i18ndude, scsslint and zptlint support
 --------------------------------------

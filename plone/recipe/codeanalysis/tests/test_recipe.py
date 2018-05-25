@@ -87,22 +87,22 @@ class RecipeTestCase(unittest.TestCase):
 
     def test_no_git_folder(self):
         with OutputCapture() as out:
-            self.code_analysis.install_pre_commit_hook()
+            self.code_analysis.install_hook('pre-commit')
             found = out.captured.find('Unable to create git pre-commit hook,')
             self.assertTrue(found == 0)
 
     def test_hooks_folder_being_created(self):
         os.makedirs('{0}/.git'.format(self.test_dir))
         with OutputCapture() as out:
-            self.code_analysis.install_pre_commit_hook()
-            out.compare('Install Git pre-commit hook.')
+            self.code_analysis.install_hook('pre-commit')
+            out.compare('Installed Git pre-commit hook.')
         self.assertTrue(os.path.exists('{0}/.git/hooks'.format(self.test_dir)))
 
     def test_hook_file_exists(self):
         os.makedirs('{0}/.git/hooks'.format(self.test_dir))
         with OutputCapture() as out:
-            self.code_analysis.install_pre_commit_hook()
-            out.compare('Install Git pre-commit hook.')
+            self.code_analysis.install_hook('pre-commit')
+            out.compare('Installed Git pre-commit hook.')
         self.assertTrue(
             os.path.exists('{0}/.git/hooks/pre-commit'.format(self.test_dir)),
         )
@@ -110,7 +110,7 @@ class RecipeTestCase(unittest.TestCase):
     def test_hook_contents(self):
         os.makedirs('{0}/.git/hooks'.format(self.test_dir))
         with OutputCapture():
-            self.code_analysis.install_pre_commit_hook()
+            self.code_analysis.install_hook('pre-commit')
 
         with open('{0}/.git/hooks/pre-commit'.format(self.test_dir)) as f:
             file_contents = f.read()
@@ -123,15 +123,15 @@ class RecipeTestCase(unittest.TestCase):
             f.write('something')
 
         with OutputCapture() as output:
-            self.code_analysis.uninstall_pre_commit_hook()
-            output.compare('Uninstall Git pre-commit hook.')
+            self.code_analysis.uninstall_hook('pre-commit')
+            output.compare('Uninstalled Git pre-commit hook.')
 
     def test_uninstall_hook_no_os_error(self):
         os.makedirs('{0}/.git/hooks'.format(self.test_dir))
 
         with OutputCapture() as output:
-            self.code_analysis.uninstall_pre_commit_hook()
-            output.compare('Uninstall Git pre-commit hook.')
+            self.code_analysis.uninstall_hook('pre-commit')
+            output.compare('Uninstalled Git pre-commit hook.')
 
     def test_extensions_default(self):
         self.assertEqual(

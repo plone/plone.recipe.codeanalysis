@@ -49,6 +49,10 @@ Change history
 - Introduce ``overrides`` to support individual developer preferences.
   [gyst]
 
+- Introduce ``pre-push-hook`` and allow command-line and githook
+  deviation from default ``return-status-codes``.
+  [gyst]
+
 2.3 (2018-01-18)
 ----------------
 

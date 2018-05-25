@@ -69,6 +69,9 @@ class TestScripts(unittest.TestCase):
     def test_default_directory(self):
         with OutputCapture() as output:
             with wrap_sys_argv():
+                sys.argv = [
+                    'bin/code-analysis',
+                ]
                 code_analysis(self.options)
 
         self.assertIn(
