@@ -16,6 +16,7 @@ CSS Lint code analysis is not included by default::
     ...     'directory' : '${buildout:directory}/plone/recipe/codeanalysis',
     ... })
     >>> buildout_output_lower = system(buildout).lower()
+    >>> print(buildout_output_lower)
 
 CSS Lint code analysis script has been created::
 
