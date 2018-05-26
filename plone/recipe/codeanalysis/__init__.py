@@ -194,7 +194,7 @@ class Recipe(object):
                 eggs,
                 python,
                 directory,
-                **kwargs,
+                **kwargs  # noqa: C815 - need py2 backcompatibility
             )
 
         # flake8
