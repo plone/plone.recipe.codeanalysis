@@ -12,7 +12,7 @@ class RecipeTestCase(unittest.TestCase):
 
     def setUp(self):
         test_dir = os.path.realpath(mkdtemp())
-        for directory in ('bin', 'parts', 'eggs', 'develop-eggs', ):
+        for directory in ('bin', 'parts', 'eggs', 'develop-eggs'):
             os.makedirs('{0}/{1}'.format(test_dir, directory))
 
         self.buildout_options = {
@@ -136,7 +136,7 @@ class RecipeTestCase(unittest.TestCase):
     def test_extensions_default(self):
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', ],
+            ['flake8>=2.0.0'],
         )
 
     def test_extensions_no_flake8(self):
@@ -157,7 +157,7 @@ class RecipeTestCase(unittest.TestCase):
         self.code_analysis = self._get_recipe()
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', ],
+            ['flake8>=2.0.0'],
         )
 
     def test_overrides_flake8(self):
@@ -165,7 +165,7 @@ class RecipeTestCase(unittest.TestCase):
         self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
         self.options['overrides'] = 'code-analysis-overrides'
         self.buildout_options['code-analysis-overrides'] = {
-            'flake8-extensions': 'pep8-naming\nflake8-blind-except'
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
         }
         self.code_analysis = self._get_recipe()
         self.assertEqual(
@@ -186,7 +186,7 @@ class RecipeTestCase(unittest.TestCase):
         # but one crafty hacker has a .buildout/default.cfg
         # with a specific part [False] to try and trick this
         self.buildout_options['False'] = {
-            'flake8-extensions': ''
+            'flake8-extensions': '',
         }
         self.code_analysis = self._get_recipe()
         # nah we don't do that
@@ -201,7 +201,7 @@ class RecipeTestCase(unittest.TestCase):
         self.options['overrides'] = 'code-analysis-overrides'
         self.options['overrides-allowed'] = 'foo\nflake8-extensions'
         self.buildout_options['code-analysis-overrides'] = {
-            'flake8-extensions': 'pep8-naming\nflake8-blind-except'
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
         }
         self.code_analysis = self._get_recipe()
         self.assertEqual(
@@ -215,7 +215,7 @@ class RecipeTestCase(unittest.TestCase):
         self.options['overrides'] = 'code-analysis-overrides'
         self.options['overrides-allowed'] = 'foo'
         self.buildout_options['code-analysis-overrides'] = {
-            'flake8-extensions': 'pep8-naming\nflake8-blind-except'
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
         }
         self.code_analysis = self._get_recipe()
         self.assertEqual(
@@ -229,7 +229,7 @@ class RecipeTestCase(unittest.TestCase):
         self.options['overrides'] = 'code-analysis-overrides'
         self.options['overrides-allowed'] = ''
         self.buildout_options['code-analysis-overrides'] = {
-            'flake8-extensions': 'pep8-naming\nflake8-blind-except'
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
         }
         self.code_analysis = self._get_recipe()
         self.assertEqual(

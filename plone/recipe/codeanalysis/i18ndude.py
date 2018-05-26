@@ -7,7 +7,7 @@ class I18NDude(Analyser):
 
     name = 'find-untranslated'
     title = 'Translations'
-    extensions = ('pt', 'cpt', 'zpt', )
+    extensions = ('pt', 'cpt', 'zpt')
 
     @property
     def cmd(self):

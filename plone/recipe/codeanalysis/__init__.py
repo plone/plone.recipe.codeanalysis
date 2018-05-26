@@ -194,7 +194,7 @@ class Recipe(object):
                 eggs,
                 python,
                 directory,
-                **kwargs
+                **kwargs,
             )
 
         # flake8
@@ -229,8 +229,7 @@ class Recipe(object):
         if not os.path.exists(git_directory):
             print(
                 'Unable to create git {0} hook, '
-                'this does not seem to be a git repository.'.format(name)
-            )
+                'this does not seem to be a git repository.'.format(name))
             return
 
         git_hooks_directory = git_directory + '/hooks'
@@ -244,7 +243,7 @@ class Recipe(object):
             # 'pre-push-return-status-codes', if unset, inherit
             # their values from vanilla 'return-status-codes'
             if bool_option(self.options[
-                    '{}-return-status-codes'.format(name)]):
+                    '{0}-return-status-codes'.format(name)]):
                 output_file.write(' --return-status-codes')
             else:
                 output_file.write(' --no-return-status-codes')
@@ -278,13 +277,13 @@ def code_analysis(options):
         '-x', '--return-status-codes',
         action='store_true',
         help=('Exit with code 1 on validation errors,'
-              ' overrides buildout.cfg default.')
+              ' overrides buildout.cfg default.'),
     )
     group.add_argument(
         '-n', '--no-return-status-codes',
         action='store_true',
         help=('Always exit with code 0, even on validation errors.'
-              ' Overrides buildout.cfg default.')
+              ' Overrides buildout.cfg default.'),
     )
     args = parser.parse_args()
 
