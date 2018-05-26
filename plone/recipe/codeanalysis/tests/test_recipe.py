@@ -161,7 +161,7 @@ class RecipeTestCase(unittest.TestCase):
         )
 
     def test_overrides_flake8(self):
-        '''Use flake8 as an example. Works with all options.'''
+        """Use flake8 as an example. Works with all options."""
         self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
         self.options['overrides'] = 'code-analysis-overrides'
         self.buildout_options['code-analysis-overrides'] = {
@@ -196,7 +196,7 @@ class RecipeTestCase(unittest.TestCase):
         )
 
     def test_overrides_allowed_whitelisted(self):
-        '''Use flake8 as an example. Works with all options.'''
+        """Use flake8 as an example. Works with all options."""
         self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
         self.options['overrides'] = 'code-analysis-overrides'
         self.options['overrides-allowed'] = 'foo\nflake8-extensions'
@@ -210,7 +210,7 @@ class RecipeTestCase(unittest.TestCase):
         )
 
     def test_overrides_allowed_blocked(self):
-        '''Use flake8 as an example. Works with all options.'''
+        """Use flake8 as an example. Works with all options."""
         self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
         self.options['overrides'] = 'code-analysis-overrides'
         self.options['overrides-allowed'] = 'foo'
@@ -224,7 +224,7 @@ class RecipeTestCase(unittest.TestCase):
         )
 
     def test_overrides_allowed_empty(self):
-        '''Use flake8 as an example. Works with all options.'''
+        """Use flake8 as an example. Works with all options."""
         self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
         self.options['overrides'] = 'code-analysis-overrides'
         self.options['overrides-allowed'] = ''
