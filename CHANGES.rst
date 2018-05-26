@@ -53,6 +53,9 @@ Change history
   deviation from default ``return-status-codes``.
   [gyst]
 
+- Remove trailing dot from Jenkins output, to ease copy-pasting filenames.
+  [janwijbrand]
+
 2.3 (2018-01-18)
 ----------------
 

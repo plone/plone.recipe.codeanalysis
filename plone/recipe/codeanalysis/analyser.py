@@ -199,7 +199,7 @@ class Analyser:
             if self.use_jenkins:
                 self.log(
                     'failure',
-                    'Output file written to {0}.'.format(output_file.name),
+                    'Output file written to {0}'.format(output_file.name),
                 )
             else:
                 self.log(
