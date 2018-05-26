@@ -265,9 +265,7 @@ class Recipe(object):
         print('Uninstalled Git {0} hook.'.format(name))
 
 
-def code_analysis(options):
-    start = time()
-
+def parse_command_line_arguments(options):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'directory', nargs='?',
@@ -285,16 +283,22 @@ def code_analysis(options):
         help=('Always exit with code 0, even on validation errors.'
               ' Overrides buildout.cfg default.'),
     )
-    args = parser.parse_args()
 
+    args = parser.parse_args()
     if args.directory:
         options['directory'] = args.directory
         options['check-manifest-directory'] = args.directory
-
     if args.return_status_codes:
         options['return-status-codes'] = True
     if args.no_return_status_codes:
         options['return-status-codes'] = False
+
+    return options
+
+
+def code_analysis(options):
+    start = time()
+    options = parse_command_line_arguments(options)
 
     class DummyValue(object):
         def __init__(self, value=True):
