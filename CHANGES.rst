@@ -56,7 +56,7 @@ Change history
 - Remove trailing dot from Jenkins output, to ease copy-pasting filenames.
   [janwijbrand]
 
-- Bring our own dogfood linter config in sync with coredev qa.cfg.
+- Bring our own dogfood linter config and version pins in sync with coredev qa.cfg.
   [gyst]
 
 2.3 (2018-01-18)
