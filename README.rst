@@ -209,7 +209,7 @@ the project-wide setting is to not abort the commit on violations.
 If for example the project ``buildout.cfg`` reads::
 
   [code-analysis]
-  overrides = code-analysis-overrides
+  overrides = code-analysis-overrides-acmecorp
   return-status-codes = False
   pre-commit-hook = True
 
@@ -217,7 +217,7 @@ But as a developer I'd rather have a blocking pre-push instead of a nonblocking
 pre-commit, I can configure overrides in my
 ``.buildout/default.cfg`` configuration as follows::
 
-  [code-analysis-overrides]
+  [code-analysis-overrides-acmecorp]
   return-status-codes = True
   pre-commit-hook = False
   pre-push-hook = True
@@ -236,6 +236,26 @@ level, you can as a dev still configure that in ``.buildout/default.cfg``::
 
   [code-analysis-overrides]
   return-status-codes = True
+
+The recommended policy is to define an overrides name per project, so devs
+can tune their overrides per project. Repo-specific override names only
+make sense if the repo is really different (say much bigger) than typical.
+Per-project override names would show up in a devs ``.buildout/default.cfg``
+for example as follows::
+
+  [code-analysis-overrides-plone]
+  return-status-codes = True
+  pre-commit-hook = True
+  pre-push-hook = True
+
+  [code-analysis-overrides-grok]
+  <= code-analysis-overrides-plone
+
+  [code-analysis-overrides-acmecorp]
+  return-status-codes = True
+  pre-commit-hook = False
+  pre-push-hook = True
+
 
 For projects that really really want to NOT offer this option to their
 developers, there's the simple solution of blocking overrides in the
