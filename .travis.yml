@@ -1,9 +1,6 @@
 language: python
 python:
   - 2.7
-  - 3.4
-  - 3.5
-  - 3.6
 sudo: false
 cache:
   directories:
@@ -13,7 +10,6 @@ cache:
 env:
   matrix:
     - CONF=travis.cfg
-    - CONF=travis.cfg TEST_ALL=true
 install:
   - pip install -r requirements.txt
   - easy_install -U zc.buildout==2.11.0
@@ -21,10 +17,9 @@ install:
   - buildout -N -t 3 -c $CONF || buildout -N -t 3 -c $CONF
 script:
   - bin/code-analysis
-  - bin/test
+  - bin/test -t README
 after_failure:
   - bin/flake8 --version
   - bin/csslint --version
   - bin/jshint --version
   - bin/jscs --version
-

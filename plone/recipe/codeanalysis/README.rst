@@ -1,6 +1,11 @@
 Example usage
 =============
 
+Debugging::
+
+    >>> import os
+    >>> print(os.environ)
+
 Minimal buildout::
 
     >>> write('buildout.cfg',
