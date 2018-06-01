@@ -14,9 +14,9 @@ from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
 
+import argparse
 import os
 import subprocess
-import sys
 import zc.buildout
 import zc.recipe.egg
 
@@ -58,6 +58,7 @@ class Recipe(object):
         self.options.setdefault('directory', '.')
         self.options.setdefault('multiprocessing', 'False')
         self.options.setdefault('pre-commit-hook', 'True')
+        self.options.setdefault('pre-push-hook', 'False')
         # Flake 8
         self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-extensions', '')
@@ -95,6 +96,10 @@ class Recipe(object):
         self.options.setdefault('flake8-filesystem', 'False')
         # Error codes
         self.options.setdefault('return-status-codes', 'False')
+        self.options.setdefault('pre-commit-return-status-codes',
+                                self.options.get('return-status-codes'))
+        self.options.setdefault('pre-push-return-status-codes',
+                                self.options.get('return-status-codes'))
         # Find untranslated strings
         self.options.setdefault('find-untranslated', 'False')
         self.options.setdefault('i18ndude-bin', '')
@@ -107,6 +112,18 @@ class Recipe(object):
         # zptlint
         self.options.setdefault('zptlint', 'False')
         self.options.setdefault('zptlint-bin', '')
+
+        # support user-local overrides from e.g. ~/.buildout/default.cfg
+        overrides = self.options.get('overrides')
+        overrides_allowed = self.options.get('overrides-allowed', '')
+        # except when hard-excluded at the project level buildout.cfg
+        if overrides and overrides not in ('False', 'false', '0', 'None'):
+            override_options = self.buildout.get(overrides)
+            if override_options:
+                for (key, value) in override_options.items():
+                    if overrides_allowed == '' or key in overrides_allowed:
+                        self.options[key] = value
+
         # Figure out default output file
         plone_jenkins = os.path.join(
             self.buildout['buildout']['parts-directory'], 'code-analysis',
@@ -127,9 +144,14 @@ class Recipe(object):
         self.install_extensions()
 
         if bool_option(self.options['pre-commit-hook']):
-            self.install_pre_commit_hook()
+            self.install_hook('pre-commit')
         else:
-            self.uninstall_pre_commit_hook()
+            self.uninstall_hook('pre-commit')
+
+        if bool_option(self.options['pre-push-hook']):
+            self.install_hook('pre-push')
+        else:
+            self.uninstall_hook('pre-push')
 
         # Create location
         wd = self.options.get('working-directory', '')
@@ -172,7 +194,7 @@ class Recipe(object):
                 eggs,
                 python,
                 directory,
-                **kwargs
+                **kwargs  # noqa: C815 - need py2 backcompatibility
             )
 
         # flake8
@@ -202,46 +224,81 @@ class Recipe(object):
 
             add_script(cmd, arguments=arguments)
 
-    def install_pre_commit_hook(self):
+    def install_hook(self, name):
         git_directory = self.buildout['buildout']['directory'] + '/.git'
         if not os.path.exists(git_directory):
             print(
-                'Unable to create git pre-commit hook, '
-                'this does not seem to be a git repository.'
-            )
+                'Unable to create git {0} hook, '
+                'this does not seem to be a git repository.'.format(name))
             return
 
         git_hooks_directory = git_directory + '/hooks'
         if not os.path.exists(git_hooks_directory):
             os.mkdir(git_hooks_directory)
 
-        with open(git_hooks_directory + '/pre-commit', 'w') as output_file:
+        hook = git_hooks_directory + '/' + name
+        with open(hook, 'w') as output_file:
             output_file.write('#!/usr/bin/env bash\nbin/code-analysis')
+            # 'pre-commit-return-status-codes' and
+            # 'pre-push-return-status-codes', if unset, inherit
+            # their values from vanilla 'return-status-codes'
+            if bool_option(self.options[
+                    '{0}-return-status-codes'.format(name)]):
+                output_file.write(' --return-status-codes')
+            else:
+                output_file.write(' --no-return-status-codes')
         subprocess.call([
             'chmod',
             '775',
-            git_hooks_directory + '/pre-commit',
+            hook,
         ])
-        print('Install Git pre-commit hook.')
+        print('Installed Git {0} hook.'.format(name))
 
-    def uninstall_pre_commit_hook(self):
+    def uninstall_hook(self, name):
         git_hooks_directory = self.buildout['buildout']['directory'] + \
             '/.git/hooks'
         try:
-            os.remove(git_hooks_directory + '/pre-commit')
+            hook = git_hooks_directory + '/' + name
+            os.remove(hook)
         except OSError:
             pass
-        print('Uninstall Git pre-commit hook.')
+        print('Uninstalled Git {0} hook.'.format(name))
+
+
+def parse_command_line_arguments(options):
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'directory', nargs='?',
+        help='Directory to run code-analysis on. Defaults to cwd.')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        '-x', '--return-status-codes',
+        action='store_true',
+        help=('Exit with code 1 on validation errors,'
+              ' overrides buildout.cfg default.'),
+    )
+    group.add_argument(
+        '-n', '--no-return-status-codes',
+        action='store_true',
+        help=('Always exit with code 0, even on validation errors.'
+              ' Overrides buildout.cfg default.'),
+    )
+
+    args = parser.parse_args()
+    if args.directory:
+        options['directory'] = args.directory
+        options['check-manifest-directory'] = args.directory
+    if args.return_status_codes:
+        options['return-status-codes'] = True
+    if args.no_return_status_codes:
+        options['return-status-codes'] = False
+
+    return options
 
 
 def code_analysis(options):
     start = time()
-
-    # if there is a second argument (first is always the program itself)
-    # use that one to run code analysis against
-    if len(sys.argv) > 1:
-        options['directory'] = sys.argv[1]
-        options['check-manifest-directory'] = sys.argv[1]
+    options = parse_command_line_arguments(options)
 
     class DummyValue(object):
         def __init__(self, value=True):
@@ -276,6 +333,7 @@ def code_analysis(options):
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
+
     if bool_option(options['return-status-codes']):
         exit_code = 0 if status.value else 1
 
@@ -285,4 +343,4 @@ def code_analysis(options):
 
 
 def bool_option(value):
-    return value in ('True', 'true', 'on')
+    return value in (True, 'True', 'true', 'on')

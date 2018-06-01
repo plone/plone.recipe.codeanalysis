@@ -12,7 +12,7 @@ class RecipeTestCase(unittest.TestCase):
 
     def setUp(self):
         test_dir = os.path.realpath(mkdtemp())
-        for directory in ('bin', 'parts', 'eggs', 'develop-eggs', ):
+        for directory in ('bin', 'parts', 'eggs', 'develop-eggs'):
             os.makedirs('{0}/{1}'.format(test_dir, directory))
 
         self.buildout_options = {
@@ -87,22 +87,22 @@ class RecipeTestCase(unittest.TestCase):
 
     def test_no_git_folder(self):
         with OutputCapture() as out:
-            self.code_analysis.install_pre_commit_hook()
+            self.code_analysis.install_hook('pre-commit')
             found = out.captured.find('Unable to create git pre-commit hook,')
             self.assertTrue(found == 0)
 
     def test_hooks_folder_being_created(self):
         os.makedirs('{0}/.git'.format(self.test_dir))
         with OutputCapture() as out:
-            self.code_analysis.install_pre_commit_hook()
-            out.compare('Install Git pre-commit hook.')
+            self.code_analysis.install_hook('pre-commit')
+            out.compare('Installed Git pre-commit hook.')
         self.assertTrue(os.path.exists('{0}/.git/hooks'.format(self.test_dir)))
 
     def test_hook_file_exists(self):
         os.makedirs('{0}/.git/hooks'.format(self.test_dir))
         with OutputCapture() as out:
-            self.code_analysis.install_pre_commit_hook()
-            out.compare('Install Git pre-commit hook.')
+            self.code_analysis.install_hook('pre-commit')
+            out.compare('Installed Git pre-commit hook.')
         self.assertTrue(
             os.path.exists('{0}/.git/hooks/pre-commit'.format(self.test_dir)),
         )
@@ -110,7 +110,7 @@ class RecipeTestCase(unittest.TestCase):
     def test_hook_contents(self):
         os.makedirs('{0}/.git/hooks'.format(self.test_dir))
         with OutputCapture():
-            self.code_analysis.install_pre_commit_hook()
+            self.code_analysis.install_hook('pre-commit')
 
         with open('{0}/.git/hooks/pre-commit'.format(self.test_dir)) as f:
             file_contents = f.read()
@@ -123,20 +123,20 @@ class RecipeTestCase(unittest.TestCase):
             f.write('something')
 
         with OutputCapture() as output:
-            self.code_analysis.uninstall_pre_commit_hook()
-            output.compare('Uninstall Git pre-commit hook.')
+            self.code_analysis.uninstall_hook('pre-commit')
+            output.compare('Uninstalled Git pre-commit hook.')
 
     def test_uninstall_hook_no_os_error(self):
         os.makedirs('{0}/.git/hooks'.format(self.test_dir))
 
         with OutputCapture() as output:
-            self.code_analysis.uninstall_pre_commit_hook()
-            output.compare('Uninstall Git pre-commit hook.')
+            self.code_analysis.uninstall_hook('pre-commit')
+            output.compare('Uninstalled Git pre-commit hook.')
 
     def test_extensions_default(self):
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', ],
+            ['flake8>=2.0.0'],
         )
 
     def test_extensions_no_flake8(self):
@@ -157,5 +157,82 @@ class RecipeTestCase(unittest.TestCase):
         self.code_analysis = self._get_recipe()
         self.assertEqual(
             self.code_analysis.extensions,
-            ['flake8>=2.0.0', ],
+            ['flake8>=2.0.0'],
+        )
+
+    def test_overrides_flake8(self):
+        """Use flake8 as an example. Works with all options."""
+        self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
+        self.options['overrides'] = 'code-analysis-overrides'
+        self.buildout_options['code-analysis-overrides'] = {
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
+        }
+        self.code_analysis = self._get_recipe()
+        self.assertEqual(
+            self.code_analysis.extensions,
+            ['flake8>=2.0.0', 'pep8-naming', 'flake8-blind-except'],
+        )
+
+    def test_overrides_refers_nonexisting_part(self):
+        self.options['flake8'] = False
+        self.options['overrides'] = 'code-analysis-overrides'
+        # buildout has no part 'code-analysis-overrides', skip silently
+        self.code_analysis = self._get_recipe()
+        self.assertEqual(self.code_analysis.extensions, [])
+
+    def test_overrides_blocked(self):
+        self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
+        self.options['overrides'] = 'False'
+        # but one crafty hacker has a .buildout/default.cfg
+        # with a specific part [False] to try and trick this
+        self.buildout_options['False'] = {
+            'flake8-extensions': '',
+        }
+        self.code_analysis = self._get_recipe()
+        # nah we don't do that
+        self.assertEqual(
+            self.code_analysis.extensions,
+            ['flake8>=2.0.0', 'pep8-naming', 'flake8-todo'],
+        )
+
+    def test_overrides_allowed_whitelisted(self):
+        """Use flake8 as an example. Works with all options."""
+        self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
+        self.options['overrides'] = 'code-analysis-overrides'
+        self.options['overrides-allowed'] = 'foo\nflake8-extensions'
+        self.buildout_options['code-analysis-overrides'] = {
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
+        }
+        self.code_analysis = self._get_recipe()
+        self.assertEqual(
+            self.code_analysis.extensions,
+            ['flake8>=2.0.0', 'pep8-naming', 'flake8-blind-except'],
+        )
+
+    def test_overrides_allowed_blocked(self):
+        """Use flake8 as an example. Works with all options."""
+        self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
+        self.options['overrides'] = 'code-analysis-overrides'
+        self.options['overrides-allowed'] = 'foo'
+        self.buildout_options['code-analysis-overrides'] = {
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
+        }
+        self.code_analysis = self._get_recipe()
+        self.assertEqual(
+            self.code_analysis.extensions,
+            ['flake8>=2.0.0', 'pep8-naming', 'flake8-todo'],
+        )
+
+    def test_overrides_allowed_empty(self):
+        """Use flake8 as an example. Works with all options."""
+        self.options['flake8-extensions'] = 'pep8-naming\nflake8-todo'
+        self.options['overrides'] = 'code-analysis-overrides'
+        self.options['overrides-allowed'] = ''
+        self.buildout_options['code-analysis-overrides'] = {
+            'flake8-extensions': 'pep8-naming\nflake8-blind-except',
+        }
+        self.code_analysis = self._get_recipe()
+        self.assertEqual(
+            self.code_analysis.extensions,
+            ['flake8>=2.0.0', 'pep8-naming', 'flake8-blind-except'],
         )

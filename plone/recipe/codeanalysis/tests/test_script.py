@@ -40,7 +40,7 @@ class TestScripts(unittest.TestCase):
 
     def setUp(self):
         test_dir = os.path.realpath(mkdtemp())
-        for directory in ('bin', 'parts', 'eggs', 'develop-eggs', ):
+        for directory in ('bin', 'parts', 'eggs', 'develop-eggs'):
             os.makedirs('{0}/{1}'.format(test_dir, directory))
 
         self.test_dir = test_dir
@@ -69,6 +69,9 @@ class TestScripts(unittest.TestCase):
     def test_default_directory(self):
         with OutputCapture() as output:
             with wrap_sys_argv():
+                sys.argv = [
+                    'bin/code-analysis',
+                ]
                 code_analysis(self.options)
 
         self.assertIn(

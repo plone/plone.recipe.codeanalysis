@@ -26,7 +26,7 @@ class TestCheckManifest(CodeAnalysisTestCase):
         with OutputCapture():
             self.assertEqual(
                 CheckManifest(self.options).cmd,
-                [executable, '-v', ],
+                [executable, '-v'],
             )
 
     def test_check_manifest_packages(self):

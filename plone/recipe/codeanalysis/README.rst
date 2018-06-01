@@ -51,5 +51,5 @@ And run buildout again::
 
 Then the git pre-commit hook is installed::
 
-    >>> 'install git pre-commit hook.' in buildout_output_lower
+    >>> 'installed git pre-commit hook.' in buildout_output_lower
     True

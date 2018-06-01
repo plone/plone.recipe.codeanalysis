@@ -8,7 +8,7 @@ class ZPTLint(Analyser):
     name = 'zptlint'
     title = 'ZPT Lint'
     output_file_extension = 'log'
-    extensions = ('pt', 'cpt', 'zpt', )
+    extensions = ('pt', 'cpt', 'zpt')
 
     @property
     def cmd(self):

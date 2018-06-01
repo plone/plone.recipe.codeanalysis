@@ -19,14 +19,14 @@ if PY3:
 DOCTYPE_WRAPPER = """\
 <!DOCTYPE html [<!ENTITY nbsp 'no-break space'>
                 <!ENTITY times 'multiplication sign'>]>
-{}"""
+{0}"""
 
 
 class ChameleonLint(Analyser):
 
     name = 'chameleon-lint'
     title = 'Chameleon Lint'
-    extensions = ('pt', 'cpt', 'zpt', )
+    extensions = ('pt', 'cpt', 'zpt')
 
     def cmd(self):
         # Please the ABC by faux-implementing the cmd.
@@ -51,10 +51,10 @@ class ChameleonLint(Analyser):
                 msg = e.msg
                 for line_number in re.findall('line ([0-9]+)', msg):
                     msg = msg.replace(
-                        'line {}'.format(line_number),
-                        'line {}'.format(int(line_number) - offset))
+                        'line {0}'.format(line_number),
+                        'line {0}'.format(int(line_number) - offset))
 
-                total_errors.append('{}: {}'.format(file_path, msg))
+                total_errors.append('{0}: {1}'.format(file_path, msg))
 
         with self.open_output_file() as output_file:
             output_file.write('\n'.join(total_errors))

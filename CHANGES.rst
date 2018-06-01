@@ -42,8 +42,22 @@ Change history
 - Add ``importchecker`` linter.
   Fixes #67.
   [gyst]
-  
+
 - Post-merge cleanup of source dependencies for the python3 work.
+  [gyst]
+
+- Introduce ``overrides`` to support individual developer preferences.
+  [gyst]
+
+- Introduce ``pre-push-hook`` and allow command-line and githook
+  deviation from default ``return-status-codes``.
+  [gyst]
+
+- Remove trailing dot from Jenkins output, to ease copy-pasting filenames.
+  [janwijbrand]
+
+- Bring our own dogfood linter config and version pins in sync with coredev qa.cfg.
+  [gyst]
 
 2.3 (2018-01-18)
 ----------------

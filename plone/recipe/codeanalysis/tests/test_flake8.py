@@ -30,6 +30,15 @@ class MyClass():
         self.my_sum = my_sum
 """
 
+ISORT_CFG = """
+[settings]
+force_alphabetical_sort = True
+force_single_line = True
+lines_after_imports = 2
+line_length = 200
+not_skip = __init__.py
+"""
+
 
 class TestFlake8(CodeAnalysisTestCase):
 
@@ -44,6 +53,7 @@ class TestFlake8(CodeAnalysisTestCase):
         self.options.update(self.flake8_default_options)
         if os.path.isfile('../../bin/flake8'):  # when cwd is parts/test
             self.options['bin-directory'] = '../../bin'
+        self.given_a_file_in_test_dir('.isort.cfg', ISORT_CFG)
 
     def test_analysis_should_return_false_when_error_found(self):
         self.given_a_file_in_test_dir('incorrect.py', INVALID_CODE)
