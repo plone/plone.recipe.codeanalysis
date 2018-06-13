@@ -4,6 +4,8 @@ Change history
 2.4.0 (unreleased)
 ------------------
 
+- removed flake8 default settings in favor of using setug.cfg [iham]
+
 - Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
 
 - Add scss-lint for sass files. [janjaapdriessen]
