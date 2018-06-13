@@ -447,35 +447,24 @@ The recipe supports the following options:
         flake8-quotes
         pep8-naming
 
-All through flake8 extensions raised validation errors may be suppressed
-using the ``flake8-ignore`` option.
 
-**flake8-ignore**
-    Skip errors or warnings. See `Flake8 documentation`_ for error codes.
-    Default is none.
+**flake8 Settings**
 
-**flake8-exclude**
-    Comma-separated filename and glob patterns default. Say you want to
-    exclude bootstrap.py, setup.py and all collective.* and plone.* packages.
-    Just set ``flake8-exclude=bootstrap.py,docs,*.egg,setup.py,collective.*,plone.*``
-    in your buildout configuration. Default is
-    ``bootstrap.py,bootstrap-buildout.py,docs,*.egg``.
+    Flake8 uses the following files to look for settings:
 
-**flake8-max-complexity**
-    McCabe complexity threshold. Default is ``10``.
+    - setup.cfg (recommended for Plone)
+    - tox.ini
+    - .flake8
 
-**flake8-max-line-length**
-    Set maximum allowed line length. Default is ``79``.
+.. code-block:: ini
 
-.. note::
-   You can add additional flake8 options as long as they are valid for flake8
-   itself or any of its plugins. Just prefix them with ``flake8-``.
+    [flake8]
+    exclude = bootstrap.py,boostrap-buildout.py,docs,*.egg
+    max-complexity = 10
+    max-line-length = 79
 
-   For example, if you are using ``pep8-naming`` and want to change the list
-   of ignored names, add the following line on your buildout.cfg:
-   ``flake8-ignore-names = setUp,tearDown,setUpClass,tearDownClass``
-
-   Look at flake8 documentation and its plugins to see which options are available.
+Look at `flake8 documentation <http://flake8.pycqa.org/en/latest/user/configuration.html#project-configuration>`_
+ and it's plugins to see which options are available.
 
 **check-manifest**
     If set to True, ``check-manifest`` will be run to check you MANIFEST.in
