@@ -1,8 +1,8 @@
 Change history
 ==============
 
-2.4.0 (unreleased)
-------------------
+3.0.0a (2018-06-15)
+-------------------
 
 - removed flake8 default settings in favor of using setug.cfg [iham]
 
