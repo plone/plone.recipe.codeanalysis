@@ -4,13 +4,14 @@ Change history
 3.0.0a1 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Re-release of 3.0.0a (brown bag release).
+  [timo]
 
 
 3.0.0a (2018-06-15)
 -------------------
 
-- removed flake8 default settings in favor of using setug.cfg [iham]
+- Removed flake8 default settings in favor of using setug.cfg [iham]
 
 - Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
 
@@ -66,6 +67,7 @@ Change history
 
 - Bring our own dogfood linter config and version pins in sync with coredev qa.cfg.
   [gyst]
+
 
 2.3 (2018-01-18)
 ----------------
