@@ -21,6 +21,7 @@ install:
   - buildout -N -t 3 -c $CONF || buildout -N -t 3 -c $CONF
 script:
   - pip install docutils
+  - pip install Pygments
   - python setup.py check -r -s
   - bin/code-analysis
   - bin/test
