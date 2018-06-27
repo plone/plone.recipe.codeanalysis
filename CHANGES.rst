@@ -1,7 +1,7 @@
 Change history
 ==============
 
-3.0.1 (unreleased)
+3.0.1 (2018-06-27)
 ------------------
 
 - Fix PyPi readme page.
