@@ -4,6 +4,7 @@ global-exclude *.swo
 global-exclude **/.DS_Store
 global-exclude **/__pycache__
 global-exclude *.un~
+global-exclude Makefile
 graft docs
 graft plone
 include *.rst
