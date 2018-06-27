@@ -463,7 +463,7 @@ The recipe supports the following options:
     max-complexity = 10
     max-line-length = 79
 
-Look at `flake8 documentation <http://flake8.pycqa.org/en/latest/user/configuration.html#project-configuration>`_
+Look at `Flake8 documentation`_
  and it's plugins to see which options are available.
 
 **check-manifest**
