@@ -20,9 +20,9 @@ install:
   - buildout -c $CONF annotate
   - buildout -N -t 3 -c $CONF || buildout -N -t 3 -c $CONF
 script:
-  - if [ $PYTHON_VERSION == 2.7 ]; then pip install docutils ; fi
-  - if [ $PYTHON_VERSION == 2.7 ]; then pip install Pygments ; fi
-  - if [ $PYTHON_VERSION == 2.7 ]; then python setup.py check -r -s ; fi
+  - if [[ $PYTHON_VERSION == 2.7 ]]; then pip install docutils ; fi
+  - if [[ $PYTHON_VERSION == 2.7 ]]; then pip install Pygments ; fi
+  - if [[ $PYTHON_VERSION == 2.7 ]]; then python setup.py check -r -s ; fi
   - bin/code-analysis
   - bin/test
 after_failure:
