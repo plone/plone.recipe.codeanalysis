@@ -20,6 +20,8 @@ install:
   - buildout -c $CONF annotate
   - buildout -N -t 3 -c $CONF || buildout -N -t 3 -c $CONF
 script:
+  - bin/pip install docutils
+  - bin/python setup.py check -r -s
   - bin/code-analysis
   - bin/test
 after_failure:
