@@ -1,8 +1,8 @@
 Change history
 ==============
 
-3.0.0a1 (unreleased)
---------------------
+3.0.0 (2018-06-27)
+------------------
 
 - Re-release of 3.0.0a (brown bag release).
   [timo]
