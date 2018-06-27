@@ -4,7 +4,8 @@ Change history
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix PyPi readme page.
+  [timo]
 
 
 3.0.0 (2018-06-27)
