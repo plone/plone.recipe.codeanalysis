@@ -67,6 +67,46 @@ LINK_TEXT_CONTENT = """\
 </html>
 """
 
+LINK_TAL_CONTENT_LINK_NODE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <a href="link.html" tal:content="'Link'"></a>
+  </body>
+</html>
+"""
+
+LINK_TAL_CONTENT_CHILD_NODE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <a href="link.html"><span tal:content="'Link'"></span></a>
+  </body>
+</html>
+"""
+
+LINK_TAL_REPLACE_CHILD_NODE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <a href="link.html"><tal:block replace="'Link'"></tal:block></a>
+  </body>
+</html>
+"""
+
+LINK_TAL_REPLACE_CHILD_NODE2 = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <a href="link.html"><span tal:replace="'Link'"></span></a>
+  </body>
+</html>
+"""
+
 LINK_IMG_CONTENT = """\
 <html
   xmlns="http://www.w3.org/1999/xhtml"
@@ -107,9 +147,50 @@ IMG_MISSING_ALT = """\
 </html>
 """
 
+BUTTON_TEXT_CONTENT = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <button>Actionable</button>
+  </body>
+</html>
+"""
+
+BUTTON_NO_CONTENT = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <button><i class="fa-nice-button"></i></button>
+  </body>
+</html>
+"""
+
+BUTTON_TAL_CONTENT_BUTTON_NODE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <button tal:content="'Link'"></button>
+  </body>
+</html>
+"""
+
+BUTTON_TAL_CONTENT_CHILD_NODE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <button><span tal:content="'Link'"></span></button>
+  </body>
+</html>
+"""
+
 
 # NOTE: tests to add:
 #  attributes() for  allowed syntaxes of `tal:attributes`
+# tal:replace
 
 
 class TestA11yLint(CodeAnalysisTestCase):
@@ -161,6 +242,25 @@ class TestA11yLint(CodeAnalysisTestCase):
         with OutputCapture():
             self.assertTrue(A11yLint(self.options).run())
 
+    def test_link_has_tal_content_link_node(self):
+        self.given_a_file_in_test_dir('valid.pt', LINK_TAL_CONTENT_LINK_NODE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+
+    def test_link_has_tal_content_child_node(self):
+        self.given_a_file_in_test_dir('valid.pt', LINK_TAL_CONTENT_CHILD_NODE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+
+    def test_link_has_tal_replace_child_node(self):
+        self.given_a_file_in_test_dir('valid.pt', LINK_TAL_REPLACE_CHILD_NODE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+        self.given_a_file_in_test_dir(
+            'valid.pt', LINK_TAL_REPLACE_CHILD_NODE2)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+
     def test_link_has_no_text_content(self):
         self.given_a_file_in_test_dir('invalid.pt', LINK_NO_TEXT_CONTENT)
         with OutputCapture():
@@ -170,6 +270,28 @@ class TestA11yLint(CodeAnalysisTestCase):
         self.given_a_file_in_test_dir('invalid.pt', IMG_MISSING_ALT)
         with OutputCapture():
             self.assertFalse(A11yLint(self.options).run())
+
+    def test_button_has_text_content(self):
+        self.given_a_file_in_test_dir('valid.pt', BUTTON_TEXT_CONTENT)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+
+    def test_button_has_no_text_content(self):
+        self.given_a_file_in_test_dir('invalid.pt', BUTTON_NO_CONTENT)
+        with OutputCapture():
+            self.assertFalse(A11yLint(self.options).run())
+
+    def test_button_has_tal_content_link_node(self):
+        self.given_a_file_in_test_dir(
+            'valid.pt', BUTTON_TAL_CONTENT_BUTTON_NODE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+
+    def test_button_has_tal_content_child_node(self):
+        self.given_a_file_in_test_dir(
+            'valid.pt', BUTTON_TAL_CONTENT_CHILD_NODE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
 
     # def test_analysis_file_should_exist_when_jenkins_is_true(self):
     #     self.given_a_file_in_test_dir('valid.pt', VALID_CODE)

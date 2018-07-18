@@ -19,10 +19,13 @@ NSMAP = {
 
 
 TAL_ATTRIBUTES = '{{{0}}}attributes'.format(NSMAP['tal'])
+TAL_CONTENT_XPATH = (
+    './@tal:content|.//*/@tal:content|'
+    './/*/@tal:replace|.//tal:block/@replace')
 
 
 def fmt_error(msg, file_path, lineno, offset=0):
-    return '{0}: line {1} {2}'.format(file_path, lineno - offset, msg)
+    return '{0}:{1} {2}'.format(file_path, lineno - offset, msg)
 
 
 def attribute(node, name):
@@ -43,7 +46,7 @@ def attribute(node, name):
 
 def missing_href(root, file_path, lineno_offset):
     errors = []
-    for link in root.xpath('//xhtml:a', namespaces=NSMAP):
+    for link in root.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
         if href is None:
             errors.append(
@@ -58,12 +61,26 @@ def missing_href(root, file_path, lineno_offset):
     return errors or None
 
 
+def missing_alt(root, file_path, lineno_offset):
+    errors = []
+    for image in root.xpath('//xhtml:img|//img', namespaces=NSMAP):
+        alt = attribute(image, 'alt')
+        if alt is None:
+            errors.append(
+                fmt_error(
+                    '<img> element requires a non-empty alt attribute',
+                    file_path, image.sourceline, lineno_offset))
+    return errors or None
+
+
 def missing_link_content(root, file_path, lineno_offset):
     errors = []
-    for link in root.xpath('//xhtml:a', namespaces=NSMAP):
+    for link in root.xpath('//xhtml:a|//a', namespaces=NSMAP):
         if link.xpath('.//text()'):
             continue
-        if link.xpath('.//xhtml:img', namespaces=NSMAP):
+        if link.xpath('.//xhtml:img|//img', namespaces=NSMAP):
+            continue
+        if link.xpath(TAL_CONTENT_XPATH, namespaces=NSMAP):
             continue
         if attribute(link, 'aria-label'):
             continue
@@ -75,20 +92,25 @@ def missing_link_content(root, file_path, lineno_offset):
     return errors or None
 
 
-def missing_alt(root, file_path, lineno_offset):
+def missing_button_content(root, file_path, lineno_offset):
     errors = []
-    for image in root.xpath('//xhtml:img', namespaces=NSMAP):
-        alt = attribute(image, 'alt')
-        if alt is None:
-            errors.append(
-                fmt_error(
-                    '<img> element requires a non-empty alt attribute',
-                    file_path, image.sourceline, lineno_offset))
+    for button in root.xpath('//xhtml:button|//button', namespaces=NSMAP):
+        print(button)
+        if button.xpath('.//text()'):
+            continue
+        if button.xpath(TAL_CONTENT_XPATH, namespaces=NSMAP):
+            continue
+        if attribute(button, 'aria-label'):
+            continue
+        errors.append(
+            fmt_error(
+                '<button> requires descriptive content in the form of text, '
+                'an "aria-label" attribute',
+                file_path, button.sourceline, lineno_offset))
     return errors or None
 
 
 class A11yLint(ChameleonLint):
-
     name = 'a11y-lint'
     title = 'A1y (Accessibility) Lint'
 
@@ -105,7 +127,8 @@ class A11yLint(ChameleonLint):
         for check in (
                 missing_href,
                 missing_alt,
-                missing_link_content):
+                missing_link_content,
+                missing_button_content):
             errors = check(root, file_path, offset)
             if errors is not None:
                 total_errors.extend(errors)
