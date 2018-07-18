@@ -52,16 +52,16 @@ class ChameleonLint(Analyser):
                 msg = msg.replace(
                     'line {0}'.format(line_number),
                     'line {0}'.format(int(line_number) - offset))
-            return '{0}: {1}'.format(file_path, msg)
+            return ['{0}: {1}'.format(file_path, msg)]
         return None
 
     def linter(self, files):
         total_errors = []
         for file_path in files:
             file_content = open(file_path, 'r').read()
-            error = self.lint(file_content, file_path)
-            if error is not None:
-                total_errors.append(error)
+            errors = self.lint(file_content, file_path)
+            if errors is not None:
+                total_errors.extend(errors)
         return total_errors
 
     def report(self, errors):
