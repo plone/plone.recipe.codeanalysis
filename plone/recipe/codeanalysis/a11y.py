@@ -95,7 +95,6 @@ def missing_link_content(root, file_path, lineno_offset):
 def missing_button_content(root, file_path, lineno_offset):
     errors = []
     for button in root.xpath('//xhtml:button|//button', namespaces=NSMAP):
-        print(button)
         if button.xpath('.//text()'):
             continue
         if button.xpath(TAL_CONTENT_XPATH, namespaces=NSMAP):
