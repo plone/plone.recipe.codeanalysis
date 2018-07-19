@@ -5,6 +5,7 @@ from plone.recipe.codeanalysis.analyser import Analyser
 from plone.recipe.codeanalysis.analyser import console_factory
 
 import io
+import os
 import re
 import sys
 
@@ -57,6 +58,7 @@ class ChameleonLint(Analyser):
 
     def linter(self, files):
         total_errors = []
+        files = sorted(files, key=lambda f: (len(f.split(os.sep)), f))
         for file_path in files:
             file_content = open(file_path, 'r').read()
             errors = self.lint(file_content, file_path)
