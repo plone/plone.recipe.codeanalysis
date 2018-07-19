@@ -62,7 +62,7 @@ class Context(object):
         cls._checks.append(func)
         return func
 
-    def report(self, msg, node):
+    def report(self, node, msg):
         self._errors.append('{0}:{1} {2}'.format(
             self.file_path, node.sourceline - self.lineno_offset, msg))
 
@@ -77,11 +77,10 @@ def missing_href(context):
     for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
         if href is None:
-            context.report(
-                '<a> element requires a href attribute', link)
+            context.report(link, '<a> element requires a href attribute')
         elif href.strip() == '#':
             context.report(
-                '<a> element href attribute should not be a single "#"', link)
+                link, '<a> element href attribute should not be a single "#"')
 
 
 @Context.add_check
@@ -90,7 +89,7 @@ def missing_alt(context):
         alt = attribute(image, 'alt')
         if alt is None:
             context.report(
-                '<img> element requires a non-empty alt attribute', image)
+                image, '<img> element requires a non-empty alt attribute')
 
 
 @Context.add_check
@@ -105,8 +104,9 @@ def missing_link_content(context):
         if attribute(link, 'aria-label'):
             continue
         context.report(
+            link,
             '<a> requires descriptive content in the form of text, '
-            'an image or an "aria-label" attribute', link)
+            'an image or an "aria-label" attribute')
 
 
 @Context.add_check
@@ -120,8 +120,9 @@ def missing_button_content(context):
         if attribute(button, 'aria-label'):
             continue
         context.report(
+            button,
             '<button> requires descriptive content in the form of text '
-            'or an "aria-label" attribute', button)
+            'or an "aria-label" attribute')
 
 
 class A11yLint(ChameleonLint):
