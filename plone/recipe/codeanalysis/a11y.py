@@ -51,7 +51,7 @@ def missing_href(root, file_path, lineno_offset):
         if href is None:
             errors.append(
                 fmt_error(
-                    '<a> element requires a non-empty href attribute',
+                    '<a> element requires a href attribute',
                     file_path, link.sourceline, lineno_offset))
         elif href.strip() == '#':
             errors.append(
