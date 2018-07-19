@@ -24,10 +24,6 @@ TAL_CONTENT_XPATH = (
     './/*/@tal:replace|.//tal:block/@replace')
 
 
-def fmt_error(msg, file_path, lineno, offset=0):
-    return '{0}:{1} {2}'.format(file_path, lineno - offset, msg)
-
-
 def attribute(node, name):
     found = node.attrib.get(name)
     if found is not None:
@@ -44,38 +40,62 @@ def attribute(node, name):
     return None
 
 
-def missing_href(root, file_path, lineno_offset):
-    errors = []
-    for link in root.xpath('//xhtml:a|//a', namespaces=NSMAP):
+class Context(object):
+
+    _checks = None
+
+    def __init__(self, file_content, file_path):
+        self._errors = []
+        if '<!DOCTYPE' not in file_content:
+            file_content = DOCTYPE_WRAPPER.format(file_content)
+            self.lineno_offset = len(DOCTYPE_WRAPPER.splitlines()) - 1
+        else:
+            self.lineno_offset = 0
+        self.file_path = file_path
+        self.node = lxml.etree.parse(
+            io.StringIO(unicode(file_content))).getroot()
+
+    @classmethod
+    def add_check(cls, func):
+        if cls._checks is None:
+            cls._checks = []
+        cls._checks.append(func)
+        return func
+
+    def report(self, msg, node):
+        self._errors.append('{0}:{1} {2}'.format(
+            self.file_path, node.sourceline - self.lineno_offset, msg))
+
+    def run(self):
+        for check in self._checks:
+            check(self)
+        return self._errors
+
+
+@Context.add_check
+def missing_href(context):
+    for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
         if href is None:
-            errors.append(
-                fmt_error(
-                    '<a> element requires a href attribute',
-                    file_path, link.sourceline, lineno_offset))
+            context.report(
+                '<a> element requires a href attribute', link)
         elif href.strip() == '#':
-            errors.append(
-                fmt_error(
-                    '<a> element href attribute should not be a single "#"',
-                    file_path, link.sourceline, lineno_offset))
-    return errors or None
+            context.report(
+                '<a> element href attribute should not be a single "#"', link)
 
 
-def missing_alt(root, file_path, lineno_offset):
-    errors = []
-    for image in root.xpath('//xhtml:img|//img', namespaces=NSMAP):
+@Context.add_check
+def missing_alt(context):
+    for image in context.node.xpath('//xhtml:img|//img', namespaces=NSMAP):
         alt = attribute(image, 'alt')
         if alt is None:
-            errors.append(
-                fmt_error(
-                    '<img> element requires a non-empty alt attribute',
-                    file_path, image.sourceline, lineno_offset))
-    return errors or None
+            context.report(
+                '<img> element requires a non-empty alt attribute', image)
 
 
-def missing_link_content(root, file_path, lineno_offset):
-    errors = []
-    for link in root.xpath('//xhtml:a|//a', namespaces=NSMAP):
+@Context.add_check
+def missing_link_content(context):
+    for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         if link.xpath('.//text()'):
             continue
         if link.xpath('.//xhtml:img|//img', namespaces=NSMAP):
@@ -84,29 +104,24 @@ def missing_link_content(root, file_path, lineno_offset):
             continue
         if attribute(link, 'aria-label'):
             continue
-        errors.append(
-            fmt_error(
-                '<a> requires descriptive content in the form of text, '
-                'an image or an "aria-label" attribute',
-                file_path, link.sourceline, lineno_offset))
-    return errors or None
+        context.report(
+            '<a> requires descriptive content in the form of text, '
+            'an image or an "aria-label" attribute', link)
 
 
-def missing_button_content(root, file_path, lineno_offset):
-    errors = []
-    for button in root.xpath('//xhtml:button|//button', namespaces=NSMAP):
+@Context.add_check
+def missing_button_content(context):
+    for button in context.node.xpath(
+            '//xhtml:button|//button', namespaces=NSMAP):
         if button.xpath('.//text()'):
             continue
         if button.xpath(TAL_CONTENT_XPATH, namespaces=NSMAP):
             continue
         if attribute(button, 'aria-label'):
             continue
-        errors.append(
-            fmt_error(
-                '<button> requires descriptive content in the form of text, '
-                'an "aria-label" attribute',
-                file_path, button.sourceline, lineno_offset))
-    return errors or None
+        context.report(
+            '<button> requires descriptive content in the form of text '
+            'or an "aria-label" attribute', button)
 
 
 class A11yLint(ChameleonLint):
@@ -118,20 +133,7 @@ class A11yLint(ChameleonLint):
         pass
 
     def lint(self, file_content, file_path):
-        total_errors = []
-        if '<!DOCTYPE' not in file_content:
-            file_content = DOCTYPE_WRAPPER.format(file_content)
-            offset = len(DOCTYPE_WRAPPER.splitlines()) - 1
-        root = lxml.etree.parse(io.StringIO(unicode(file_content))).getroot()
-        for check in (
-                missing_href,
-                missing_alt,
-                missing_link_content,
-                missing_button_content):
-            errors = check(root, file_path, offset)
-            if errors is not None:
-                total_errors.extend(errors)
-        return total_errors
+        return Context(file_content, file_path).run()
 
 
 def console_script(options):
