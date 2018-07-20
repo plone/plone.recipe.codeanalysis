@@ -97,7 +97,7 @@ def missing_link_content(context):
     for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         if link.xpath('.//text()'):
             continue
-        if link.xpath('.//xhtml:img|//img', namespaces=NSMAP):
+        if link.xpath('.//xhtml:img|.//img', namespaces=NSMAP):
             continue
         if link.xpath(TAL_CONTENT_XPATH, namespaces=NSMAP):
             continue
