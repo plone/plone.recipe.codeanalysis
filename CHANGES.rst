@@ -4,8 +4,8 @@ Change history
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Newer versions of z3c.dependencychecker already report its exit code.
+  [gforcada]
 
 3.0.1 (2018-06-27)
 ------------------
