@@ -127,7 +127,7 @@ def missing_button_content(context):
 
 class A11yLint(ChameleonLint):
     name = 'a11y-lint'
-    title = 'A1y (Accessibility) Lint'
+    title = 'Accessibility Lint'
 
     def cmd(self):
         # Please the ABC by faux-implementing the cmd.
