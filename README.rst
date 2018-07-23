@@ -481,6 +481,8 @@ Look at `Flake8 documentation`_
 **dependencychecker-bin**
     Set the path to a custom version of ``dependencychecker``.
 
+.. note:: Version 2.3 or bigger must be used so that it reports its exit code correctly.
+
 **importchecker**
     If set to True, import statement analysis is run and unused
     imports are reported. Default is ``False``.
