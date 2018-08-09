@@ -77,10 +77,24 @@ def missing_href(context):
     for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
         if href is None:
-            context.report(link, '<a> element requires a href attribute')
+            context.report(
+                link,
+                'The <a> element is missing the href attribute. '
+                'Without the href attribute an anchor represents '
+                'a placeholder for where a link might otherwise have '
+                'been placed and is invisible for screen readers. '
+                'If the <a> is used to create interactive clickable '
+                'elements, consider using the <button type=“button”> '
+                'element instead for this.')
         elif href.strip() == '#':
             context.report(
-                link, '<a> element href attribute should not be a single "#"')
+                link,
+                'The <a> element href attribute should not be a single "#", '
+                'it can cause the page to scroll back to the top and it adds '
+                'an entry to the browser history, so it takes an additional '
+                'click of the back button to go to the previous page. '
+                'Consider using a <button type=“button”> element to create '
+                'interactive clickable elements.')
 
 
 @Context.add_check
@@ -89,7 +103,13 @@ def missing_alt(context):
         alt = attribute(image, 'alt')
         if alt is None:
             context.report(
-                image, '<img> element requires a non-empty alt attribute')
+                image,
+                'The <img> element requires an alt attribute. The alt attribute '
+                'provides descriptive information for an image if a user for some '
+                'reason cannot view it (because of slow connection, an error, '
+                'or if the user uses a screen reader). If the image is considered '
+                'decorative, the alt attribute should be left empty, '
+                'but not removed, so screen readers will ignore the image.')
 
 
 @Context.add_check
@@ -105,8 +125,13 @@ def missing_link_content(context):
             continue
         context.report(
             link,
-            '<a> requires descriptive content in the form of text, '
-            'an image or an "aria-label" attribute')
+            'The <a> element requires descriptive content that help users better '
+            'understand what they can expect if they click the link. An <a> element '
+            'without descriptive text will only announce the href path to screen '
+            'reader users. Keep in mind that users of screen readers have trouble '
+            'distinguishing icons and need descriptive text to understand '
+            'the context of the <button>. Consider adding descriptive content in '
+            'the form of text, an aria-label attribute or an image.')
 
 
 @Context.add_check
@@ -121,8 +146,11 @@ def missing_button_content(context):
             continue
         context.report(
             button,
-            '<button> requires descriptive content in the form of text '
-            'or an "aria-label" attribute')
+            'The <button> element requires descriptive text that helps users understand '
+            'what they can expect when they click it. Keep in mind that users of screen '
+            'readers have trouble distinguishing icons and need descriptive text to understand '
+            'the context of the <button>. Consider adding descriptive text in the form of text '
+            'or an aria-label attribute.')
 
 
 class A11yLint(ChameleonLint):
