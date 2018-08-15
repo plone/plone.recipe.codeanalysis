@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from plone.recipe.codeanalysis.a11y import A11yLint
 from plone.recipe.codeanalysis.chameleonlint import ChameleonLint
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
@@ -23,6 +24,7 @@ import zc.recipe.egg
 
 current_dir = os.path.dirname(__file__)
 all_checks = [
+    A11yLint,
     ChameleonLint,
     CSSLint,
     CheckManifest,

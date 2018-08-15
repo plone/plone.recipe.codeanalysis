@@ -4,6 +4,8 @@ Change history
 2.4.0 (unreleased)
 ------------------
 
+- Add A11Y (accessibility) linter for chameleon template files. [janwijbrand]
+
 - Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
 
 - Add scss-lint for sass files. [janjaapdriessen]
