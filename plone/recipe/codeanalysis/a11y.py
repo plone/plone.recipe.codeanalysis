@@ -104,12 +104,13 @@ def missing_alt(context):
         if alt is None:
             context.report(
                 image,
-                'The <img> element requires an alt attribute. The alt attribute '
-                'provides descriptive information for an image if a user for some '
-                'reason cannot view it (because of slow connection, an error, '
-                'or if the user uses a screen reader). If the image is considered '
-                'decorative, the alt attribute should be left empty, '
-                'but not removed, so screen readers will ignore the image.')
+                'The <img> element requires an alt attribute. The alt '
+                'attribute provides descriptive information for an image if a '
+                'user for some reason cannot view it (because of slow '
+                'connection, an error, or if the user uses a screen reader). '
+                'If the image is considered decorative, the alt attribute '
+                'should be left empty, but not removed, so screen readers '
+                'will ignore the image.')
 
 
 @Context.add_check
@@ -125,13 +126,14 @@ def missing_link_content(context):
             continue
         context.report(
             link,
-            'The <a> element requires descriptive content that help users better '
-            'understand what they can expect if they click the link. An <a> element '
-            'without descriptive text will only announce the href path to screen '
-            'reader users. Keep in mind that users of screen readers have trouble '
-            'distinguishing icons and need descriptive text to understand '
-            'the context of the <button>. Consider adding descriptive content in '
-            'the form of text, an aria-label attribute or an image.')
+            'The <a> element requires descriptive content that help users '
+            'better understand what they can expect if they click the link. '
+            'An <a> element without descriptive text will only announce the '
+            'href path to screen reader users. Keep in mind that users of '
+            'screen readers have trouble distinguishing icons and need '
+            'descriptive text to understand the context of the <button>. '
+            'Consider adding descriptive content in the form of text, an '
+            'aria-label attribute or an image.')
 
 
 @Context.add_check
@@ -146,10 +148,11 @@ def missing_button_content(context):
             continue
         context.report(
             button,
-            'The <button> element requires descriptive text that helps users understand '
-            'what they can expect when they click it. Keep in mind that users of screen '
-            'readers have trouble distinguishing icons and need descriptive text to understand '
-            'the context of the <button>. Consider adding descriptive text in the form of text '
+            'The <button> element requires descriptive text that helps users '
+            'understand what they can expect when they click it. Keep in mind '
+            'that users of screen readers have trouble distinguishing icons '
+            'and need descriptive text to understand the context of the '
+            '<button>. Consider adding descriptive text in the form of text '
             'or an aria-label attribute.')
 
 
