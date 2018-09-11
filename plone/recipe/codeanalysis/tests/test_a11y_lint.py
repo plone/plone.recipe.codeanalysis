@@ -192,6 +192,15 @@ BUTTON_TAL_CONTENT_CHILD_NODE = """\
 </html>
 """
 
+LABEL_WITHOUT_FOR_ATTRIBUTE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <label><input type="text"/>Label text<label>
+  </body>
+</html>
+"""
 
 # NOTE: tests to add:
 #  attributes() for  allowed syntaxes of `tal:attributes`
@@ -297,6 +306,12 @@ class TestA11yLint(CodeAnalysisTestCase):
             'valid.pt', BUTTON_TAL_CONTENT_CHILD_NODE)
         with OutputCapture():
             self.assertTrue(A11yLint(self.options).run())
+
+    def test_label_has_for_attribute(self):
+        self.given_a_file_in_test_dir(
+            'invalid.pt', LABEL_WITHOUT_FOR_ATTRIBUTE)
+        with OutputCapture():
+            self.assertFalse(A11yLint(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         self.given_a_file_in_test_dir('valid.pt', LINK_HREF)
