@@ -156,6 +156,17 @@ def missing_button_content(context):
             'or an aria-label attribute.')
 
 
+@Context.add_check
+def missing_for(context):
+    for label in context.node.xpath('//xhtml:label|//label', namespaces=NSMAP):
+        label_for = attribute(label, 'for')
+        if label_for is None:
+            context.report(
+                label,
+                'The <label> element needs to be explicitly associated with a '
+                'form control through the use of the for attribute.')
+
+
 class A11yLint(ChameleonLint):
     name = 'a11y-lint'
     title = 'Accessibility Lint'
