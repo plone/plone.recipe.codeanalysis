@@ -164,7 +164,10 @@ def missing_for(context):
             context.report(
                 label,
                 'The <label> element needs to be explicitly associated with a '
-                'form control through the use of the for attribute.')
+                'form control through the use of the for attribute, whose '
+                'value needs to correspond to the value of the id attribute '
+                'of the associated form control element (<input>, <textarea> '
+                'and <select>).')
 
 
 class A11yLint(ChameleonLint):
