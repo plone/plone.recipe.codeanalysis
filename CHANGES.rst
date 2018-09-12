@@ -4,6 +4,9 @@ Change history
 2.4.0 (unreleased)
 ------------------
 
+- Add test for A11Y linter that checks for for attributes on label elements.
+  [richardicke]
+
 - Add A11Y (accessibility) linter for chameleon template files. [janwijbrand]
 
 - Add XMLLint for .xml .xsl .zcml files. [janjaapdriessen]
