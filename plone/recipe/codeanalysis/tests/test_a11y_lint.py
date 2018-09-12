@@ -202,6 +202,16 @@ LABEL_WITHOUT_FOR_ATTRIBUTE = """\
 </html>
 """
 
+LABEL_WITH_FOR_ATTRIBUTE = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <label for="inputid"><input id="inputid" type="text"/>Label text<label>
+  </body>
+</html>
+"""
+
 # NOTE: tests to add:
 #  attributes() for  allowed syntaxes of `tal:attributes`
 # tal:replace
@@ -307,11 +317,17 @@ class TestA11yLint(CodeAnalysisTestCase):
         with OutputCapture():
             self.assertTrue(A11yLint(self.options).run())
 
-    def test_label_has_for_attribute(self):
+    def test_label_has_no_for_attribute(self):
         self.given_a_file_in_test_dir(
             'invalid.pt', LABEL_WITHOUT_FOR_ATTRIBUTE)
         with OutputCapture():
             self.assertFalse(A11yLint(self.options).run())
+
+    def test_label_has_for_attribute(self):
+        self.given_a_file_in_test_dir(
+            'valid.pt', LABEL_WITH_FOR_ATTRIBUTE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
 
     def test_analysis_file_should_exist_when_jenkins_is_true(self):
         self.given_a_file_in_test_dir('valid.pt', LINK_HREF)
