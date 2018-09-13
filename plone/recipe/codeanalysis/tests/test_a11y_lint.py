@@ -197,7 +197,7 @@ LABEL_WITHOUT_FOR_ATTRIBUTE = """\
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:tal="http://xml.zope.org/namespaces/tal">
   <body>
-    <label><input type="text"/>Label text<label>
+    <label><input type="text"/>Label text</label>
   </body>
 </html>
 """
@@ -207,7 +207,7 @@ LABEL_WITH_FOR_ATTRIBUTE = """\
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:tal="http://xml.zope.org/namespaces/tal">
   <body>
-    <label for="inputid"><input id="inputid" type="text"/>Label text<label>
+    <label for="inputid"><input id="inputid" type="text"/>Label text</label>
   </body>
 </html>
 """
