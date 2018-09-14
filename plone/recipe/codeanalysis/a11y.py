@@ -159,6 +159,8 @@ def missing_button_content(context):
 @Context.add_check
 def missing_for(context):
     for label in context.node.xpath('//xhtml:label|//label', namespaces=NSMAP):
+        if label.xpath('.//xhtml:input|.//input', namespaces=NSMAP):
+            continue
         label_for = attribute(label, 'for')
         if label_for is None:
             context.report(
