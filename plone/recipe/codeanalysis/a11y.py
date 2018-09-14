@@ -76,6 +76,8 @@ class Context(object):
 def missing_href(context):
     for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
+        if attribute(link, 'role') == 'button':
+            continue
         if href is None:
             context.report(
                 link,
