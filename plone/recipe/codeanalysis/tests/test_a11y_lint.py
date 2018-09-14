@@ -29,6 +29,16 @@ LINK_SINGLE_FRAGMENT_IDENTIFIER = """\
 </html>
 """
 
+LINK_ROLE_BUTTON = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <a role="button" href="#">Link</a>
+  </body>
+</html>
+"""
+
 LINK_HREF = """\
 <html
   xmlns="http://www.w3.org/1999/xhtml"
@@ -245,6 +255,12 @@ class TestA11yLint(CodeAnalysisTestCase):
             'invalid.pt', LINK_SINGLE_FRAGMENT_IDENTIFIER)
         with OutputCapture():
             self.assertFalse(A11yLint(self.options).run())
+
+    def test_link_role_button(self):
+        self.given_a_file_in_test_dir(
+            'valid.pt', LINK_ROLE_BUTTON)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
 
     def test_link_has_href(self):
         self.given_a_file_in_test_dir('valid.pt', LINK_HREF)
