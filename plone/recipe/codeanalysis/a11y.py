@@ -78,7 +78,7 @@ def missing_href(context):
         href = attribute(link, 'href')
         if attribute(link, 'role') == 'button':
             continue
-        if attribute(link, 'x-ng-preventDefault') == '':
+        if attribute(link, 'preventDefault') == '':
             continue
         if href is None:
             context.report(
