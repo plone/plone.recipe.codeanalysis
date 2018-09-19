@@ -3,8 +3,7 @@ Change history
 
 2.4.0 (unreleased)
 ------------------
-- BLUE-2653 Additional a11y linter tests for labels and anchors.
-  [redrohX]
+- Additional a11y linter tests for labels and anchors. [redrohX]
 
 - Add test for A11Y linter that checks for for attributes on label elements.
   [richardicke]
