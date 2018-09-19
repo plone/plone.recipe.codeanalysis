@@ -76,6 +76,10 @@ class Context(object):
 def missing_href(context):
     for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
+        if attribute(link, 'role') == 'button':
+            continue
+        if attribute(link, 'preventDefault') == '':
+            continue
         if href is None:
             context.report(
                 link,
@@ -159,6 +163,8 @@ def missing_button_content(context):
 @Context.add_check
 def missing_for(context):
     for label in context.node.xpath('//xhtml:label|//label', namespaces=NSMAP):
+        if label.xpath('.//xhtml:input|.//input', namespaces=NSMAP):
+            continue
         label_for = attribute(label, 'for')
         if label_for is None:
             context.report(
