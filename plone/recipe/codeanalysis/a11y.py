@@ -76,10 +76,6 @@ class Context(object):
 def missing_href(context):
     for link in context.node.xpath('//xhtml:a|//a', namespaces=NSMAP):
         href = attribute(link, 'href')
-        if attribute(link, 'role') == 'button':
-            continue
-        if attribute(link, 'preventDefault') == '':
-            continue
         if href is None:
             context.report(
                 link,
@@ -91,6 +87,10 @@ def missing_href(context):
                 'elements, consider using the <button type=“button”> '
                 'element instead for this.')
         elif href.strip() == '#':
+            if attribute(link, 'role') == 'button':
+                continue
+            if attribute(link, 'preventDefault'):
+                continue
             context.report(
                 link,
                 'The <a> element href attribute should not be a single "#", '
