@@ -87,6 +87,10 @@ def missing_href(context):
                 'elements, consider using the <button type=“button”> '
                 'element instead for this.')
         elif href.strip() == '#':
+            if attribute(link, 'role') == 'button':
+                continue
+            if attribute(link, 'preventDefault'):
+                continue
             context.report(
                 link,
                 'The <a> element href attribute should not be a single "#", '
@@ -104,12 +108,13 @@ def missing_alt(context):
         if alt is None:
             context.report(
                 image,
-                'The <img> element requires an alt attribute. The alt attribute '
-                'provides descriptive information for an image if a user for some '
-                'reason cannot view it (because of slow connection, an error, '
-                'or if the user uses a screen reader). If the image is considered '
-                'decorative, the alt attribute should be left empty, '
-                'but not removed, so screen readers will ignore the image.')
+                'The <img> element requires an alt attribute. The alt '
+                'attribute provides descriptive information for an image if a '
+                'user for some reason cannot view it (because of slow '
+                'connection, an error, or if the user uses a screen reader). '
+                'If the image is considered decorative, the alt attribute '
+                'should be left empty, but not removed, so screen readers '
+                'will ignore the image.')
 
 
 @Context.add_check
@@ -125,13 +130,14 @@ def missing_link_content(context):
             continue
         context.report(
             link,
-            'The <a> element requires descriptive content that help users better '
-            'understand what they can expect if they click the link. An <a> element '
-            'without descriptive text will only announce the href path to screen '
-            'reader users. Keep in mind that users of screen readers have trouble '
-            'distinguishing icons and need descriptive text to understand '
-            'the context of the <button>. Consider adding descriptive content in '
-            'the form of text, an aria-label attribute or an image.')
+            'The <a> element requires descriptive content that help users '
+            'better understand what they can expect if they click the link. '
+            'An <a> element without descriptive text will only announce the '
+            'href path to screen reader users. Keep in mind that users of '
+            'screen readers have trouble distinguishing icons and need '
+            'descriptive text to understand the context of the <button>. '
+            'Consider adding descriptive content in the form of text, an '
+            'aria-label attribute or an image.')
 
 
 @Context.add_check
@@ -146,11 +152,28 @@ def missing_button_content(context):
             continue
         context.report(
             button,
-            'The <button> element requires descriptive text that helps users understand '
-            'what they can expect when they click it. Keep in mind that users of screen '
-            'readers have trouble distinguishing icons and need descriptive text to understand '
-            'the context of the <button>. Consider adding descriptive text in the form of text '
+            'The <button> element requires descriptive text that helps users '
+            'understand what they can expect when they click it. Keep in mind '
+            'that users of screen readers have trouble distinguishing icons '
+            'and need descriptive text to understand the context of the '
+            '<button>. Consider adding descriptive text in the form of text '
             'or an aria-label attribute.')
+
+
+@Context.add_check
+def missing_for(context):
+    for label in context.node.xpath('//xhtml:label|//label', namespaces=NSMAP):
+        if label.xpath('.//xhtml:input|.//input', namespaces=NSMAP):
+            continue
+        label_for = attribute(label, 'for')
+        if label_for is None:
+            context.report(
+                label,
+                'The <label> element needs to be explicitly associated with a '
+                'form control through the use of the for attribute, whose '
+                'value needs to correspond to the value of the id attribute '
+                'of the associated form control element (<input>, <textarea> '
+                'and <select>).')
 
 
 class A11yLint(ChameleonLint):
