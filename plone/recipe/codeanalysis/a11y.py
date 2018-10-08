@@ -32,8 +32,9 @@ def attribute(node, name):
     if tal_attributes is not None and name in tal_attributes:
         for attr in tal_attributes.split(';'):
             attr = attr.strip()
-            key, value = attr.split(None, 1)
-            return value
+            key, value = [el.strip() for el in attr.split(None, 1)]
+            if name == key:
+                return value
     x_ng_attribute = node.attrib.get('x-ng-{0}'.format(name))
     if x_ng_attribute is not None:
         return x_ng_attribute
