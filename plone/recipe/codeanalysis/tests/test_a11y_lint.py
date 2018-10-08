@@ -273,6 +273,18 @@ class TestAttributeHelper(unittest.TestCase):
                 '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
         self.assertIsNone(attribute(node, 'class'))
 
+    def test_attribute_wrong_namespace(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div attributes="class \'foo\'">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertIsNone(attribute(node, 'class'))
+
     def test_attribute_x_ng_attribute(self):
         node = lxml.etree.fromstring(
             '<html'
@@ -387,9 +399,7 @@ class TestA11yLint(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
         super(TestA11yLint, self).setUp()
-        self.options.update({
-            'a11y-lint': 'True',
-        })
+        self.options.update({'a11y-lint': 'True'})
 
     def test_link_requires_href(self):
         self.given_a_file_in_test_dir('invalid.pt', LINK_MISSING_HREF)
