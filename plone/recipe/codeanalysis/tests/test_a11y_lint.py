@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from plone.recipe.codeanalysis.a11y import A11yLint
+from plone.recipe.codeanalysis.a11y import attribute
 from plone.recipe.codeanalysis.a11y import console_script
+from plone.recipe.codeanalysis.a11y import NSMAP
 from plone.recipe.codeanalysis.testing import CodeAnalysisTestCase
 from shutil import rmtree
 from tempfile import mkdtemp
 from testfixtures import OutputCapture
 
+import lxml.etree
 import os
+import unittest
 
 
 LINK_MISSING_HREF = """\
@@ -242,18 +246,160 @@ LABEL_WRAPS_INPUT = """\
 </html>
 """
 
-# NOTE: tests to add:
-#  attributes() for  allowed syntaxes of `tal:attributes`
-# tal:replace
+
+class TestAttributeHelper(unittest.TestCase):
+
+    def test_attribute_found(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div class="foo">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual('foo', attribute(node, 'class'))
+
+    def test_attribute_missing(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div notaclass="foo">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertIsNone(attribute(node, 'class'))
+
+    def test_attribute_wrong_namespace(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div attributes="class \'foo\'">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertIsNone(attribute(node, 'class'))
+
+    def test_attribute_x_ng_attribute(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div x-ng-class="{{foo}}">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual('{{foo}}', attribute(node, 'class'))
+
+    def test_attribute_x_ng_attribute_missing(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div x-ng-notaclass="{{foo}}">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertIsNone(attribute(node, 'class'))
+
+    def test_attribute_tal_attributes(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div tal:attributes="class \'foo\'">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual("'foo'", attribute(node, 'class'))
+
+    def test_attribute_tal_attributes_multiline_single_attr(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div tal:attributes="'
+            '      class \'foo\'">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual("'foo'", attribute(node, 'class'))
+
+    def test_attribute_tal_attributes_multiline_multiple_attr(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div tal:attributes="'
+            '      id \'some-id\';'
+            '      class \'foo\';'
+            '      title \'Some Title\'">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual("'foo'", attribute(node, 'class'))
+
+    def test_attribute_tal_attributes_singleline_multiple_attr(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div tal:attributes="'
+            '      id \'some-id\'; class \'foo\'; title \'Some Title\'">'
+            '      body contents'
+            '    </div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual("'foo'", attribute(node, 'class'))
+
+    def test_attribute_tal_attributes_multiline_extraneous_whitespace(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div tal:attributes="'
+            '      id \'some-id\'; class \'foo\'     ; title \'Some Title\'">'
+            '      body contents'
+            '    </div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertEqual("'foo'", attribute(node, 'class'))
+
+    def test_attribute_tal_attributes_attr_name_substring(self):
+        node = lxml.etree.fromstring(
+            '<html'
+            '  xmlns="http://www.w3.org/1999/xhtml"'
+            '  xmlns:tal="http://xml.zope.org/namespaces/tal">'
+            '  <body>'
+            '    <div tal:attributes="'
+            '      id \'some-id\';'
+            '      classy \'foo\';'
+            '      title \'Some Title\'">body contents</div>'
+            '  </body>'
+            '</html>').xpath(
+                '/xhtml:html/xhtml:body/xhtml:div', namespaces=NSMAP)[0]
+        self.assertIsNone(attribute(node, 'class'))
 
 
 class TestA11yLint(CodeAnalysisTestCase):
 
     def setUp(self):  # noqa
         super(TestA11yLint, self).setUp()
-        self.options.update({
-            'a11y-lint': 'True',
-        })
+        self.options.update({'a11y-lint': 'True'})
 
     def test_link_requires_href(self):
         self.given_a_file_in_test_dir('invalid.pt', LINK_MISSING_HREF)
