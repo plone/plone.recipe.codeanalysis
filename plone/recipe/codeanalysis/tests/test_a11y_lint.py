@@ -236,6 +236,17 @@ LABEL_WITH_FOR_ATTRIBUTE = """\
 </html>
 """
 
+LABEL_WITH_XNG_ATTR_FOR = """\
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal">
+  <body>
+    <input id="inputid" type="text"/>
+    <label x-ng-attr-for="inputid">Label text</label>
+  </body>
+</html>
+"""
+
 LABEL_WRAPS_INPUT = """\
 <html
   xmlns="http://www.w3.org/1999/xhtml"
@@ -514,6 +525,12 @@ class TestA11yLint(CodeAnalysisTestCase):
     def test_label_has_for_attribute(self):
         self.given_a_file_in_test_dir(
             'valid.pt', LABEL_WITH_FOR_ATTRIBUTE)
+        with OutputCapture():
+            self.assertTrue(A11yLint(self.options).run())
+
+    def test_label_has_xng_attr_for_attribute(self):
+        self.given_a_file_in_test_dir(
+            'valid.pt', LABEL_WITH_XNG_ATTR_FOR)
         with OutputCapture():
             self.assertTrue(A11yLint(self.options).run())
 
