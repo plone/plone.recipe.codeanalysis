@@ -35,7 +35,10 @@ def attribute(node, name):
             key, value = [el.strip() for el in attr.split(None, 1)]
             if name == key:
                 return value
-    x_ng_attribute = node.attrib.get('x-ng-attr-{0}'.format(name))
+    x_ng_attr_attribute = node.attrib.get('x-ng-attr-{0}'.format(name))
+    if x_ng_attr_attribute is not None:
+        return x_ng_attr_attribute
+    x_ng_attribute = node.attrib.get('x-ng-{0}'.format(name))
     if x_ng_attribute is not None:
         return x_ng_attribute
     return None
