@@ -222,34 +222,45 @@ class Recipe(object):
             add_script(cmd, arguments=arguments)
 
     def install_hook(self, name):
-        git_directory = self.buildout['buildout']['directory'] + '/.git'
-        if not os.path.exists(git_directory):
-            print(
-                'Unable to create git {0} hook, '
-                'this does not seem to be a git repository.'.format(name))
-            return
+        hook_locations = self.options.get('hook-locations', '').split()
+        if not hook_locations:
+            hook_locations = [
+                self.buildout['buildout']['directory'],
+            ]
 
-        git_hooks_directory = git_directory + '/hooks'
-        if not os.path.exists(git_hooks_directory):
-            os.mkdir(git_hooks_directory)
+        for hook_location in hook_locations:
+            git_directory = hook_location + '/.git'
+            if not os.path.exists(git_directory):
+                print(
+                    'Unable to create git {0} hook, '
+                    'this does not seem to be a git repository.'.format(name))
+                continue
 
-        hook = git_hooks_directory + '/' + name
-        with open(hook, 'w') as output_file:
-            output_file.write('#!/usr/bin/env bash\nbin/code-analysis')
-            # 'pre-commit-return-status-codes' and
-            # 'pre-push-return-status-codes', if unset, inherit
-            # their values from vanilla 'return-status-codes'
-            if bool_option(self.options[
-                    '{0}-return-status-codes'.format(name)]):
-                output_file.write(' --return-status-codes')
-            else:
-                output_file.write(' --no-return-status-codes')
-        subprocess.call([
-            'chmod',
-            '775',
-            hook,
-        ])
-        print('Installed Git {0} hook.'.format(name))
+            git_hooks_directory = git_directory + '/hooks'
+            if not os.path.exists(git_hooks_directory):
+                os.mkdir(git_hooks_directory)
+
+            hook = git_hooks_directory + '/' + name
+            with open(hook, 'w') as output_file:
+                output_file.write(
+                    '#!/usr/bin/env bash\n{}/bin/code-analysis'.format(
+                        self.buildout['buildout']['directory']
+                    )
+                )
+                # 'pre-commit-return-status-codes' and
+                # 'pre-push-return-status-codes', if unset, inherit
+                # their values from vanilla 'return-status-codes'
+                if bool_option(self.options[
+                        '{0}-return-status-codes'.format(name)]):
+                    output_file.write(' --return-status-codes')
+                else:
+                    output_file.write(' --no-return-status-codes')
+            subprocess.call([
+                'chmod',
+                '775',
+                hook,
+            ])
+            print('Installed Git {0} hook in {1}.'.format(name, hook_location))
 
     def uninstall_hook(self, name):
         git_hooks_directory = self.buildout['buildout']['directory'] + \

@@ -4,6 +4,10 @@ Change history
 3.0.2 (unreleased)
 ------------------
 
+- WIP: Misses tests and documentation
+  Added the ``hook-locations`` options to support the use case of
+  installing the git pre commit/push hook in different locations
+  [ale-rt]
 - Newer versions of z3c.dependencychecker already report its exit code.
   [gforcada]
 
