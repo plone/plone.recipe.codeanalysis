@@ -222,11 +222,9 @@ class Recipe(object):
             add_script(cmd, arguments=arguments)
 
     def install_hook(self, name):
-        hook_locations = self.options.get('hook-locations', '').split()
-        if not hook_locations:
-            hook_locations = [
-                self.buildout['buildout']['directory'],
-            ]
+        hook_locations = self.options.get(
+            'hook-locations', self.buildout['buildout']['directory']
+        ).split()
 
         for hook_location in hook_locations:
             git_directory = hook_location + '/.git'
