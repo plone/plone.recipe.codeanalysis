@@ -6,7 +6,7 @@ Change history
 
 - WIP: Misses tests and documentation
   Added the ``hook-locations`` options to support the use case of
-  installing the git pre commit/push hook in different locations
+  installing the git pre commit/push hook in different locations (see #227)
   [ale-rt]
 - Newer versions of z3c.dependencychecker already report its exit code.
   [gforcada]
