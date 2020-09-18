@@ -293,6 +293,13 @@ def parse_command_line_arguments(options):
     return options
 
 
+def _taskrunner(klass, options, lock, status):
+    check = klass(options, lock)
+    if check.enabled:
+        if not check.run():
+            status.value = False
+
+
 def code_analysis(options):
     start = time()
     options = parse_command_line_arguments(options)
@@ -305,12 +312,6 @@ def code_analysis(options):
     status = DummyValue()
     multiprocessing = bool_option(options.get('multiprocessing'))
 
-    def taskrunner(klass, options, lock, status):
-        check = klass(options, lock)
-        if check.enabled:
-            if not check.run():
-                status.value = False
-
     if multiprocessing:
         from multiprocessing import Lock
         from multiprocessing import Process
@@ -319,14 +320,14 @@ def code_analysis(options):
         lock = Lock()
         status = Value('b', True)
         procs = [
-            Process(target=taskrunner, args=(klass, options, lock, status))
+            Process(target=_taskrunner, args=(klass, options, lock, status))
             for klass in all_checks
         ]
         [p.start() for p in procs]
         [p.join() for p in procs]
     else:
         for klass in all_checks:
-            taskrunner(klass, options, lock, status)
+            _taskrunner(klass, options, lock, status)
 
     # Check all status codes and return with exit code 1 if one of the code
     # analysis steps did not return True
