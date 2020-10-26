@@ -18,7 +18,5 @@ Flake 8 code analysis is included by default::
 
 Flake 8 code analysis script has been created::
 
-    >>> buildout_output_lower
-    debug-travis
     >>> '/sample-buildout/bin/code-analysis-flake8' in buildout_output_lower
     True
