@@ -11,7 +11,7 @@ class CSSLint(Analyser):
     title = 'CSS Lint'
     output_file_extension = 'xml'
     output_regex = re.compile(r'(?P<name>Error[^ -]*)')
-    output_replace = '\033[00;31m\g<name>\033[0m'
+    output_replace = r'\033[00;31m\g<name>\033[0m'
 
     jenkins_re = re.compile(r'severity="error"')
     no_jenkins_re = re.compile(r'Error -|error at')
@@ -19,7 +19,7 @@ class CSSLint(Analyser):
     @property
     def cmd(self):
         cmd = []
-        files = self.find_files('.*\.css')
+        files = self.find_files(r'.*.css')
         if files:
             cmd.append(self.get_prefixed_option('bin'))
             if self.use_jenkins:

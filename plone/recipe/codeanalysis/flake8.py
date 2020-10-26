@@ -25,8 +25,7 @@ class Flake8(Analyser):
         # get the options
         options = [
             o for o in self.options
-            if o.startswith('flake8-') and
-            o not in no_options
+            if o.startswith('flake8-') and o not in no_options
         ]
         # format them
         options = [

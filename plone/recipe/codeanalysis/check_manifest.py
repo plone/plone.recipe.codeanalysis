@@ -12,7 +12,7 @@ class CheckManifest(Analyser):
     name = 'check-manifest'
     title = 'Check MANIFEST.in'
     output_regex = re.compile(r'(?P<name>Error[^ -]*)')
-    output_replace = '\033[00;31m\g<name>\033[0m'
+    output_replace = r'\033[00;31m\g<name>\033[0m'
 
     @property
     def cmd(self):
