@@ -18,7 +18,7 @@ install:
   - pip install -r requirements.txt
   - easy_install -U zc.buildout==2.13.3
   - buildout -c $CONF annotate
-  - buildout -N -t 3 -c $CONF || buildout -N -t 3 -c $CONF
+  - buildout -N -t 3 -c $CONF
 script:
   - if [[ $PYTHON_VERSION == 2.7 ]]; then pip install docutils ; fi
   - if [[ $PYTHON_VERSION == 2.7 ]]; then pip install Pygments ; fi
