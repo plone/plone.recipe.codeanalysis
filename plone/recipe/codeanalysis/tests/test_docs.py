@@ -8,11 +8,7 @@ import unittest
 import zc.buildout.testing
 
 
-optionflags = (
-    doctest.ELLIPSIS |
-    doctest.NORMALIZE_WHITESPACE |
-    doctest.REPORT_ONLY_FIRST_FAILURE
-)
+optionflags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
 
 
 def setUp(test):  # noqa

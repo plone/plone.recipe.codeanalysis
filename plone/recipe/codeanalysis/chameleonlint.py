@@ -35,7 +35,7 @@ class ChameleonLint(Analyser):
     def run(self):
         files = []
         for extension in self.extensions:
-            files.extend(self.find_files('.*\.{0}'.format(extension)))
+            files.extend(self.find_files(r'.*.{0}'.format(extension)))
 
         total_errors = []
         for file_path in files:

@@ -1,9 +1,9 @@
 language: python
 python:
   - 2.7
-  - 3.4
-  - 3.5
   - 3.6
+  - 3.7
+  - 3.8
 sudo: false
 cache:
   directories:
@@ -16,9 +16,9 @@ env:
     - CONF=travis.cfg TEST_ALL=true
 install:
   - pip install -r requirements.txt
-  - easy_install -U zc.buildout==2.11.0
+  - easy_install -U zc.buildout==2.13.3
   - buildout -c $CONF annotate
-  - buildout -N -t 3 -c $CONF || buildout -N -t 3 -c $CONF
+  - buildout -N -t 3 -c $CONF
 script:
   - if [[ $PYTHON_VERSION == 2.7 ]]; then pip install docutils ; fi
   - if [[ $PYTHON_VERSION == 2.7 ]]; then pip install Pygments ; fi
