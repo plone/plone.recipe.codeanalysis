@@ -26,8 +26,6 @@ It is also possible to run single code analysis scripts::
 
     >>> '/sample-buildout/bin/code-analysis-flake8' in buildout_output_lower
     True
-    >>> '/sample-buildout/bin/code-analysis-jshint' in buildout_output_lower
-    True
 
 Flake 8 is installed by the buildout script, there is no need to install it on
 the system::

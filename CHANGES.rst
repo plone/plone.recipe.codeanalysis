@@ -10,6 +10,9 @@ Change history
 - Support multi-processing on python3.8.
   [janjaapdriessen]
 
+- Remove all frontend code analysis: (s)csslint, jscs, tslint.
+  [janjaapdriessen]
+
 3.0.1 (2018-06-27)
 ------------------
 
