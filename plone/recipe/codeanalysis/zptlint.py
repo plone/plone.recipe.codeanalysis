@@ -15,7 +15,7 @@ class ZPTLint(Analyser):
         cmd = []
         files = []
         for extension in self.extensions:
-            files.extend(self.find_files('.*\.{0}'.format(extension)))
+            files.extend(self.find_files(r'.*.{0}'.format(extension)))
 
         if files:
             cmd.append(self.get_prefixed_option('bin'))

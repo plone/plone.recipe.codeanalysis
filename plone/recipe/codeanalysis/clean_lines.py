@@ -76,7 +76,7 @@ class CleanLines(Analyser):
         for check in self.checks:
             files = []
             for extension in check['extensions']:
-                files.extend(self.find_files('.*\.{0}'.format(extension)))
+                files.extend(self.find_files(r'.*.{0}'.format(extension)))
             for file_path in files:
                 total_errors.extend(self.check(file_path, **check))
 

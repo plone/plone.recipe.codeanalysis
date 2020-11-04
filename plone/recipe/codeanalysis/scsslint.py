@@ -15,7 +15,7 @@ class SCSSLint(Analyser):
     def cmd(self):
         linter = self.options.get('scsslint-bin')
         cmd = []
-        files = self.find_files('.*\.scss')
+        files = self.find_files(r'.*.scss')
 
         if (files or self.use_jenkins) and linter:
             cmd.append(linter)

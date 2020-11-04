@@ -46,7 +46,8 @@ Please upgrade to Ruby 2.0.0 or greater as soon as possible.
     <error source="" line="2" column="1" length="1" severity="error" message="Syntax Error: Invalid CSS after &quot;#boom#&quot;: expected &quot;{&quot;, was &quot;&quot;" />
   </file>
 </checkstyle>
-"""  # flake8:noqa
+"""  # noqa
+
 
 class TestSCSSLint(CodeAnalysisTestCase):
 
@@ -131,7 +132,6 @@ class TestSCSSLint(CodeAnalysisTestCase):
         self.assertTrue(warnings.startswith('<?xml'))
         self.assertTrue('<checkstyle ' in warnings)
         self.assertFalse('<error ' in warnings)
-
 
     @unittest.skipIf(not SCSSLINT_INSTALLED, SCSSLINT_NOT_INSTALLED_MSG)
     def test_analysis_file_contains_xml_warnings_when_jenkins_is_true(self):

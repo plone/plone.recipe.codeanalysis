@@ -17,7 +17,7 @@ class JSCS(Analyser):
     @property
     def cmd(self):
         cmd = []
-        files = self.find_files('.*\.js')
+        files = self.find_files(r'.*.js')
 
         if files or self.use_jenkins:
             cmd.append(self.get_prefixed_option('bin'))

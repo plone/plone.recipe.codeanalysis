@@ -11,7 +11,7 @@ class JSHint(Analyser):
     title = 'JSHint'
     output_file_extension = 'xml'
     output_regex = re.compile(r'\((?P<name>[EW]\d\d\d)\)')
-    output_replace = '\033[00;31m\g<name>\033[0m'
+    output_replace = r'\033[00;31m\g<name>\033[0m'
 
     jenkins_re = re.compile(r'severity="E"')
     no_jenkins_re = re.compile(r'(E\d\d\d)')
@@ -19,7 +19,7 @@ class JSHint(Analyser):
     @property
     def cmd(self):
         cmd = []
-        files = self.find_files('.*\.js')
+        files = self.find_files(r'.*.js')
         if files or self.use_jenkins:
             cmd.extend([self.get_prefixed_option('bin'), '--verbose'])
             if self.use_jenkins:
