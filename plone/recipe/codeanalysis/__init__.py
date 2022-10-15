@@ -2,14 +2,10 @@
 from plone.recipe.codeanalysis.chameleonlint import ChameleonLint
 from plone.recipe.codeanalysis.check_manifest import CheckManifest
 from plone.recipe.codeanalysis.clean_lines import CleanLines
-from plone.recipe.codeanalysis.csslint import CSSLint
 from plone.recipe.codeanalysis.dependencychecker import DependencyChecker
 from plone.recipe.codeanalysis.flake8 import Flake8
 from plone.recipe.codeanalysis.i18ndude import I18NDude
 from plone.recipe.codeanalysis.importchecker import ImportChecker
-from plone.recipe.codeanalysis.jscs import JSCS
-from plone.recipe.codeanalysis.jshint import JSHint
-from plone.recipe.codeanalysis.scsslint import SCSSLint
 from plone.recipe.codeanalysis.xmllint import XMLLint
 from plone.recipe.codeanalysis.zptlint import ZPTLint
 from time import time
@@ -24,16 +20,12 @@ import zc.recipe.egg
 current_dir = os.path.dirname(__file__)
 all_checks = [
     ChameleonLint,
-    CSSLint,
     CheckManifest,
     CleanLines,
     DependencyChecker,
     ImportChecker,
     Flake8,
     I18NDude,
-    JSCS,
-    JSHint,
-    SCSSLint,
     XMLLint,
     ZPTLint,
 ]
@@ -62,20 +54,8 @@ class Recipe(object):
         # Flake 8
         self.options.setdefault('flake8', 'True')
         self.options.setdefault('flake8-extensions', '')
-        # JSHint
-        self.options.setdefault('jshint', 'False')
-        self.options.setdefault('jshint-bin', 'jshint')
-        self.options.setdefault('jshint-exclude', '')
-        self.options.setdefault('jshint-suppress-warnings', 'True')
-        # JSCS
-        self.options.setdefault('jscs', 'False')
-        self.options.setdefault('jscs-bin', 'jscs')
-        self.options.setdefault('jscs-exclude', '')
         # Chameleon Lint
         self.options.setdefault('chameleon-lint', 'False')
-        # CSS Lint
-        self.options.setdefault('csslint', 'False')
-        self.options.setdefault('csslint-bin', 'csslint')
         # check-manifest
         self.options.setdefault('check-manifest', 'False')
         self.options.setdefault('check-manifest-directory', '.')
@@ -100,10 +80,6 @@ class Recipe(object):
         # Find untranslated strings
         self.options.setdefault('find-untranslated', 'False')
         self.options.setdefault('i18ndude-bin', '')
-        # scss-lint
-        self.options.setdefault('scsslint', 'False')
-        self.options.setdefault('scsslint-bin', 'scss-lint')
-        self.options.setdefault('scsslint-config', '')
         # xmllint
         self.options.setdefault('xmllint', 'False')
         # zptlint

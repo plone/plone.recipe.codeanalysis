@@ -12,13 +12,9 @@ Minimal buildout::
     ... recipe = plone.recipe.codeanalysis
     ... directory = %(directory)s
     ... flake8-filesystem = %(flake8-filesystem)s
-    ... jshint = %(jshint)s
-    ... jshint = %(csslint)s
     ... """ % {
     ...     'directory' : '${buildout:directory}/plone/recipe/codeanalysis',
     ...     'flake8-filesystem': 'True',
-    ...     'jshint': 'True',
-    ...     'csslint': 'True',
     ... })
     >>> buildout_output_lower = system(buildout).lower()
 

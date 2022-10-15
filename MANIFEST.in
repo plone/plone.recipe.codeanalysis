@@ -9,8 +9,6 @@ graft docs
 graft plone
 include *.rst
 include .coveragerc
-include .csslintrc
-include .jscs.json
 include buildout.cfg
 include travis.cfg
 include .isort.cfg

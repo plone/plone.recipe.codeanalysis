@@ -8,7 +8,6 @@ sudo: false
 cache:
   directories:
     - $HOME/buildout-cache
-    - $HOME/parts/node
     - $HOME/.cache/pip
 env:
   matrix:
@@ -27,7 +26,3 @@ script:
   - bin/test
 after_failure:
   - bin/flake8 --version
-  - bin/csslint --version
-  - bin/jshint --version
-  - bin/jscs --version
-

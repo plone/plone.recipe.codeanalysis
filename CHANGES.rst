@@ -6,6 +6,9 @@ Change history
 
 Breaking change:
 
+- Remove all frontend code analysis: (s)csslint, jscs, jshint.
+  [janjaapdriessen]
+
 - Drop support for Python 3.4 and 3.5.
   [janjaapdriessen]
 
@@ -21,7 +24,6 @@ Bugfixes:
 
 - Newer versions of z3c.dependencychecker already report its exit code.
   [gforcada]
-
 
 3.0.1 (2018-06-27)
 ------------------

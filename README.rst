@@ -28,8 +28,7 @@ Introduction
 ============
 
 ``plone.recipe.codeanalysis`` provides static code analysis for Buildout-based
-Python projects, including `flake8`_, `JSHint`_, `CSS Lint`_, and
-other code checks.
+Python projects, including `flake8`_ and other code checks.
 
 This buildout recipe creates a script to run the code analysis::
 
@@ -78,18 +77,6 @@ This configuration looks like this:
         ${buildout:directory}/src
     return-status-codes = True
     pre-commit-hook = True
-    # JS
-    jshint = True
-    jshint-bin = ${buildout:bin-directory}/jshint
-    jshint-suppress-warnings = False
-    jscs = True
-    jscs-bin = ${buildout:bin-directory}/jscs
-    jscs-exclude =
-        ${buildout:directory}/dev/bower_components
-        ${buildout:directory}/node_modules
-    # CSS
-    csslint = True
-    csslint-bin = ${buildout:bin-directory}/csslint
     # ZPT
     zptlint = True
     zptlint-bin = ${buildout:bin-directory}/zptlint
@@ -97,16 +84,8 @@ This configuration looks like this:
     chameleon-lint = False
     # XML (there is no xmllint-bin, it uses lxml)
     xmllint = True
-    # scss-lint
-    scsslint = True
-    scsslint-bin = ${buildout:bin-directory}/scss-lint
-    # TS
-    tslint = True
-    tslint-bin = ${buildout:directory}/bin/tslint
-    tslint-exclude = ${:jscs-exclude}
     # Conventions
     clean-lines = True
-    clean-lines-exclude = ${:jscs-exclude}
     # dependency-checker
     dependencychecker = True
     dependencychecker-bin = ${buildout:directory}/bin/dependencychecker
@@ -114,11 +93,6 @@ This configuration looks like this:
     find-untranslated = True
     i18ndude-bin = ${buildout:bin-directory}/i18ndude
     flake8-exclude = bootstrap.py,bootstrap-buildout.py,docs,*.egg,*.cpy,*.vpy,overrides
-
-    [node]
-    recipe = gp.recipe.node
-    npms = csslint jshint jscs tslint
-    scripts = csslint jshint jscs tslint
 
 ``[recommended]`` extra
 =======================
@@ -318,22 +292,6 @@ pep8 (to read the flake8 output)::
 
     **/parts/code-analysis/flake8.log
 
-csslint::
-
-    **/parts/code-analysis/csslint.xml
-
-csslint::
-
-    **/parts/code-analysis/scsslint.xml
-
-jslint (to read the jshint output)::
-
-    **/parts/code-analysis/jshint.xml
-
-checkstyle (to read the jscs output)::
-
-    **/parts/code-analysis/jscs.xml
-
 Filesystem output
 =================
 
@@ -490,103 +448,6 @@ Look at `Flake8 documentation`_
 **importchecker-bin**
     Set the path to a custom version of ``importchecker``.
 
-**jshint**
-    If set to True, jshint code analysis is run. Default is ``False``. Note
-    that plone.recipe.codeanalysis requires jshint >= 1.0.
-
-**jshint-bin**
-    JSHint executable. Default is ``jshint``. If you have JSHint installed on
-    your system and in your path, there is nothing to do. To install JSHint in
-    your buildout, use the following:
-
-.. code-block:: ini
-
-    [jshint]
-    recipe = gp.recipe.node
-    npms = jshint
-    scripts = jshint
-
-set jshint-bin to ``${buildout:bin-directory}/jshint``.
-
-**jshint-exclude**
-    Allows you to specify directories which you don't want to be linted.
-    Default is none. If you want JSHint to skip some files you can list them
-    in a file named ``.jshintignore``. See `JSHint documentation`_ for more
-    details.
-
-**jshint-suppress-warnings**
-    By default warnings of jshint are suppressed and not shown. You may disable
-    this by setting to False, default is ``True`` for backward compatibility
-    reasons.
-
-**jscs**
-    If set to True, jscs code analysis is run. Default is ``False``.
-
-    JavaScript Code Style options should be configured using a ``.jscs.json``
-    file. You should align your javascript code to the next generation of
-    Plone's javascript framework Mockup_ and take it's ``.jscs.json`` file
-    which is available here:
-    https://github.com/plone/mockup/blob/master/mockup/.jscs.json
-
-    All configuration options are documented on the `jscs website`_.
-
-**jscs-bin**
-    Set the path to a custom version of JSCS, e.g. ``/usr/local/bin/jscs``.
-
-    If you have Javascript Code Style Checker installed in your system and
-    path, you have nothing to do. To install with Buildout, add the following
-    section to your buildout and set jscs-bin to
-    ``{buildout:bin-directory}/jscs``:
-
-.. code-block:: ini
-
-    [jscs]
-    recipe = gp.recipe.node
-    npms = jscs
-    scripts = jscs
-
-**jscs-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none. Note that these directories have to be given in
-    absolute paths, use ``${buildout:directory}/foo/bar/static/js-3rd-party``
-    for example.
-
-**csslint**
-    If set to True, CSS Lint code analysis is run. Default is ``False``.
-
-    CSS Lint options should be configured using a ``.csslintrc`` file. A
-    typical ``.csslintrc`` file will look like this::
-
-        --format=compact
-        --quiet
-        --ignore=adjoining-classes,floats,font-faces,font-sizes,ids,qualified-headings,unique-headings
-        --exclude-list=foo/bar/static/third-party.css
-
-    This typical configuration includes a list of CSS rules that will be
-    ignored as they are `considered useless`_.
-
-    See `CSS Lint documentation`_ and `CSS Lint command-line interface`_ for a
-    detailed list and description of the rules.
-
-**csslint-bin**
-    Set the path to a custom version of CSS Lint, e.g. ``/usr/local/bin/csslint``.
-
-    If you have CSS Lint installed in your system and path, you have nothing
-    to do. To install CSS Lint with Buildout, add the following section to
-    your buildout and set csslint-bin to
-    ``{buildout:bin-directory}/csslint``:
-
-.. code-block:: ini
-
-    [csslint]
-    recipe = gp.recipe.node
-    npms = csslint
-    scripts = csslint
-
-**csslint-exclude**
-    Allows you to specify directories and/or files which you don't want to be
-    checked. Default is none.
-
 **chameleon-lint**
     If set to True, ChamleonLint code analysis is run. Default is ``False``.
 
@@ -612,12 +473,13 @@ set jshint-bin to ``${buildout:bin-directory}/jshint``.
     Allows you to specify directories and/or files which you don't want to be
     checked. Default is none.
 
-i18ndude, scsslint and zptlint support
---------------------------------------
+i18ndude and zptlint support
+----------------------------
 
-To reduce the number of Zope/Plone direct dependencies, plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `SCSS Lint`_ nor `zptlint`_;
-in order to use the following options you have to install them on your
-system, see ``buildout.cfg`` for an example install.
+To reduce the number of Zope/Plone direct dependencies,
+plone.recipe.codeanalysis no longer depends on `i18ndude`_ nor `zptlint`_; in
+order to use the following options you have to install them on your system,
+see ``buildout.cfg`` for an example install.
 
 **find-untranslated**
     If set to True, scan Zope templates to find untranslated strings.
@@ -636,34 +498,6 @@ system, see ``buildout.cfg`` for an example install.
 **i18ndude-bin**
     Set the path to a custom version of `i18ndude`_.
     Default is none.
-
-**scsslint**
-    If set to True, `SCSS Lint`_ code analysis is run. Default is ``True``.
-
-**scsslint-bin**
-    Set the path to a custom version of `SCSS Lint`_.
-    Default is none.
-
-    Note that you'll typically install the gem ``scss_lint`` (with underscore)
-    to get a bin file ``scss-lint`` (with a dash).
-
-    If you have SCSS Lint installed in your system and path, you have nothing
-    to do. To install SCSS Lint with Buildout, add the following section to
-    your buildout and set scsslint-bin to
-    ``{buildout:bin-directory}/scss-lint``:
-
-.. code-block:: ini
-
-    [rubygems]
-    recipe = rubygemsrecipe
-    gems = scss_lint
-
-    Please note that due to some buildout weirdness this will break buildout
-    on the first buildout run; a second buildout run will complete just fine.
-
-**scsslint-configuration**
-
-    SCSS Lint options can be configured, see `SCSS Lint`_ README.
 
 **zptlint**
     If set to True, zptlint code analysis is run.
@@ -688,40 +522,6 @@ To run a ``plone.recipe.codeanalysis`` self-test that covers these extra linters
 Known Issues
 ============
 
-JSHint "ERROR: Unknown option --verbose"::
-
-    JSHint                [ OK ]
-    ERROR: Unknown option --verbose
-
-Upgrade JSHint to latest version (>= 1.0) to fix this issue, e.g.::
-
-    $ sudo npm install -g jshint
-
-
-JSHint "ERROR: Unknown option --exclude"::
-
-    JSHint                [ OK ]
-    ERROR: Unknown option --exclude
-
-Upgrade JSHint to latest version (>= 2.1.6) to fix this issue, e.g.::
-
-    $ sudo npm install -g jshint
-
-
-Rubygems woes::
-
-  Installing rubygems.
-  rubygems: Extracting package to /app/plone.recipe.codeanalysis/parts
-  ERROR:  While executing gem ... (Errno::EACCES)
-  Permission denied @ rb_sysopen - /usr/lib/ruby/gems/2.3.0/specifications/default/bundler-1.16.1.gemspec
-  rubygems: b''
-  rubygems: Command failed with exit code 1: ['ruby', 'setup.rb', 'all', '--prefix=/app/plone.recipe.codeanalysis/parts/rubygems', '--no-rdoc', '--no-ri']
-  While:
-  Installing rubygems.
-  Error: System error
-
-Solution: run buildout again. Really.
-
 Tests fail::
 
   Traceback (most recent call last):
@@ -732,27 +532,19 @@ Tests fail::
 This is likely caused by https://github.com/pypa/pip/issues/4695.
 Solution: run::
 
-  bin/easy_install -U zc.buildout==2.11.0
+  bin/easy_install -U zc.buildout==2.13.3
 
 before running ``bin/buildout``.
 
 
-.. _`considered useless`: http://2002-2012.mattwilcox.net/archive/entry/id/1054/
-.. _`CSS Lint documentation`: https://github.com/CSSLint/csslint/wiki/Rules
-.. _`CSS Lint command-line interface`: https://github.com/CSSLint/csslint/wiki/Command-line-interface
-.. _`CSS Lint`: http://csslint.net/
-.. _`SCSS Lint`: https://github.com/brigade/scss-lint
 .. _`Flake8 documentation`: http://flake8.readthedocs.org/en/latest/warnings.html#error-codes
 .. _`Jenkins Violations plugin`: https://wiki.jenkins-ci.org/display/JENKINS/Violations
 .. _`flake8`: https://pypi.python.org/pypi/flake8
-.. _`JSHint documentation`: http://jshint.com/docs/
-.. _`JSHint`: http://www.jshint.com/
 .. _`PEP 3101 (Advanced String Formatting)`: http://www.python.org/dev/peps/pep-3101/
 .. _`plone.api conventions`: http://ploneapi.readthedocs.org/en/latest/contribute/conventions.html#about-imports
 .. _`zptlint`: https://pypi.python.org/pypi/spirit.zptlint
 .. _`i18ndude`: https://pypi.python.org/pypi/i18ndude
 .. _`Unit testing framework documentation`: http://docs.python.org/2/library/unittest.html#deprecated-aliases
 .. _`Mockup`: https://github.com/plone/mockup
-.. _`jscs website`: https://www.npmjs.org/package/jscs
 .. _`Plone's styleguide`: http://docs.plone.org/develop/styleguide/
 .. _`extra configuration`: https://raw.githubusercontent.com/plone/plone.recipe.codeanalysis/master/.isort.cfg
