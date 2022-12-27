@@ -1,5 +1,5 @@
 # keep them in sync with buildout.cfg
-setuptools==44.1.1
+setuptools==65.5.1
 zc.buildout==2.13.3
 
 coverage==3.7
